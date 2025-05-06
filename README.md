@@ -1,5 +1,4 @@
-# 🎮 GameProfessores-Esoft3S  
-## 🕹️ *Syntax Fight: Batalha no DOM*  
+# 🕹️ *Syntax Fight: Batalha no DOM*  
 Projeto da disciplina de **Front-End** - Curso de Engenharia de Software  
 Turma **ESOFT-A**
 
