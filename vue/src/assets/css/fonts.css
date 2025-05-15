@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
+
+/* Fontes locais */
+@font-face {
+  font-family: 'GameFont';
+  src: url('../fonts/game-font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body, button, input, textarea, p, div, span {
+  font-family: 'Roboto Mono', monospace;
+}
+
+h1 {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.pixel-font {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.game-font {
+  font-family: 'GameFont', sans-serif;
+}
+
+.mono-font {
+  font-family: 'Roboto Mono', monospace;
+}
