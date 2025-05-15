@@ -1,0 +1,1 @@
+//Vida, energia, nome, status do jogador

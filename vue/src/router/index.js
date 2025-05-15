@@ -1,0 +1,1 @@
+//Define as rotas: /menu, /map, /battle, /credits, etc
