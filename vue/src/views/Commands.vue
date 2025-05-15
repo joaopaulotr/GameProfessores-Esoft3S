@@ -1,5 +1,6 @@
 <template>
   <div class="commands-screen">
+    <router-link to="/"><button>Voltar ao Menu</button></router-link>
     <h1>Comandos e Controles</h1>
     <div class="commands-container">
       <div class="command-section">
@@ -20,7 +21,6 @@
         </ul>
       </div>
     </div>
-    <router-link to="/"><button>Voltar ao Menu</button></router-link>
   </div>
 </template>
 
@@ -72,6 +72,6 @@ li {
 }
 
 button {
-  margin-top: 2rem;
+  margin-bottom: 2rem; /* Ajuste para espaçamento abaixo do botão */
 }
 </style>
