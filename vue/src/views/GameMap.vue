@@ -4,7 +4,7 @@ import PlayerSprite from '../components/PlayerSprite.vue';
 
 <template>
   <div class="game-map">
-    <router-link to="/"><button>Voltar ao Menu</button></router-link>
+    <router-link to="/"><button class="btn btn-back">Voltar ao Menu</button></router-link>
     <h1>Mapa do Jogo</h1>
     <div class="map-container">
       <!-- Área do mapa e personagens -->
@@ -17,24 +17,27 @@ import PlayerSprite from '../components/PlayerSprite.vue';
 </template>
 
 <style scoped>
+
 .game-map {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  background-color: #121212;
+  background-color: #81bcff;
   color: #fff;
 }
 
 .map-container {
-  width: 80%;
-  height: 70%;
+  width: 800px;
+  height: 500px;
   background-color: #1e1e1e;
   border: 2px solid #5c6bc0;
   border-radius: 8px;
   margin: 2rem 0;
   position: relative;
   overflow: hidden;
+  top: 90px;
+  transform: translateX(65%);
 }
 
 .map-controls {
@@ -42,5 +45,8 @@ import PlayerSprite from '../components/PlayerSprite.vue';
   display: flex;
   justify-content: center;
   gap: 20px;
+}
+.btn-back{
+  background-color: #5c6bc0;
 }
 </style>

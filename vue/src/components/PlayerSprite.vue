@@ -52,21 +52,65 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div
-    class="character"
-    :style="{
-      top: position.top + 'px',
-      left: position.left + 'px',
-      position: 'absolute',
-    }"
-  />
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active d-flex justify-content-center">
+      <div class="character-1"></div>
+   
+    </div>
+    <div class="carousel-item d-flex justify-content-center">
+      <div class="character-2"></div>
+    </div>
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 </template>
 
 <style scoped>
-.character {
+.container {
+  width: 400px;
+  position: top;
+  
+}
+
+.character-1 {
   height: 100px;
   width: 50px;
-  background-color: red;
-  transition: all 0.1s ease;
+  background-color: rgb(7, 8, 99);
+  
 }
+
+.character-2 {
+  height: 100px;
+  width: 50px;
+  background-color: rgb(255, 0, 119);
+  
+  
+}
+
+.carousel-item.active .character-1 {
+  z-index: 2;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: black;
+  margin: auto;
+  height: 300px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+
 </style>
