@@ -1,10 +1,12 @@
 <template>
     <div class="menu-screen">
       <h1>Syntax Fight</h1>
-      <p>Batalha no DOM</p>
-      <router-link to="/map"><button>Jogar</button></router-link>
-      <router-link to="/credits"><button>Créditos</button></router-link>
-      <router-link to="/commands"><button>Comandos / Teclado</button></router-link>
+      <h1 class="subtitle">Batalha no DOM</h1>
+      <div class="buttons-container">
+        <router-link to="/map"><button>Jogar</button></router-link>
+        <router-link to="/credits"><button>Créditos</button></router-link>
+        <router-link to="/commands"><button>Comandos</button></router-link>
+      </div>
     </div>
   </template>
   
@@ -16,20 +18,91 @@
   justify-content: center;
   height: 100vh;
   gap: 20px;
-  background-color: #121212;
+  background-color: #24b5f8;
   color: #fff;
+  background-image: url('@/assets/images/background.png');
+  background-size: cover;
+  background-position: center;
 }
 
 h1 {
-  font-size: 3rem;
-  margin-bottom: 2rem;
+  font-size: 4.5rem;
+  margin: 0;
   text-align: center;
+  color: #ffce1c;
+  text-shadow: 
+    4px 4px 0 #931e30,
+    2px 4px 0 #931e30,
+    4px 2px 0 #931e30,
+    6px 6px 0 rgba(147, 30, 48, 0.6),
+    8px 8px 0 rgba(147, 30, 48, 0.4),
+    10px 10px 0 rgba(147, 30, 48, 0.2);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin: 10px 0 25px 0;
+  color: #fff;
+  text-shadow: 
+    2px 2px 0 #931e30,
+    1px 2px 0 #931e30,
+    2px 1px 0 #931e30,
+    3px 3px 0 rgba(147, 30, 48, 0.6);
+  letter-spacing: 2px;
+  font-weight: bold;
+  animation: pulse 2s infinite alternate;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 button {
-  width: 200px;
-  padding: 12px 0;
-  font-size: 1.2rem;
-  margin: 10px 0;
+  width: 250px;
+  font-size: 1rem;
+  padding: 8px 0;
+  font-family: 'Press Start 2P', cursive;
+  background-color: transparent;
+  border: none;
+  color: white;
+  text-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.5),
+    1px 1px 0 rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  text-shadow: 
+    3px 3px 0 rgba(0, 0, 0, 0.7),
+    1px 1px 0 rgba(0, 0, 0, 0.7);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+@keyframes pulse {
+  from {
+    text-shadow: 
+      2px 2px 0 #931e30,
+      1px 2px 0 #931e30,
+      2px 1px 0 #931e30,
+      3px 3px 0 rgba(147, 30, 48, 0.6);
+  }
+  to {
+    text-shadow: 
+      2px 2px 0 #931e30,
+      1px 2px 0 #931e30,
+      2px 1px 0 #931e30,
+      3px 3px 0 rgba(147, 30, 48, 0.6),
+      4px 4px 0 rgba(147, 30, 48, 0.4);
+  }
 }
 </style>
