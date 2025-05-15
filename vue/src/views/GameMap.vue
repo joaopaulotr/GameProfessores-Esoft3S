@@ -1,8 +1,14 @@
+<script setup>
+import PlayerSprite from '../components/PlayerSprite.vue';
+</script>
+
 <template>
   <div class="game-map">
+    <router-link to="/"><button>Voltar ao Menu</button></router-link>
     <h1>Mapa do Jogo</h1>
     <div class="map-container">
       <!-- Área do mapa e personagens -->
+      <PlayerSprite/>
     </div>
     <div class="map-controls">
       <!-- Controles de navegação -->
@@ -27,6 +33,8 @@
   border: 2px solid #5c6bc0;
   border-radius: 8px;
   margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .map-controls {

@@ -1,39 +1,54 @@
-<script>
-export default {
-  data() {
-    return {
-      position: {
-        top: 0,
-        left: 0,
-      },
-      step: 10, // Quantidade de pixels por movimento
-    };
-  },
-  methods: {
-    handleKeyPress(event) {
-      switch (event.keyCode) {
-        case 37: // Esquerda
-          this.position.left -= this.step;
-          break;
-        case 38: // Cima
-          this.position.top -= this.step;
-          break;
-        case 39: // Direita
-          this.position.left += this.step;
-          break;
-        case 40: // Baixo
-          this.position.top += this.step;
-          break;
-      }
-    },
-  },
-  mounted() {
-    window.addEventListener('keydown', this.handleKeyPress);
-  },
-  beforeUnmount() {
-    window.removeEventListener('keydown', this.handleKeyPress);
-  },
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
+const position = ref({ top: 0, left: 0 });
+const step = 10;
+
+let containerWidth = 0;
+let containerHeight = 0;
+const characterWidth = 50;
+const characterHeight = 100;
+
+const handleKeyPress = (event) => {
+  const newPos = { ...position.value };
+
+  switch (event.keyCode) {
+    case 37: // esquerda
+      newPos.left -= step;
+      break;
+    case 38: // cima
+      newPos.top -= step;
+      break;
+    case 39: // direita
+      newPos.left += step;
+      break;
+    case 40: // baixo
+      newPos.top += step;
+      break;
+  }
+
+  // Limites horizontais
+  newPos.left = Math.max(0, Math.min(newPos.left, containerWidth - characterWidth));
+  // Limites verticais
+  newPos.top = Math.max(0, Math.min(newPos.top, containerHeight - characterHeight));
+
+  position.value = newPos;
 };
+
+onMounted(() => {
+  const container = document.querySelector('.map-container');
+  if (container) {
+    containerWidth = container.clientWidth;
+    containerHeight = container.clientHeight;
+  }
+
+  window.addEventListener('keydown', handleKeyPress);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyPress);
+});
+
 </script>
 
 <template>
@@ -44,8 +59,7 @@ export default {
       left: position.left + 'px',
       position: 'absolute',
     }"
-  >
-  </div>
+  />
 </template>
 
 <style scoped>
