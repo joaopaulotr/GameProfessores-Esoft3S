@@ -2,6 +2,19 @@
 import { ref } from 'vue'
 import PlayerSprite from '../components/PlayerSprite.vue'
 import Tile from '../components/Tile.vue'
+import DialogBox from '../components/DialogBox.vue';
+
+const dialogActiveInicio = ref(true)
+
+function openDialogInicio() {
+  dialogActiveInicio.value = true
+}
+
+const dialogMessagesInicio = [
+  'Bem-vindo ao jogo!',
+  'Use as setas para se mover.',
+  'Pressione E para interagir com objetos.'
+]
 
 
 const mapWidth = 25   // número de colunas
@@ -30,6 +43,11 @@ const gameMap = ref([
     <div class="map-container" ref="mapRef">
       <Tile :map="gameMap" :tile-size="tileSize" />
       <PlayerSprite :map="gameMap" :tile-size="tileSize" :map-width="mapWidth" :map-height="mapHeight" />
+      <DialogBox
+      v-if="dialogActiveInicio"
+      :messages="dialogMessagesInicio"
+      @close="dialogActive = false"
+      />
     </div>
     <div class="map-controls">
       <!-- Controles de navegação -->
@@ -54,11 +72,9 @@ const gameMap = ref([
   background-color: #1e1e1e;
   border: 2px solid #5c6bc0;
   border-radius: 8px;
-  margin: 2rem 0;
+  margin: 2rem auto; /* centraliza horizontalmente */
   position: relative;
   overflow: hidden;
-  top: 90px;
-  transform: translateX(65%);
 }
 
 .map-controls {
