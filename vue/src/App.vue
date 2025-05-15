@@ -1,13 +1,11 @@
-<script setup>
-</script>
-
 <template>
-  <header>
-  </header>
-
-  <main>
-  </main>
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
-<style scoped>
+<style>
+body{
+  margin: 0;
+}
 </style>

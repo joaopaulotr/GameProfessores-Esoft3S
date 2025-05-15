@@ -5,7 +5,8 @@ import BattleScreen from '@/views/BattleScreen.vue';
 import Credits from '@/views/Credits.vue';
 import Instructions from '@/views/Instructions.vue';
 import Victory from '@/views/Victory.vue';
-import Defeat from '@/views/Defeat.vue';    
+import Defeat from '@/views/Defeat.vue';
+import Commands from '@/views/Commands.vue';    
 
 const routes = [
   { path: '/', component: MainMenu },
@@ -14,7 +15,8 @@ const routes = [
   { path: '/credits', component: Credits },
   { path: '/instructions', component: Instructions },
   { path: '/victory', component: Victory },
-  { path: '/defeat', component: Defeat }
+  { path: '/defeat', component: Defeat },
+  { path: '/commands', component: Commands }
 ];
 
 export default createRouter({
