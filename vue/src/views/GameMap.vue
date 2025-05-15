@@ -1,14 +1,35 @@
 <script setup>
-import PlayerSprite from '../components/PlayerSprite.vue';
+import { ref } from 'vue'
+import PlayerSprite from '../components/PlayerSprite.vue'
+import Tile from '../components/Tile.vue'
+
+
+const mapWidth = 25   // número de colunas
+const mapHeight = 10  // número de linhas
+const tileSize = 64   // pixels por tile
+
+// Exemplo simples de um mapa 16×12
+const gameMap = ref([
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
+  [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+])
 </script>
 
 <template>
   <div class="game-map">
     <router-link to="/"><button class="btn btn-back">Voltar ao Menu</button></router-link>
     <h1>Mapa do Jogo</h1>
-    <div class="map-container">
-      <!-- Área do mapa e personagens -->
-      <PlayerSprite/>
+    <div class="map-container" ref="mapRef">
+      <Tile :map="gameMap" :tile-size="tileSize" />
+      <PlayerSprite :map="gameMap" :tile-size="tileSize" :map-width="mapWidth" :map-height="mapHeight" />
     </div>
     <div class="map-controls">
       <!-- Controles de navegação -->
