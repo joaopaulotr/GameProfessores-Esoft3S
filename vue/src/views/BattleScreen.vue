@@ -32,138 +32,240 @@ const addXP = () => {
 
 <template>
   <div class="battle-screen">
-    <h1>Tela de Batalha</h1>
-    <div class="battle-interface">
-      <div class="player-status">
-        <HealthBar
-          :name="playerStats.name"
-          :health="playerStats.health"
-          :maxHealth="playerStats.maxHealth"
-          :xp="playerStats.xp"
-          :maxXp="playerStats.maxXp"
-        />
+    <div class="battle-overlay">
+      <div class="mc-header">
+        <h1>Tela de Batalha</h1>
       </div>
       
-      <!-- Botões de teste -->
-      <div class="test-buttons">
-        <button @click="damagePlayer">Tomar Dano (-10)</button>
-        <button @click="healPlayer">Curar (+10)</button>
-        <button @click="addXP">Ganhar XP (+10)</button>
+      <div class="battle-interface text-center">
+        <div class="player-status">
+          <HealthBar
+            :name="playerStats.name"
+            :health="playerStats.health"
+            :maxHealth="playerStats.maxHealth"
+            :xp="playerStats.xp"
+            :maxXp="playerStats.maxXp"
+          />
+        </div>
+        
+        <div class="test-buttons">
+          <button @click="damagePlayer" class="damage-btn">
+            <span class="btn-icon">💔</span>
+            Tomar Dano (-10)
+          </button>
+          <button @click="healPlayer" class="heal-btn">
+            <span class="btn-icon">💖</span>
+            Curar (+10)
+          </button>
+          <button @click="addXP" class="xp-btn">
+            <span class="btn-icon">⭐</span>
+            Ganhar XP (+10)
+          </button>
+        </div>
+
+        <div class="battle-arena">
+          <div class="arena-container">
+            <!-- Área de batalha -->
+          </div>
+        </div>
       </div>
 
-      <div class="battle-arena">
-        <!-- Componentes de batalha serão adicionados aqui -->
+      <div class="bottom-controls">
+        <div class="action-buttons">
+          <button class="action-btn">
+            <span class="btn-icon">⚔️</span>
+            Atacar
+          </button>
+          <button class="action-btn">
+            <span class="btn-icon">🛡️</span>
+            Defender
+          </button>
+          <button class="action-btn">
+            <span class="btn-icon">📚</span>
+            Habilidades
+          </button>
+        </div>
+
+        <div class="menu-buttons">
+          <router-link to="/">
+            <button class="menu-btn">
+              <span class="btn-icon">🏠</span>
+              Voltar ao Menu
+            </button>
+          </router-link>
+        </div>
       </div>
-    </div>
-    <div class="action-buttons">
-      <!-- ActionButtons component será usado aqui -->
-    </div>
-    <div class="menu-buttons">
-      <router-link to="/"><button>Voltar ao Menu</button></router-link>
     </div>
   </div>
 </template>
 
 <style scoped>
 .battle-screen {
+  background-image: url('@/assets/images/imgFundo.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.battle-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  background-color: #121212;
-  color: #fff;
   padding: 20px;
+  backdrop-filter: blur(3px);
+}
+
+.mc-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mc-header h1 {
+  font-size: 3rem;
+  color: #ffce1c;
+  text-shadow:
+    4px 4px 0 #931e30,
+    2px 4px 0 #931e30,
+    4px 2px 0 #931e30,
+    6px 6px 0 rgba(147, 30, 48, 0.6),
+    8px 8px 0 rgba(147, 30, 48, 0.4),
+    10px 10px 0 rgba(147, 30, 48, 0.2);
 }
 
 .battle-interface {
   width: 100%;
-  max-width: 1200px;
-  margin: 20px 0;
+  max-width: 1300px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .player-status {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 117px;
+  left: 1275px;
   z-index: 10;
 }
 
 .battle-arena {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
   margin: 2rem 0;
+}
+
+.arena-container {
+  width: 90%;
+  height: 500px;
+  background: rgba(30, 30, 30, 0.8);
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c,
+              inset 0 0 50px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
   position: relative;
-  min-height: 400px;
+  overflow: hidden;
+}
+
+.arena-container::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.bottom-controls {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .action-buttons {
-  width: 80%;
-  margin-top: 1rem;
-}
-
-.menu-buttons {
-  margin-top: 2rem;
   display: flex;
-  gap: 1rem;
-}
-
-.layer1 {
-  top: 0;
-}
-
-.layer2 {
-  top: 40px;
-  border-left-width: 70px;
-  border-right-width: 70px;
-  border-bottom-width: 70px;
-}
-
-.layer3 {
-  top: 90px;
-  border-left-width: 80px;
-  border-right-width: 80px;
-  border-bottom-width: 80px;
-}
-
-.trunk {
-  position: absolute;
-  top: 170px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 40px;
-  background-color: #8b5a2b;
-  border-radius: 3px;
+  gap: 1.5rem;
+  justify-content: center;
 }
 
 button {
   font-family: 'Press Start 2P', cursive;
-  padding: 10px 20px;
-  background-color: #931e30;
+  padding: 15px 25px;
+  background-color: rgba(147, 30, 48, 0.9);
   color: #ffce1c;
-  border: none;
-  border-radius: 4px;
+  border: 2px solid #ffce1c;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 200px;
+  justify-content: center;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 button:hover {
-  transform: scale(1.05);
-  background-color: #b92639;
+  transform: translateY(-2px) scale(1.02);
+  background-color: rgba(185, 38, 57, 0.9);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+.btn-icon {
+  font-size: 1.2em;
 }
 
 .test-buttons {
-   position: fixed;
-   top: 200px;
-   left: 20px;
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-   z-index: 10;
+  position: fixed;
+  top: 200px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 10;
 }
 
-.test-buttons button {
-   min-width: 150px;
+.damage-btn { background-color: rgba(231, 76, 60, 0.9); }
+.heal-btn { background-color: rgba(46, 204, 113, 0.9); }
+.xp-btn { background-color: rgba(52, 152, 219, 0.9); }
+
+.damage-btn:hover { background-color: rgba(231, 76, 60, 1); }
+.heal-btn:hover { background-color: rgba(46, 204, 113, 1); }
+.xp-btn:hover { background-color: rgba(52, 152, 219, 1); }
+
+.action-btn {
+  background-color: rgba(147, 30, 48, 0.9);
+  min-width: 180px;
+}
+
+.menu-btn {
+  background-color: rgba(44, 62, 80, 0.9);
+  min-width: 250px;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 20px #ffce1c; }
+  50% { box-shadow: 0 0 20px #ffc; }
+  100% { box-shadow: 0 0 20px yellow; }
+}
+
+.arena-container {
+  animation: glow 3s infinite;
 }
 </style>

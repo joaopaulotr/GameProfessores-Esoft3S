@@ -30,6 +30,7 @@ const xpPercent = computed(() => Math.min(100, Math.max(0, (props.xp / props.max
 const healthBarColor = computed(() => {
    if (healthPercent.value > 50) return '#2ecc71'
    if (healthPercent.value > 20) return '#f1c40f'
+   if (healthPercent.value < 10) return '#e67e22'
    return '#e74c3c'
 })
 </script>
@@ -67,7 +68,7 @@ const healthBarColor = computed(() => {
 .player-stats {
    background-color: rgba(0, 0, 0, 0.8);
    padding: 1rem;
-   border: 4px solid #931e30;
+   border: 4px solid red;
    border-radius: 0;
    width: 300px;
    position: relative;
@@ -143,7 +144,7 @@ const healthBarColor = computed(() => {
 }
 
 .health-bar {
-   border-color: #931e30;
+   border-color: red;
    box-shadow: 0 0 10px rgba(147, 30, 48, 0.5);
    margin-bottom: 1rem;
 }
