@@ -1,13 +1,14 @@
 <script setup>
 import HealthBar from '../components/HealthBar.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const playerStats = ref({
    name: 'Aluno',
    health: 100,
    maxHealth: 100,
-   xp: 50,
-   maxXp: 100
+   xp: 0,
+   maxXp: 100,
+   level: 1
 })
 
 // Funções de teste
@@ -28,6 +29,23 @@ const addXP = () => {
       playerStats.value.xp = Math.min(playerStats.value.maxXp, playerStats.value.xp + 10)
    }
 }
+
+// Sistema de level up
+watch(() => playerStats.value.xp, (newXP) => {
+   if (newXP >= playerStats.value.maxXp) {
+      // Level up!
+      playerStats.value.level++
+      playerStats.value.xp = 0
+      // Aumenta o máximo de XP necessário para o próximo nível
+      playerStats.value.maxXp += Math.floor(playerStats.value.maxXp * 0.5)
+      // Aumenta o HP máximo e cura totalmente
+      playerStats.value.maxHealth += 20
+      playerStats.value.health = playerStats.value.maxHealth
+
+      // Exibe mensagem de level up (você pode adicionar um componente de notificação depois)
+      alert(`Level Up! Você alcançou o nível ${playerStats.value.level}!`)
+   }
+})
 </script>
 
 <template>
@@ -35,6 +53,7 @@ const addXP = () => {
     <div class="battle-overlay">
       <div class="mc-header">
         <h1>Tela de Batalha</h1>
+        <div class="level-display">Nível {{ playerStats.level }}</div>
       </div>
       
       <div class="battle-interface text-center">
@@ -136,6 +155,20 @@ const addXP = () => {
     6px 6px 0 rgba(147, 30, 48, 0.6),
     8px 8px 0 rgba(147, 30, 48, 0.4),
     10px 10px 0 rgba(147, 30, 48, 0.2);
+}
+
+.level-display {
+  font-family: 'Press Start 2P', cursive;
+  color: #ffce1c;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 1rem;
+  text-shadow: 2px 2px 0 #931e30;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid #931e30;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 .battle-interface {
