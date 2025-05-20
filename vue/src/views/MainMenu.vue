@@ -10,6 +10,7 @@
       </div>
     </div>
     <div class="cloud"></div>
+    <div class="leaf"></div>
   </div>
 </template>
 
@@ -143,5 +144,29 @@ button:active {
   100% {
     left: 110%;
   }
+}
+@keyframes fallLeaf {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(50px) translateY(300px) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-50px) translateY(600px) rotate(360deg);
+    opacity: 0;
+  }
+}
+.leaf {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  background-image: url('leaf.png'); /* Coloque o caminho da imagem da folha */
+  background-size: cover;
+  animation: fallLeaf 6s ease-in-out infinite;
 }
 </style>
