@@ -12,7 +12,7 @@ function openDialogInicio() {
 
 const dialogMessagesInicio = [
   'Bem-vindo ao jogo!',
-  'Use as setas para se mover.',
+  'Use as setas para se mover. ⭠ ⭡ ⭢ ⭣',
   'Pressione E para interagir com objetos.'
 ]
 
@@ -38,7 +38,6 @@ const gameMap = ref([
 
 <template>
   <div class="game-map">
-    <router-link to="/"><button class="btn btn-back">Voltar ao Menu</button></router-link>
     <h1>Mapa do Jogo</h1>
     <div class="map-container" ref="mapRef">
       <Tile :map="gameMap" :tile-size="tileSize" />
@@ -49,6 +48,7 @@ const gameMap = ref([
       @close="dialogActive = false"
       />
     </div>
+    <router-link to="/"><button class="btn-back">Voltar ao Menu</button></router-link>
     <div class="map-controls">
       <!-- Controles de navegação -->
     </div>
@@ -56,6 +56,20 @@ const gameMap = ref([
 </template>
 
 <style scoped>
+
+h1 {
+  font-size: 3rem;
+  margin-top: 5rem;
+  text-align: center;
+  color: #ffce1c;
+  text-shadow:
+    4px 4px 0 #931e30,
+    2px 4px 0 #931e30,
+    4px 2px 0 #931e30,
+    6px 6px 0 rgba(147, 30, 48, 0.6),
+    8px 8px 0 rgba(147, 30, 48, 0.4),
+    10px 10px 0 rgba(147, 30, 48, 0.2);
+}
 
 .game-map {
   display: flex;
@@ -83,7 +97,31 @@ const gameMap = ref([
   justify-content: center;
   gap: 20px;
 }
-.btn-back{
-  background-color: #5c6bc0;
+
+.btn-back {
+  width: 250px;
+  font-size: 1rem;
+  padding: 8px 0;
+  font-family: 'Press Start 2P', cursive;
+  background-color: transparent;
+  border: none;
+  color: white;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.5),
+    1px 1px 0 rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.7),
+    1px 1px 0 rgba(0, 0, 0, 0.7);
+}
+
+.btn-back:active {
+  transform: scale(0.98);
 }
 </style>

@@ -1,24 +1,30 @@
 <template>
   <div class="commands-screen">
-    <router-link to="/"><button>Voltar ao Menu</button></router-link>
-    <h1>Comandos e Controles</h1>
-    <div class="commands-container">
-      <div class="command-section">
-        <h2>Controles de Teclado</h2>
-        <ul>
-          <li><strong>Setas</strong>: Movimentação</li>
-          <li><strong>Espaço</strong>: Atacar</li>
-          <li><strong>E</strong>: Interagir</li>
-          <li><strong>I</strong>: Inventário</li>
-          <li><strong>Esc</strong>: Menu de pausa</li>
-        </ul>
+    <div class="pokemon-window">
+      <h1>Comandos e Controles</h1>
+      <div class="commands-container">
+        <div class="command-section">
+          <h2>Controles de Teclado</h2>
+          <ul>
+            <li><span class="command-key">Setas</span>: Movimentação</li>
+            <li><span class="command-key">Espaço</span>: Atacar</li>
+            <li><span class="command-key">E</span>: Interagir</li>
+            <li><span class="command-key">I</span>: Inventário</li>
+            <li><span class="command-key">Esc</span>: Menu de pausa</li>
+          </ul>
+        </div>
+        <div class="command-section">
+          <h2>Comandos de Combate</h2>
+          <ul>
+            <li><span class="command-key">1-4</span>: Selecionar habilidades</li>
+            <li><span class="command-key">Tab</span>: Alternar entre inimigos</li>
+          </ul>
+        </div>
       </div>
-      <div class="command-section">
-        <h2>Comandos de Combate</h2>
-        <ul>
-          <li><strong>1-4</strong>: Selecionar habilidades</li>
-          <li><strong>Tab</strong>: Alternar entre inimigos</li>
-        </ul>
+      <div class="button-container">
+        <router-link to="/">
+          <button class="pixel-button">Voltar ao Menu</button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -29,36 +35,68 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 100vh;
   padding: 2rem;
-  background-color: #121212;
-  color: #fff;
+  background-color: #24b5f8; /* Azul do seu projeto */
+  background-image: url('@/assets/images/background.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.pokemon-window {
+  width: 90%;
+  max-width: 700px;
+  background-color: white;
+  border: 4px solid #931e30; /* Vermelho escuro do seu projeto */
+  border-radius: 0;
+  padding: 20px 30px;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30; /* Borda amarela externa */
+  position: relative;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  image-rendering: pixelated;
+}
+
+.pokemon-window::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c; /* Bordas internas amarelas */
+  pointer-events: none;
 }
 
 .commands-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 80%;
-  margin: 2rem 0;
+  flex-direction: column;
+  width: 100%;
+  margin: 1.5rem 0;
 }
 
 .command-section {
-  background-color: #1e1e1e;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1rem;
-  min-width: 300px;
+  background-color: transparent;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  border-top: 2px dashed #ffce1c;
+  border-bottom: 2px dashed #ffce1c;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
+  color: #ffce1c; /* Amarelo do seu projeto */
+  text-shadow: 1px 1px 0 #931e30, 2px 2px 0 #931e30;
+  text-align: center;
   margin-bottom: 1.5rem;
 }
 
 h2 {
-  margin-bottom: 1rem;
-  color: #5c6bc0;
+  color: #931e30; /* Vermelho escuro do seu projeto */
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+  text-transform: uppercase;
 }
 
 ul {
@@ -67,11 +105,58 @@ ul {
 }
 
 li {
-  margin-bottom: 0.8rem;
-  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  position: relative;
+  padding-left: 1rem;
 }
 
-button {
-  margin-bottom: 2rem; /* Ajuste para espaçamento abaixo do botão */
+li::before {
+  content: '►';
+  position: absolute;
+  left: 0;
+  color: #931e30;
+}
+
+.command-key {
+  color: #931e30;
+  font-weight: bold;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.pixel-button {
+  background-color: transparent;
+  border: none;
+  color: #931e30;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.pixel-button::before {
+  content: '►';
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.pixel-button:hover::before {
+  opacity: 1;
+  left: -10px;
+}
+
+.pixel-button:hover {
+  color: #ffce1c;
+  text-shadow: 1px 1px 0 #931e30;
 }
 </style>
