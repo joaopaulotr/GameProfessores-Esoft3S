@@ -1,10 +1,4 @@
 <template>
-   <div>
-      <div class="cloud" style="top: 60px;"></div>
-      <div class="cloud" style="top: 120px; animation-delay: 10s;"></div>
-      <div class="cloud" style="top: 180px; animation-delay: 20s;"></div>
-
-   </div>
     <div class="menu-screen">
       <h1>Syntax Fight</h1>
       <h1 class="subtitle">Batalha no DOM</h1>
