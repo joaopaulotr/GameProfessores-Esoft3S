@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import PlayerSprite from '../components/PlayerSprite.vue'
 import Tile from '../components/Tile.vue'
 import DialogBox from '../components/DialogBox.vue';
+import HealthBar from '../components/HealthBar.vue'
 
 const dialogActiveInicio = ref(true)
 
@@ -49,6 +50,7 @@ const gameMap = ref([
       />
     </div>
     <router-link to="/"><button class="btn-back">Voltar ao Menu</button></router-link>
+    <router-link to="/battle"><button class="btn-back">Ir para batalha!</button></router-link>
     <div class="map-controls">
       <!-- Controles de navegação -->
     </div>
