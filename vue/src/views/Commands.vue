@@ -9,7 +9,6 @@
             <li><span class="command-key">Setas</span>: Movimentação</li>
             <li><span class="command-key">Espaço</span>: Atacar</li>
             <li><span class="command-key">E</span>: Interagir</li>
-            <li><span class="command-key">I</span>: Inventário</li>
             <li><span class="command-key">Esc</span>: Menu de pausa</li>
           </ul>
         </div>
@@ -145,7 +144,8 @@ li::before {
 .pixel-button::before {
   content: '►';
   position: absolute;
-  left: -15px;
+  left: -10px;
+  bottom: 13px;
   opacity: 0;
   transition: all 0.2s ease;
 }

@@ -5,15 +5,20 @@
       <div class="credits-content">
         <div class="credit-section">
           <h2>Desenvolvimento</h2>
-          <p>João Pedro</p>
+          <p>João Paulo</p>
+          <p>Gustavo Pasquini</p>
+          <p>Heitor Ferrari</p>
         </div>
         <div class="credit-section">
           <h2>Design</h2>
-          <p>Equipe SyntaxFight</p>
+          <p>Maria Eduarda</p>
+          <p>João Paulo</p>
+          <p>Heitor Ferrari</p>
         </div>
         <div class="credit-section">
-          <h2>Música</h2>
-          <p>Compositor Original</p>
+          <h2>Músicas</h2>
+          <p>Música 01</p>
+          <p>Música 02</p>
         </div>
       </div>
       <div class="button-container">
@@ -117,7 +122,8 @@ p {
 .pixel-button::before {
   content: '►';
   position: absolute;
-  left: -15px;
+  left: -10px;
+  bottom: 13px;
   opacity: 0;
   transition: all 0.2s ease;
 }

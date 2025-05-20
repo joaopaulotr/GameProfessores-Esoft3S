@@ -12,7 +12,7 @@ function openDialogInicio() {
 }
 
 const dialogMessagesInicio = [
-  'Bem-vindo ao jogo!',
+  'Bem-vindo ao SyntaxFIght!',
   'Use as setas para se mover. ⭠ ⭡ ⭢ ⭣',
   'Pressione E para interagir com objetos.'
 ]

@@ -1,5 +1,6 @@
 <template>
-    <div class="menu-screen">
+  <div class="menu-screen">
+    <div class="menu-container">
       <h1>Syntax Fight</h1>
       <h1 class="subtitle">Batalha no DOM</h1>
       <div class="buttons-container">
@@ -8,7 +9,9 @@
         <router-link to="/commands"><button>Comandos</button></router-link>
       </div>
     </div>
-  </template>
+    <div class="cloud"></div>
+  </div>
+</template>
 
 <style scoped>
 .menu-screen {
@@ -22,7 +25,25 @@
   color: #fff;
   background-image: url('@/assets/images/background.png');
   background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-position: center;
+}
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  box-shadow: 
+    0 0 0 4px rgba(147, 30, 48, 0.8),
+    0 0 0 8px rgba(255, 206, 28, 0.5),
+    0 0 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  max-width: 90%;
+  width: 500px;
 }
 
 h1 {
@@ -40,7 +61,7 @@ h1 {
 }
 
 .subtitle {
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin: 10px 0 25px 0;
   color: #fff;
   text-shadow:
@@ -58,6 +79,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 15px;
+  margin-top: 20px;
 }
 
 button {
@@ -74,6 +96,7 @@ button {
   text-transform: uppercase;
   letter-spacing: 2px;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 button:hover {
@@ -82,6 +105,14 @@ button:hover {
   text-shadow:
     3px 3px 0 rgba(0, 0, 0, 0.7),
     1px 1px 0 rgba(0, 0, 0, 0.7);
+}
+
+button:hover::before {
+  content: "►";
+  position: absolute;
+  left:5px;
+  bottom: 15px;
+  color: #ffce1c;
 }
 
 button:active {
@@ -105,20 +136,6 @@ button:active {
       4px 4px 0 rgba(147, 30, 48, 0.4);
   }
 }
-
-.cloud {
-  width: 100px;
-  height: 60px;
-  background: #fff;
-  border-radius: 50%;
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  animation: moveCloud 45s linear infinite;
-  box-shadow: 30px 0px 0px #fff, 60px 10px 0px #fff;
-  opacity: 0.8;
-}
-
 @keyframes moveCloud {
   0% {
     left: -200px;
@@ -127,5 +144,4 @@ button:active {
     left: 110%;
   }
 }
-
 </style>
