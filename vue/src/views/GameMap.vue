@@ -5,6 +5,8 @@ import Tile from '../components/Tile.vue'
 import DialogBox from '../components/DialogBox.vue';
 import HealthBar from '../components/HealthBar.vue'
 
+
+
 const dialogActiveInicio = ref(true)
 
 function openDialogInicio() {
@@ -126,4 +128,5 @@ h1 {
 .btn-back:active {
   transform: scale(0.98);
 }
+
 </style>

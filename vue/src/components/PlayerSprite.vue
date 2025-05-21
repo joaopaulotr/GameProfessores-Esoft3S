@@ -148,7 +148,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyPress))
   position: absolute;
   width: 50px;
   height: 100px;
-  background-color: red;
+  background-color: rgb(0, 255, 42);
   transition: all 0.1s linear;
 }
 
