@@ -10,6 +10,19 @@
       </div>
     </div>
     <div class="cloud"></div>
+  
+  <div class="falling-leaves">
+    <div class="leaf" style="left: 5%;  animation-duration: 6s;  animation-delay: 0s;"></div>
+    <div class="leaf" style="left: 15%; animation-duration: 7s;  animation-delay: 1.5s;"></div>
+    <div class="leaf" style="left: 25%; animation-duration: 6.5s; animation-delay: 3s;"></div>
+    <div class="leaf" style="left: 35%; animation-duration: 8s;  animation-delay: 2s;"></div>
+    <div class="leaf" style="left: 45%; animation-duration: 9s;  animation-delay: 0.5s;"></div>
+    <div class="leaf" style="left: 55%; animation-duration: 7.5s; animation-delay: 1s;"></div>
+    <div class="leaf" style="left: 65%; animation-duration: 6s;  animation-delay: 3.5s;"></div>
+    <div class="leaf" style="left: 75%; animation-duration: 8.5s; animation-delay: 2.5s;"></div>
+    <div class="leaf" style="left: 85%; animation-duration: 10s; animation-delay: 4s;"></div>
+    <div class="leaf" style="left: 95%; animation-duration: 7s;  animation-delay: 0.8s;"></div>
+  </div>
   </div>
 </template>
 
@@ -143,5 +156,30 @@ button:active {
   100% {
     left: 110%;
   }
+}
+@keyframes fallLeaf {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(50px) translateY(300px) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-50px) translateY(600px) rotate(360deg);
+    opacity: 0;
+  }
+}
+.leaf {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  background-image: url('@/assets/images/leaf.png');
+  background-size: cover;
+  animation: fallLeaf 8s ease-in-out infinite;
+  
 }
 </style>

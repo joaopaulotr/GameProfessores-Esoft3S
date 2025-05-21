@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
+
 const props = defineProps({
   map: Array,
   tileSize: Number,

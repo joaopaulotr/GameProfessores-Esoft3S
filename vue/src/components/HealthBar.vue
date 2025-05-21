@@ -33,6 +33,23 @@ const healthBarColor = computed(() => {
    if (healthPercent.value < 10) return '#e67e22'
    return '#e74c3c'
 })
+
+const xpBarColor = computed(() => {
+   if (xpPercent.value > 50) return '#3498db'
+   if (xpPercent.value > 20) return '#f39c12'
+   if (xpPercent.value < 10) return '#e74c3c'
+   return '#e74c3c'
+})
+
+function levelUp () {
+    if (props.xp >= props.maxXp) {
+        props.xp = 0
+        props.maxXp += 10
+        props.maxHealth += 5
+        props.health = props.maxHealth
+    }
+ }
+
 </script>
 
 <template>
