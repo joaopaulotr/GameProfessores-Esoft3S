@@ -11,9 +11,9 @@ const props = defineProps({
   viewportHeight: Number,
 })
 
-const step = 16
-const charW = 50
-const charH = 100
+const step = 10 // Velocidade do movimento
+const charW = 100 // Largura original do sprite
+const charH = 100 // Altura original do sprite
 
 const position = ref({
   x: (props.mapWidth * props.tileSize) / 2 - 25,
@@ -130,7 +130,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyPress))
 .container {
   width: 400px;
   position: top;
-  
+
 }
 
 .character-1 {
@@ -147,38 +147,39 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyPress))
 
 .character {
   position: absolute;
-  width: 50px;
-  height: 100px;
-  background-color: rgb(0, 255, 42);
+  width: 300px;  /* Tamanho original do sprite */
+  height: 300px; /* Tamanho original do sprite */
+  background-image: url('@/assets/aseprites/Player1.png');
+  background-repeat: no-repeat;
+  background-size: 100%; /* Mostra apenas um frame */
   transition: all 0.1s linear;
+  image-rendering: pixelated;
+  mix-blend-mode: multiply; /* Isso ajuda a remover o fundo branco */
+  filter: contrast(1.2); /* Aumenta o contraste para compensar o blend mode */
 }
 
 .para-cima {
-  background-color: blue !important;
-  /* Ajustar para o sprite desta posição */
+  background-position: 0 -100px; /* Segunda linha do spritesheet */
 }
 
 .para-baixo {
-  background-color: green;
-  /* Ajustar para o sprite desta posição */
+  background-position: 0 0; /* Primeira linha do spritesheet */
 }
 
 .para-esquerda {
-  background-color: yellow;
-  /* Ajustar para o sprite desta posição */
+  background-position: -100px 0; /* Segunda coluna */
 }
 
 .para-direita {
-  background-color: purple;
-  /* Ajustar para o sprite desta posição */
+  background-position: -100px -100px; /* Segunda coluna, segunda linha */
 }
 
 .character-2 {
   height: 100px;
   width: 50px;
   background-color: rgb(255, 0, 119);
-  
-  
+
+
 }
 
 .carousel-item.active .character-1 {
