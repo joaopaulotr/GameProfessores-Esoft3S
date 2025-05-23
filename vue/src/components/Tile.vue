@@ -39,12 +39,13 @@ const props = defineProps({
 }
 
 .tile.wall {
-    background-color: #444;
-    /* cor dos tiles com colisão */
+    background-color: rgba(255, 0, 0, 0.2);
+    border: 1px solid rgba(255, 0, 0, 0.3);
 }
 
 .tile.floor {
-    background-color: #ccc;
-    /* cor dos tiles livres */
+    /* Tiles livres são transparentes */
+    background: none;
+    border: none;
 }
 </style>

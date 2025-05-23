@@ -43,6 +43,7 @@ const gameMap = ref([
   <div class="game-map">
     <h1>Mapa do Jogo</h1>
     <div class="map-container" ref="mapRef">
+
       <Tile :map="gameMap" :tile-size="tileSize" />
       <PlayerSprite :map="gameMap" :tile-size="tileSize" :map-width="mapWidth" :map-height="mapHeight" />
       <DialogBox
@@ -85,14 +86,16 @@ h1 {
 }
 
 .map-container {
-  width: 800px;
-  height: 500px;
-  background-color: #1e1e1e;
+  width: 1600px;
+  height: 640px;
   border: 2px solid #5c6bc0;
   border-radius: 8px;
   margin: 2rem auto; /* centraliza horizontalmente */
   position: relative;
   overflow: hidden;
+  background: url('@/assets/images/mapa.png') no-repeat center;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
 }
 
 .map-controls {
