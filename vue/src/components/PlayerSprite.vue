@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
-
 const props = defineProps({
   map: Array,
   tileSize: Number,
@@ -11,14 +10,52 @@ const props = defineProps({
   viewportHeight: Number,
 })
 
-const step = 10 // Velocidade do movimento
-const charW = 100 // Largura original do sprite
-const charH = 100 // Altura original do sprite
+const step = 10
+const charW = 30
+const charH = 30
 
 const position = ref({
   x: (props.mapWidth * props.tileSize) / 2 - 25,
   y: (props.mapHeight * props.tileSize) / 2 - 50
 })
+
+const direction = ref('down')
+const frameIndex = ref(0)
+
+const frames = {
+  down: [
+    new URL('@/assets/images/walkplayer1.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer2.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer3.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer4.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer5.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer6.png', import.meta.url).href
+  ],
+  up: [
+    new URL('@/assets/images/walkplayer1.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer2.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer3.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer4.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer5.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer6.png', import.meta.url).href
+  ],
+  left: [
+    new URL('@/assets/images/walkplayer1.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer2.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer3.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer4.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer5.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer6.png', import.meta.url).href
+  ],
+  right: [
+    new URL('@/assets/images/walkplayer1.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer2.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer3.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer4.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer5.png', import.meta.url).href,
+    new URL('@/assets/images/walkplayer6.png', import.meta.url).href
+  ]
+}
 
 const mapPixelWidth = computed(() => props.mapWidth * props.tileSize)
 const mapPixelHeight = computed(() => props.mapHeight * props.tileSize)
@@ -34,8 +71,8 @@ const offset = computed(() => {
 })
 
 const canMove = ref(true)
-
-let previousKeyPressed;
+let previousKeyPressed = null
+let frameTimer = null
 
 function handleKeyPress(event) {
   if (!canMove.value) return
@@ -43,34 +80,38 @@ function handleKeyPress(event) {
   let newX = position.value.x
   let newY = position.value.y
 
-  if (previousKeyPressed === event.keyCode) {
-    switch (event.keyCode) {
-      case 37: newX -= step; break // Esquerda
-      case 38: newY -= step; break // Cima
-      case 39: newX += step; break // Direita
-      case 40: newY += step; break // Baixo
-      default: return
-    }
-  } else {
-    //trocar sprite do personagem apenas
+  switch (event.keyCode) {
+    case 37: direction.value = 'left'; newX -= step; break
+    case 38: direction.value = 'up'; newY -= step; break
+    case 39: direction.value = 'right'; newX += step; break
+    case 40: direction.value = 'down'; newY += step; break
+    default: return
   }
-
 
   if (!isColliding(newX, newY)) {
     position.value = { x: newX, y: newY }
-    canMove.value = false
 
     if (previousKeyPressed === event.keyCode) {
-      setTimeout(() => {
-        canMove.value = true
-      }, 60) // ⏱️ tempo entre passos (ms)
+      if (!frameTimer) {
+        frameTimer = setInterval(() => {
+          frameIndex.value = (frameIndex.value + 1) % frames[direction.value].length
+        }, 80)
+      }
     } else {
-      canMove.value = true
+      frameIndex.value = 0
+      clearInterval(frameTimer)
+      frameTimer = null
     }
+
+    canMove.value = false
+    setTimeout(() => {
+      canMove.value = true
+    }, 60)
   }
 
   previousKeyPressed = event.keyCode
 }
+
 
 const collisionTolerance = 32
 
@@ -107,37 +148,25 @@ function isColliding(newX, newY) {
   return false
 }
 
+
 onMounted(() => window.addEventListener('keydown', handleKeyPress))
-onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyPress))
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyPress)
+  clearInterval(frameTimer)
+})
 </script>
 
 <template>
-
-<div class="map-layer" :style="{ transform: `translate(${offset.left}px, ${offset.top}px)` }">
-    <div class="character" :class="{
-      'para-cima': previousKeyPressed === 38,
-      'para-baixo': previousKeyPressed === 40,
-      'para-esquerda': previousKeyPressed === 37,
-      'para-direita': previousKeyPressed === 39
-    }" :style="{
-      top: position.y + 'px',
-      left: position.x + 'px'
-    }" />
+  <div class="map-layer" :style="{ transform: `translate(${offset.left}px, ${offset.top}px)` }">
+    <img
+      class="character"
+      :src="frames[direction][frameIndex]"
+      :style="{ top: position.y + 'px', left: position.x + 'px' }"
+    />
   </div>
 </template>
 
 <style scoped>
-.container {
-  width: 400px;
-  position: top;
-
-}
-
-.character-1 {
-  height: 100px;
-  width: 50px;
-  background-color: rgb(7, 8, 99);
-}
 .map-layer {
   position: absolute;
   top: 0;
@@ -147,55 +176,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyPress))
 
 .character {
   position: absolute;
-  width: 300px;  /* Tamanho original do sprite */
-  height: 300px; /* Tamanho original do sprite */
-  background-image: url('@/assets/aseprites/Player1.png');
-  background-repeat: no-repeat;
-  background-size: 100%; /* Mostra apenas um frame */
-  transition: all 0.1s linear;
+  width: 400px;
+  height: 400px;
   image-rendering: pixelated;
-  mix-blend-mode: multiply; /* Isso ajuda a remover o fundo branco */
-  filter: contrast(1.2); /* Aumenta o contraste para compensar o blend mode */
 }
-
-.para-cima {
-  background-position: 0 -100px; /* Segunda linha do spritesheet */
-}
-
-.para-baixo {
-  background-position: 0 0; /* Primeira linha do spritesheet */
-}
-
-.para-esquerda {
-  background-position: -100px 0; /* Segunda coluna */
-}
-
-.para-direita {
-  background-position: -100px -100px; /* Segunda coluna, segunda linha */
-}
-
-.character-2 {
-  height: 100px;
-  width: 50px;
-  background-color: rgb(255, 0, 119);
-
-
-}
-
-.carousel-item.active .character-1 {
-  z-index: 2;
-}
-
-.card {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 20px;
-  background-color: black;
-  margin: auto;
-  height: 300px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-
 </style>
