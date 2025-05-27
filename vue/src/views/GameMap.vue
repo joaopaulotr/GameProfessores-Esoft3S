@@ -52,8 +52,14 @@ const gameMap = ref([
       @close="dialogActive = false"
       />
     </div>
-    <router-link to="/"><button class="btn-back">Voltar ao Menu</button></router-link>
-    <router-link to="/battle"><button class="btn-back">Ir para batalha!</button></router-link>
+    <div class="botoes-acao">
+      <router-link to="/">
+        <button class="pokemon-button">Voltar ao Menu</button>
+      </router-link>
+      <router-link to="/battle">
+        <button class="pokemon-button battle-button">Ir para Batalha!</button>
+      </router-link>
+    </div>
     <div class="map-controls">
       <!-- Controles de navegação -->
     </div>
@@ -88,15 +94,29 @@ h1 {
 .map-container {
   width: 1600px;
   height: 640px;
-  border: 2px solid #5c6bc0;
-  border-radius: 8px;
-  margin: 2rem auto; /* centraliza horizontalmente */
+  background-color: white;
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
   position: relative;
   overflow: hidden;
+  margin: 2rem auto;
   background: url('@/assets/images/mapa.png') no-repeat center;
   background-size: 100% 100%;
   image-rendering: pixelated;
 }
+
+.map-container::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  pointer-events: none;
+  z-index: 10;
+}
+
 
 .map-controls {
   width: 80%;
@@ -131,5 +151,55 @@ h1 {
 .btn-back:active {
   transform: scale(0.98);
 }
+
+
+
+.botoes-acao {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.pokemon-button {
+  background-color: white;
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
+  position: relative;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1rem;
+  padding: 12px 20px;
+  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: all 0.15s;
+}
+
+.pokemon-button::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  pointer-events: none;
+}
+
+.pokemon-button:hover {
+  transform: scale(1.05);
+  background-color: #f0f0f0;
+}
+
+.pokemon-button:active {
+  transform: scale(0.97);
+  background-color: #e0e0e0;
+}
+
+
+
+
 
 </style>
