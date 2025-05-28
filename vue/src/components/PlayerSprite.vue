@@ -32,12 +32,12 @@ const frames = {
     new URL('@/assets/images/walkplayer6.png', import.meta.url).href
   ],
   up: [
-    new URL('@/assets/images/walkplayer1.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer2.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer3.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer4.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer5.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer6.png', import.meta.url).href
+    new URL('@/assets/images/backplayer1.png', import.meta.url).href,
+    new URL('@/assets/images/backplayer2.png', import.meta.url).href,
+    new URL('@/assets/images/backplayer3.png', import.meta.url).href,
+    new URL('@/assets/images/backplayer4.png', import.meta.url).href,
+    new URL('@/assets/images/backplayer5.png', import.meta.url).href,
+    new URL('@/assets/images/backplayer6.png', import.meta.url).href
   ],
   left: [
      new URL('@/assets/images/walkright1.png', import.meta.url).href,
@@ -53,17 +53,17 @@ const frames = {
     new URL('@/assets/images/walkright11.png', import.meta.url).href
   ],
   right: [
-    new URL('@/assets/images/walkright1.png', import.meta.url).href,
-    new URL('@/assets/images/walkright2.png', import.meta.url).href,
-    new URL('@/assets/images/walkright3.png', import.meta.url).href,
-    new URL('@/assets/images/walkright4.png', import.meta.url).href,
-    new URL('@/assets/images/walkright5.png', import.meta.url).href,
-    new URL('@/assets/images/walkright6.png', import.meta.url).href,
-    new URL('@/assets/images/walkright7.png', import.meta.url).href,
-    new URL('@/assets/images/walkright8.png', import.meta.url).href,
-    new URL('@/assets/images/walkright9.png', import.meta.url).href,
-    new URL('@/assets/images/walkright10.png', import.meta.url).href,
-    new URL('@/assets/images/walkright11.png', import.meta.url).href
+    new URL('@/assets/images/walkleft1.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft2.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft3.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft4.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft5.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft6.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft7.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft8.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft9.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft10.png', import.meta.url).href,
+    new URL('@/assets/images/walkleft11.png', import.meta.url).href
   ]
 }
 
@@ -105,7 +105,7 @@ function handleKeyPress(event) {
       if (!frameTimer) {
         frameTimer = setInterval(() => {
           frameIndex.value = (frameIndex.value + 1) % frames[direction.value].length
-        }, 80)
+        }, 120)
       }
     } else {
       frameIndex.value = 0
