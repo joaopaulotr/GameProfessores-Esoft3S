@@ -1,6 +1,6 @@
 <script setup>
 import HealthBar from '../components/HealthBar.vue'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 const playerStats = ref({
    name: 'Aluno',
@@ -46,6 +46,25 @@ watch(() => playerStats.value.xp, (newXP) => {
       alert(`Level Up! Você alcançou o nível ${playerStats.value.level}!`)
    }
 })
+
+// Troca a música para a de batalha ao entrar e volta para a do mapa ao sair
+onMounted(() => {
+  const audio = document.getElementById('bg-music');
+  if (audio) {
+    audio.src = require('@/assets/music/musicaBatalha.mp3');
+    audio.currentTime = 0;
+    audio.play();
+  }
+});
+
+onUnmounted(() => {
+  const audio = document.getElementById('bg-music');
+  if (audio) {
+    audio.src = require('@/assets/music/musicaMapa.mp3');
+    audio.currentTime = 0;
+    audio.play();
+  }
+});
 </script>
 
 <template>
