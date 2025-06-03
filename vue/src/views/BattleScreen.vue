@@ -51,18 +51,30 @@ watch(() => playerStats.value.xp, (newXP) => {
 onMounted(() => {
   const audio = document.getElementById('bg-music');
   if (audio) {
+    // Para a música atual
+    audio.pause();
+    // Carrega a música de batalha
     audio.src = require('@/assets/music/musicaBatalha.mp3');
+    audio.volume = 0.18;
     audio.currentTime = 0;
-    audio.play();
+    audio.loop = true;
+    // Toca a nova música
+    audio.play().catch(e => console.log('Erro ao tocar música de batalha:', e));
   }
 });
 
 onUnmounted(() => {
   const audio = document.getElementById('bg-music');
   if (audio) {
+    // Para a música de batalha
+    audio.pause(); 
+    // Volta para a música do mapa
     audio.src = require('@/assets/music/musicaMapa.mp3');
+    audio.volume = 0.18;
     audio.currentTime = 0;
-    audio.play();
+    audio.loop = true;
+    // Toca a música do mapa
+    audio.play().catch(e => console.log('Erro ao tocar música do mapa:', e));
   }
 });
 </script>

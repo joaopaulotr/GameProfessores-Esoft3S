@@ -4,7 +4,6 @@
       src="@/assets/music/musicaMapa.mp3"
       autoplay
       loop
-      volume="0.5"
       id="bg-music"
       style="display:none;"
     ></audio>
@@ -13,7 +12,24 @@
 </template>
 
 <script setup>
-// ...existing code...
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  const audio = document.getElementById('bg-music');
+  
+  // Inicia a música após o primeiro clique/interação (para contornar bloqueio do navegador)
+  const startMusic = () => {
+    if (audio) {
+      audio.volume = 0.18;
+      audio.play().catch(() => {});
+    }
+    window.removeEventListener('click', startMusic);
+    window.removeEventListener('keydown', startMusic);
+  };
+  
+  window.addEventListener('click', startMusic);
+  window.addEventListener('keydown', startMusic);
+});
 </script>
 
 <style>
