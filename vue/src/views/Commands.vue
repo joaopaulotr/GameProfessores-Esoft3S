@@ -1,5 +1,12 @@
 <template>
   <div class="commands-screen">
+    <audio
+      src="@/assets/music/musicaMapa.mp3"
+      autoplay
+      loop
+      volume="0.5"
+      id="bg-music"
+    ></audio>
     <div class="pokemon-window">
       <h1>Comandos e Controles</h1>
       <div class="commands-container">
@@ -9,14 +16,6 @@
             <li><span class="command-key">Setas</span>: Movimentação</li>
             <li><span class="command-key">Espaço</span>: Atacar</li>
             <li><span class="command-key">E</span>: Interagir</li>
-            <li><span class="command-key">Esc</span>: Menu de pausa</li>
-          </ul>
-        </div>
-        <div class="command-section">
-          <h2>Comandos de Combate</h2>
-          <ul>
-            <li><span class="command-key">1-4</span>: Selecionar habilidades</li>
-            <li><span class="command-key">Tab</span>: Alternar entre inimigos</li>
           </ul>
         </div>
       </div>
