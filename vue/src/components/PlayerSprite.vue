@@ -229,14 +229,28 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyPress)
   clearInterval(frameTimer)
 })
+const scale = computed(() => {
+  const minScale = 0.5 // Tamanho mínimo
+  const maxScale = 1 // Tamanho máximo
+  const range = props.mapHeight * props.tileSize
+
+  const y = position.value.y
+  const scaleFactor = minScale + (y / range) * (maxScale - minScale)
+
+  return scaleFactor
+})
 </script>
 
 <template>
-  <div class="map-layer" :style="{ transform: `translate(${offset.left}px, ${offset.top}px)` }">
+ <div class="map-layer" :style="{ transform: `translate(${offset.left}px, ${offset.top}px)` }">
     <img
       class="character"
       :src="frames[direction][frameIndex]"
-      :style="{ top: position.y + 'px', left: position.x + 'px' }"
+      :style="{
+        top: position.y + 'px',
+        left: position.x + 'px',
+        transform: `scale(${scale})`
+      }"
     />
   </div>
 </template>
