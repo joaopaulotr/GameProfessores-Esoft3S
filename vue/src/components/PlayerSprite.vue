@@ -10,7 +10,9 @@ const props = defineProps({
   viewportHeight: Number,
 })
 
-const step = 10
+const animationSpeed = 120 // em milissegundos
+let lastFrameChange = 0
+const step = 3
 const charW = 30
 const charH = 30
 
@@ -21,6 +23,10 @@ const position = ref({
 
 const direction = ref('down')
 const frameIndex = ref(0)
+
+const keysPressed = ref({})
+
+let lastTime = performance.now()
 
 const frames = {
   down: [
@@ -67,6 +73,7 @@ const frames = {
   ]
 }
 
+
 const mapPixelWidth = computed(() => props.mapWidth * props.tileSize)
 const mapPixelHeight = computed(() => props.mapHeight * props.tileSize)
 
@@ -74,11 +81,12 @@ const offset = computed(() => {
   let left = props.viewportWidth / 2 - position.value.x - charW / 2
   let top = props.viewportHeight / 2 - position.value.y - charH / 2
 
-  left = Math.min(0, Math.max(props.viewportWidth - mapPixelWidth.value, left))
-  top = Math.min(0, Math.max(props.viewportHeight - mapPixelHeight.value, top))
+  left = Math.min(0, Math.max(props.viewportWidth - props.mapWidth * props.tileSize, left))
+  top = Math.min(0, Math.max(props.viewportHeight - props.mapHeight * props.tileSize, top))
 
   return { left, top }
 })
+
 
 const canMove = ref(true)
 let previousKeyPressed = null
@@ -121,6 +129,63 @@ function handleKeyPress(event) {
 
   previousKeyPressed = event.keyCode
 }
+function gameLoop(timestamp) {
+  const delta = timestamp - lastTime
+  lastTime = timestamp
+
+  let moved = false
+  const newPos = { ...position.value }
+
+  if (keysPressed.value['ArrowLeft']) {
+    direction.value = 'left'
+    newPos.x -= step
+    moved = true
+  }
+  if (keysPressed.value['ArrowRight']) {
+    direction.value = 'right'
+    newPos.x += step
+    moved = true
+  }
+  if (keysPressed.value['ArrowUp']) {
+    direction.value = 'up'
+    newPos.y -= step
+    moved = true
+  }
+  if (keysPressed.value['ArrowDown']) {
+    direction.value = 'down'
+    newPos.y += step
+    moved = true
+  }
+  if (moved && !isColliding(newPos.x, newPos.y)) {
+    position.value = newPos
+
+  if (timestamp - lastFrameChange > animationSpeed) {
+    frameIndex.value = (frameIndex.value + 1) % frames[direction.value].length
+    lastFrameChange = timestamp
+  }
+  }
+
+  requestAnimationFrame(gameLoop)
+}
+
+// ⌨️ Controla teclas pressionadas
+function handleKeyDown(e) {
+  keysPressed.value[e.key] = true
+}
+function handleKeyUp(e) {
+  keysPressed.value[e.key] = false
+} 
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keyup', handleKeyUp)
+  requestAnimationFrame(gameLoop)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+  window.removeEventListener('keyup', handleKeyUp)
+})
 
 
 const collisionTolerance = 10
