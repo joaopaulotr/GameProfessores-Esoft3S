@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@vueuse/core": "^13.3.0"
+  }
+}

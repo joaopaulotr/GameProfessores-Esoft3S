@@ -95,6 +95,9 @@ let frameTimer = null
 function handleKeyPress(event) {
   if (!canMove.value) return
 
+  // Ignora tecla E para permitir que o GameMap a processe
+  if (event.key === 'e' || event.key === 'E') return
+  
   let newX = position.value.x
   let newY = position.value.y
 

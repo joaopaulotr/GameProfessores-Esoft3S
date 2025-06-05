@@ -1,11 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import PlayerSprite from '../components/PlayerSprite.vue'
 import ProfessorBoss from '../components/ProfessorBoss.vue'
+import ProximityIndicator from '../components/ProximityIndicator.vue'
 import Tile from '../components/Tile.vue'
 import DialogBox from '../components/DialogBox.vue'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
+import { playSound } from '../utils/audioUtils.js'
 
 const router = useRouter()
 const { chefesDerrotados } = useDadosJogador()
@@ -14,6 +16,12 @@ const dialogActiveInicio = ref(true)
 const playerPosition = ref({ x: 400, y: 300 })
 const bossInteractionActive = ref(false)
 const currentBoss = ref(null)
+const bossNearButUnavailable = ref(false)
+const nearbyUnavailableBoss = ref(null)
+
+// Posição do indicador de proximidade
+const showProximityIndicator = ref(false)
+const proximityIndicatorPosition = ref({ x: 0, y: 0 })
 
 function openDialogInicio() {
   dialogActiveInicio.value = true
@@ -51,69 +59,144 @@ const gameMap = ref([
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ])
 
-function handleBossInteraction(boss) {
-  // Verifica se o boss está disponível (baseado nos chefes já derrotados)
-  if (chefesDerrotados.value >= (boss.chefesNecessarios || 0)) {
-    currentBoss.value = boss
-    bossInteractionActive.value = true
+// Função para iniciar a batalha quando perto de um boss
+function startBattle() {
+  if (bossInteractionActive.value && currentBoss.value) {
+    console.log('Iniciando batalha com', currentBoss.value.nome);
+    
+    // Toca som de início de batalha
+    // playSound('battle-start');
+    
+    // Redirecionamento para batalha
+    router.push(`/battle?id=${currentBoss.value.id}`);
+  } else if (bossNearButUnavailable.value && nearbyUnavailableBoss.value) {
+    // Feedback quando tenta batalhar com professor indisponível
+    console.log(`Você precisa derrotar ${nearbyUnavailableBoss.value.chefesNecessarios} chefes antes!`);
+    // playSound('professor-unavailable');
+    
+    // Mostrar uma mensagem temporária
+    showUnavailableMessage();
   } else {
-    alert(`Você precisa derrotar ${boss.chefesNecessarios} chefes antes de desafiar ${boss.nome}!`)
+    console.log('Não há professor próximo para batalhar');
   }
 }
 
-function startBattle() {
-  if (bossInteractionActive.value && currentBoss.value) {
-    router.push(`/battle?id=${currentBoss.value.id}`)
+// Controle da mensagem de professor indisponível
+const unavailableMessageVisible = ref(false);
+let unavailableMessageTimeout = null;
+
+function showUnavailableMessage() {
+  unavailableMessageVisible.value = true;
+  
+  // Limpa timeout existente se houver
+  if (unavailableMessageTimeout) {
+    clearTimeout(unavailableMessageTimeout);
+  }
+  
+  // Define novo timeout
+  unavailableMessageTimeout = setTimeout(() => {
+    unavailableMessageVisible.value = false;
+  }, 3000); // Mensagem some após 3 segundos
+}
+
+// Definimos função para verificar proximidade com os bosses
+function updatePlayerPosition(e) {
+  playerPosition.value = {
+    x: e.detail.x,
+    y: e.detail.y
+  };
+  
+  // Verifica proximidade com bosses
+  const distance = 100; // Distância para interação (pixels)
+  
+  // Reseta estados de interação
+  const wasInteractionActive = bossInteractionActive.value;
+  bossInteractionActive.value = false;
+  currentBoss.value = null;
+  bossNearButUnavailable.value = false;
+  nearbyUnavailableBoss.value = null;
+  showProximityIndicator.value = false;
+  
+  // Array para armazenar quais bosses estão próximos
+  let proximityStatus = [];
+  
+  // Verifica cada boss
+  bossesPositions.forEach(bossPos => {
+    const boss = chefesBatalha.find(b => b.id === bossPos.bossId);
+    if (boss) {
+      const dx = Math.abs(playerPosition.value.x - bossPos.x);
+      const dy = Math.abs(playerPosition.value.y - bossPos.y);
+      
+      // Verifica proximidade
+      const isNearby = (dx < distance && dy < distance);
+      
+      // Armazenamos o status de proximidade para cada boss
+      proximityStatus.push({
+        bossId: boss.id,
+        isNear: isNearby
+      });
+      
+      if (isNearby) {
+        // Verifica se o boss está disponível baseado nos chefes derrotados
+        if (chefesDerrotados.value >= (boss.chefesNecessarios || 0)) {
+          // Boss disponível
+          currentBoss.value = boss;
+          bossInteractionActive.value = true;
+          console.log('Perto do professor disponível:', boss.nome);
+          
+          // Mostra o indicador de proximidade
+          showProximityIndicator.value = true;
+          proximityIndicatorPosition.value = { x: bossPos.x, y: bossPos.y };
+          
+          // Toca som de aproximação apenas quando acabou de entrar na área 
+          if (!wasInteractionActive) {
+            // Som de aproximação desativado até termos o arquivo
+            // playSound('professor-approach');
+          }
+        } else {
+          // Boss indisponível
+          bossNearButUnavailable.value = true;
+          nearbyUnavailableBoss.value = boss;
+          console.log(`Professor ${boss.nome} não disponível ainda. Requer ${boss.chefesNecessarios} chefes derrotados.`);
+        }
+      }
+    }
+  });
+  
+  // Emite evento personalizado para cada boss com status de proximidade
+  proximityStatus.forEach(status => {
+    document.dispatchEvent(new CustomEvent('professorProximity', {
+      detail: {
+        bossId: status.bossId,
+        isNear: status.isNear
+      }
+    }));
+  });
+}
+
+// Função para tratar o pressionamento da tecla E
+function handleKeyDown(e) {
+  if (e.key === 'e' || e.key === 'E') {
+    console.log('Tecla E pressionada');
+    startBattle();
   }
 }
 
 onMounted(() => {
-  // Listener para tecla E para iniciar batalha quando perto de um boss
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'e' || e.key === 'E') {
-      startBattle()
-    }
-  })
+  console.log('GameMap montado, adicionando event listeners');
   
-  // Atualiza a posição do jogador com base no PlayerSprite
-  const updatePlayerPosition = (e) => {
-    playerPosition.value = {
-      x: e.detail.x,
-      y: e.detail.y
-    }
-    
-    // Verifica proximidade com bosses
-    const distance = 100 // Distância para interação (pixels)
-    
-    // Reseta estado de interação
-    bossInteractionActive.value = false
-    currentBoss.value = null
-    
-    // Verifica cada boss
-    bossesPositions.forEach(bossPos => {
-      const boss = chefesBatalha.find(b => b.id === bossPos.bossId)
-      if (boss) {
-        const dx = Math.abs(playerPosition.value.x - bossPos.x)
-        const dy = Math.abs(playerPosition.value.y - bossPos.y)
-        
-        // Mostra a dica ao chegar perto do boss
-        if (dx < distance && dy < distance) {
-          currentBoss.value = boss
-          bossInteractionActive.value = true
-          
-          // Verifica se o boss está disponível
-          if (chefesDerrotados.value < (boss.chefesNecessarios || 0)) {
-            // Se não está disponível, mostra mensagem mas não permite interação
-            currentBoss.value = null
-            bossInteractionActive.value = false
-          }
-        }
-      }
-    })
-  }
+  // Adiciona listeners
+  window.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('playerMoved', updatePlayerPosition);
+});
+
+// Limpeza de eventos quando o componente é desmontado
+onUnmounted(() => {
+  console.log('GameMap desmontado, removendo event listeners');
   
-  document.addEventListener('playerMoved', updatePlayerPosition)
-})
+  window.removeEventListener('keydown', handleKeyDown);
+  document.removeEventListener('playerMoved', updatePlayerPosition);
+});
 </script>
 
 <template>
@@ -130,9 +213,15 @@ onMounted(() => {
           :boss="chefesBatalha.find(b => b.id === position.bossId)" 
           :x="position.x" 
           :y="position.y"
-          @batalhar="handleBossInteraction"
         />
       </template>
+      
+      <!-- Indicador visual de proximidade com professor -->
+      <ProximityIndicator
+        v-if="showProximityIndicator"
+        :x="proximityIndicatorPosition.x"
+        :y="proximityIndicatorPosition.y"
+      />
 
       <DialogBox
         v-if="dialogActiveInicio"
@@ -140,9 +229,19 @@ onMounted(() => {
         @close="dialogActive = false"
       />
       
-      <!-- Mostra dica para pressionar E quando perto de um boss -->
-      <div v-if="bossInteractionActive" class="interaction-prompt">
+      <!-- Mostra dica para pressionar E quando perto de um boss disponível -->
+      <div v-if="bossInteractionActive" class="interaction-prompt pokemon-button" :class="{ 'flash': bossInteractionActive }">
         <span class="key-prompt">E</span> Batalhar com {{ currentBoss?.nome }}
+      </div>
+      
+      <!-- Mostra dica quando está próximo de um professor indisponível -->
+      <div v-if="bossNearButUnavailable && nearbyUnavailableBoss" class="interaction-prompt pokemon-button blocked-prompt">
+        <span class="lock-icon">🔒</span> Professor {{ nearbyUnavailableBoss.nome }} bloqueado
+      </div>
+      
+      <!-- Mostra mensagem quando tenta interagir com professor indisponível -->
+      <div v-if="unavailableMessageVisible" class="unavailable-message pokemon-button warning-message">
+        <span class="warning-icon">⚠️</span> Você precisa derrotar {{ nearbyUnavailableBoss?.chefesNecessarios }} professores antes!
       </div>
     </div>
     
@@ -294,55 +393,149 @@ h1 {
 
 .interaction-prompt {
   position: absolute;
-  bottom: 100px;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.85);
-  color: #ffce1c;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1rem;
-  padding: 12px 24px;
-  border: 3px solid #ffce1c;
-  border-radius: 8px;
-  animation: pulse 1.5s infinite;
   z-index: 100;
-  pointer-events: none; /* Evita que o prompt bloqueie interações com o mouse */
-  text-shadow: 2px 2px 0 #931e30;
-  box-shadow: 0 0 10px rgba(255, 206, 28, 0.5);
+  animation: float-button 2s ease-in-out infinite;
+  /* Removendo sobrescritas para usar exatamente o mesmo estilo do botão de menu */
+  text-transform: uppercase;
+  color: #222 !important;
+  font-family: 'Press Start 2P', cursive !important;
 }
 
-@keyframes pulse {
-  0% { opacity: 0.9; transform: translateX(-50%) scale(1); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
-  100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+@keyframes float-button {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
 }
 
-.interaction-prompt::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: 50%;
+.flash {
+  animation: flash 1.5s infinite;
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Estilo para professor bloqueado */
+.blocked-prompt {
+  background-color: #f0f0f0;
+  color: #777 !important;
+  border-color: #999;
+  animation: none;
+  opacity: 0.9;
   transform: translateX(-50%);
-  border-width: 15px;
-  border-style: solid;
-  border-color: transparent transparent rgba(0, 0, 0, 0.85) transparent;
 }
+
+.blocked-prompt::before {
+  border-color: #aaa;
+}
+
+.lock-icon {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Estilo para mensagem de aviso */
+.warning-message {
+  bottom: 110px;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404 !important;
+  animation: shake 0.5s ease-in-out, fadeOut 3s forwards 2s;
+  font-size: 0.7rem;
+  padding: 8px 12px;
+}
+
+.warning-icon {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+  font-size: 1rem;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(-50%); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-52%); }
+  20%, 40%, 60%, 80% { transform: translateX(-48%); }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Removendo a seta do prompt já que agora usamos o estilo de botão */
 
 .key-prompt {
   display: inline-block;
   background-color: #ffce1c;
   color: #931e30;
   font-weight: bold;
-  padding: 3px 8px;
+  padding: 3px 6px;
   margin-right: 10px;
-  border: 2px solid #fff;
+  border: 2px solid #931e30;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  animation: glow 1.5s infinite alternate;
+  animation: pulse-key 1.5s infinite alternate;
+  vertical-align: middle;
 }
 
-@keyframes glow {
-  0% { box-shadow: 0 0 5px rgba(255, 206, 28, 0.7); }
-  100% { box-shadow: 0 0 15px rgba(255, 206, 28, 1); }
+@keyframes pulse-key {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.2); }
+}
+
+.unavailable-message {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 110;
+  background-color: #931e30;
+  color: #ffce1c !important;
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 0.8rem;
+  padding: 10px 15px;
+  border: 3px solid #ffce1c;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  animation: fade-in-out 3s forwards;
+  text-align: center;
+  max-width: 300px;
+}
+
+@keyframes fade-in-out {
+  0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Classes para animação adicional */
+.animate__animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.animate__bounce {
+  animation-name: bounce;
+  transform-origin: center bottom;
+  animation-duration: 0.8s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-20px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-10px);
+  }
 }
 </style>
