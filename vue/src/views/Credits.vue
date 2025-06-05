@@ -1,36 +1,84 @@
 <template>
-  <div class="credits-screen">
-    <div class="pokemon-window">
-      <h1>Créditos</h1>
-      <div class="credits-content">
-        <div class="credit-section">
-          <h2>Desenvolvimento</h2>
-          <p>João Paulo</p>
-          <p>Gustavo Pasquini</p>
-          <p>Heitor Ferrari</p>
+  <transition name="fade">
+    <div class="credits-screen">
+      <div class="pokemon-window">
+        <h1>Créditos</h1>
+
+        <div class="credits-roller">
+          <div class="credits-content">
+
+            <div class="credit-section">
+              <h2>Coordenação do Projeto</h2>
+              <p>João Paulo</p>
+            </div>
+
+            <div class="credit-section">
+              <h2>Desenvolvimento</h2>
+              <p>João Paulo</p>
+              <p>Gustavo Pasquini</p>
+              <p>Heitor Ferrari</p>
+              <p>Gabriel Santos Furlanette</p>
+              <p>Eduardo Barella</p>
+            </div>
+
+            <div class="credit-section">
+              <h2>Design e Ilustrações</h2>
+              <p>Maria Eduarda</p>
+              <p>João Paulo</p>
+              <p>Heitor Ferrari</p>
+            </div>
+
+            <div class="credit-section">
+              <h2>Trilha Sonora</h2>
+              <p>Música 01 – "Battle Loop"</p>
+              <p>Música 02 – "Menu Theme"</p>
+            </div>
+
+            <div class="credit-section">
+              <h2>Testes / QA</h2>
+              <p>Maria Eduarda</p>
+              <p>Equipe de QA da Turma X</p>
+            </div>
+
+            <div class="credit-section">
+              <h2>Documentação Técnica</h2>
+              <p>Gabriel Santos Furlanette</p>
+              <p>Eduardo Barella</p>
+            </div>
+
+            <div class="credit-section">
+              <h2>Tecnologias Utilizadas</h2>
+              <p>Vue.js, HTML5, CSS3, JavaScript</p>
+            </div>
+
+            <div class="credit-section">
+              <h2>Agradecimentos Especiais</h2>
+              <p>Professor Moreno</p>
+              <p>Professor Hugo Fumero</p>
+              <p>Turma de Desenvolvimento de Sistemas</p>
+            </div>
+
+          </div>
         </div>
-        <div class="credit-section">
-          <h2>Design</h2>
-          <p>Maria Eduarda</p>
-          <p>João Paulo</p>
-          <p>Heitor Ferrari</p>
+
+        <div class="button-container">
+          <router-link to="/">
+            <button class="pixel-button">Voltar ao Menu</button>
+          </router-link>
         </div>
-        <div class="credit-section">
-          <h2>Músicas</h2>
-          <p>Música 01</p>
-          <p>Música 02</p>
-        </div>
-      </div>
-      <div class="button-container">
-        <router-link to="/">
-          <button class="pixel-button">Voltar ao Menu</button>
-        </router-link>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 .credits-screen {
   display: flex;
   flex-direction: column;
@@ -38,7 +86,7 @@
   justify-content: center;
   height: 100vh;
   padding: 2rem;
-  background-color: #24b5f8; /* Azul do seu projeto */
+  background-color: #24b5f8;
   background-image: url('@/assets/images/background.png');
   background-size: cover;
   background-position: center;
@@ -48,10 +96,10 @@
   width: 90%;
   max-width: 600px;
   background-color: white;
-  border: 4px solid #931e30; /* Vermelho escuro do seu projeto */
+  border: 4px solid #931e30;
   border-radius: 0;
   padding: 20px 30px;
-  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30; /* Borda amarela externa */
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
   position: relative;
   font-family: 'Press Start 2P', monospace;
   image-rendering: pixelated;
@@ -64,15 +112,30 @@
   left: 4px;
   right: 4px;
   bottom: 4px;
-  border: 2px solid #ffce1c; /* Bordas internas amarelas */
+  border: 2px solid #ffce1c;
   pointer-events: none;
 }
 
+.credits-roller {
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
 .credits-content {
+  animation: roll-up 40s linear infinite;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: 1.5rem 0;
+  align-items: center;
+}
+
+@keyframes roll-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
 }
 
 .credit-section {
@@ -82,14 +145,14 @@
 
 h1 {
   font-size: 2rem;
-  color: #ffce1c; /* Amarelo do seu projeto */
+  color: #ffce1c;
   text-shadow: 1px 1px 0 #931e30, 2px 2px 0 #931e30;
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
 h2 {
-  color: #931e30; /* Vermelho escuro do seu projeto */
+  color: #931e30;
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
 }
