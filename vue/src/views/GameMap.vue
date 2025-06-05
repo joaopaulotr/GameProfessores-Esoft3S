@@ -95,9 +95,18 @@ onMounted(() => {
       if (boss) {
         const dx = Math.abs(playerPosition.value.x - bossPos.x)
         const dy = Math.abs(playerPosition.value.y - bossPos.y)
+        
+        // Mostra a dica ao chegar perto do boss
         if (dx < distance && dy < distance) {
           currentBoss.value = boss
           bossInteractionActive.value = true
+          
+          // Verifica se o boss está disponível
+          if (chefesDerrotados.value < (boss.chefesNecessarios || 0)) {
+            // Se não está disponível, mostra mensagem mas não permite interação
+            currentBoss.value = null
+            bossInteractionActive.value = false
+          }
         }
       }
     })
@@ -133,7 +142,7 @@ onMounted(() => {
       
       <!-- Mostra dica para pressionar E quando perto de um boss -->
       <div v-if="bossInteractionActive" class="interaction-prompt">
-        Pressione E para batalhar com {{ currentBoss?.nome }}
+        <span class="key-prompt">E</span> Batalhar com {{ currentBoss?.nome }}
       </div>
     </div>
     
@@ -285,34 +294,55 @@ h1 {
 
 .interaction-prompt {
   position: absolute;
-  bottom: 50px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.85);
   color: #ffce1c;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.9rem;
+  font-size: 1rem;
   padding: 12px 24px;
-  border: 2px solid #ffce1c;
+  border: 3px solid #ffce1c;
   border-radius: 8px;
   animation: pulse 1.5s infinite;
   z-index: 100;
+  pointer-events: none; /* Evita que o prompt bloqueie interações com o mouse */
+  text-shadow: 2px 2px 0 #931e30;
+  box-shadow: 0 0 10px rgba(255, 206, 28, 0.5);
 }
 
 @keyframes pulse {
-  0% { opacity: 0.7; transform: translateX(-50%) scale(1); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
-  100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  0% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+  100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
 }
 
 .interaction-prompt::before {
   content: '';
   position: absolute;
-  top: -10px;
+  top: -15px;
   left: 50%;
   transform: translateX(-50%);
-  border-width: 10px;
+  border-width: 15px;
   border-style: solid;
-  border-color: transparent transparent rgba(0, 0, 0, 0.7) transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.85) transparent;
+}
+
+.key-prompt {
+  display: inline-block;
+  background-color: #ffce1c;
+  color: #931e30;
+  font-weight: bold;
+  padding: 3px 8px;
+  margin-right: 10px;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(255, 206, 28, 0.7); }
+  100% { box-shadow: 0 0 15px rgba(255, 206, 28, 1); }
 }
 </style>

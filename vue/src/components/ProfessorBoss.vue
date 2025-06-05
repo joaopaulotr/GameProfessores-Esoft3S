@@ -23,8 +23,7 @@ function handleClick() {
 }
 </script>
 
-<template>
-  <div
+<template>  <div
     class="professor-boss"
     :style="{
       left: `${x}px`,
