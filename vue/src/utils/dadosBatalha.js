@@ -3,10 +3,11 @@ import { useStorage } from '@vueuse/core';
 export const chefesBatalha = [
   {
     id: 1,
-    nome: "Prof. Algoritmo",
+    nome: "Moreno (Algoritmos)",
     vida: 120,
-    sprite: require('@/assets/professores/algoritmo-sprite.png'),
+    sprite: require('@/assets/professores/moreno-sprite.png'),
     estilo: "Algoritmos e lógica",
+    chefesNecessarios: 0, // Primeiro boss, sempre disponível
     ataques: [
       { nome: "Laço Infinito", dano: 25 },
       { nome: "Recursão Mortal", dano: 30 },
@@ -25,6 +26,7 @@ export const chefesBatalha = [
     vida: 140,
     sprite: require('@/assets/professores/cidao-sprite.png'),
     estilo: "Arquitetura e hardware",
+    chefesNecessarios: 1, // Precisa derrotar o Moreno primeiro
     ataques: [
       { nome: "Cache Mortal", dano: 27 },
       { nome: "Pipeline Quebrado", dano: 33 },
@@ -43,6 +45,7 @@ export const chefesBatalha = [
     vida: 135,
     sprite: require('@/assets/professores/gostosinho-sprite.png'),
     estilo: "Redes e comunicação",
+    chefesNecessarios: 2, // Precisa derrotar Moreno e Cidão
     ataques: [
       { nome: "Pacote Perdido", dano: 29 },
       { nome: "Broadcast Fatal", dano: 31 },
@@ -57,28 +60,11 @@ export const chefesBatalha = [
   },
   {
     id: 4,
-    nome: "Moreno (Estrutura de Dados)",
-    vida: 145,
-    sprite: require('@/assets/professores/moreno-sprite.png'),
-    estilo: "Estruturas de dados",
-    ataques: [
-      { nome: "Pilha de Problemas", dano: 28 },
-      { nome: "Fila de Ataques", dano: 22 },
-      { nome: "Árvore AVL Furiosa", dano: 32 },
-      { nome: "Hash Colisor", dano: 36 }
-    ],
-    falas: [
-      "Estruturas de dados são a base de tudo.",
-      "Se perder na minha árvore, só sai com ponteiro!",
-      "Vou empilhar bugs até travar sua memória!"
-    ]
-  },
-  {
-    id: 5,
     nome: "Hugo Fumero (Front-End)",
     vida: 160,
     sprite: require('@/assets/professores/fumero-sprite.png'),
     estilo: "Front-End Supremo",
+    chefesNecessarios: 3, // Precisa derrotar os 3 anteriores
     ataques: [
       { nome: "CSS Caótico", dano: 35 },
       { nome: "React Devastador", dano: 40 },

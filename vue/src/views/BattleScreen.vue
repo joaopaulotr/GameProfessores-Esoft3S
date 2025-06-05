@@ -1,26 +1,53 @@
 <script setup>
 import HealthBar from '../components/HealthBar.vue'
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 
+// Pega os dados do jogador do armazenamento centralizado
+const { vida, ataques, vitorias, derrotas, chefesDerrotados, vidaMaxima } = useDadosJogador()
+
+// Estatísticas do jogador para a batalha atual
 const playerStats = ref({
    name: 'Aluno',
-   health: 100,
-   maxHealth: 100,
+   health: vida.value,
+   maxHealth: vidaMaxima,
    xp: 0,
    maxXp: 100,
    level: 1
+})
+
+// Pega o ID do chefe da rota ou usa o primeiro chefe como padrão
+const route = useRoute()
+const chefeBatalhaId = computed(() => Number(route.query.id) || 1)
+
+// Encontra o chefe com base no ID da rota
+const chefeBatalha = computed(() => {
+  const chefe = chefesBatalha.find(c => c.id === chefeBatalhaId.value) || chefesBatalha[0]
+  return {
+    id: chefe.id,
+    name: chefe.nome,
+    health: chefe.vida,
+    maxHealth: chefe.vida,
+    ataques: chefe.ataques,
+    sprite: chefe.sprite,
+    estilo: chefe.estilo,
+    falas: chefe.falas
+  }
 })
 
 // Funções de teste
 const damagePlayer = () => {
    if (playerStats.value.health > 10) {
       playerStats.value.health -= 10
+      vida.value = playerStats.value.health // Atualiza o armazenamento
    }
 }
 
 const healPlayer = () => {
    if (playerStats.value.health < playerStats.value.maxHealth) {
       playerStats.value.health = Math.min(playerStats.value.maxHealth, playerStats.value.health + 10)
+      vida.value = playerStats.value.health // Atualiza o armazenamento
    }
 }
 
@@ -61,6 +88,9 @@ onMounted(() => {
     // Toca a nova música
     audio.play().catch(e => console.log('Erro ao tocar música de batalha:', e));
   }
+  
+  // Inicializa os dados da batalha
+  console.log(`Iniciando batalha contra ${chefeBatalha.value.name}`);
 });
 
 onUnmounted(() => {
