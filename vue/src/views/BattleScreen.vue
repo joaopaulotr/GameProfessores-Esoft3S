@@ -138,7 +138,15 @@ const showDefeatModal = ref(false);
 
 // Adiciona os ataques do jogador
 const realizarAtaque = (ataque) => {
-  if (!bossStats.value?.health > 0 || playerStats.value.health <= 0) return;
+  // Verifica se a batalha já acabou
+  if (showVictoryModal.value || showDefeatModal.value) return;
+
+  // Verifica se alguém já foi derrotado
+  if (bossStats.value.health <= 0 || playerStats.value.health <= 0) {
+    if (bossStats.value.health <= 0) showVictoryModal.value = true;
+    if (playerStats.value.health <= 0) showDefeatModal.value = true;
+    return;
+  }
 
   if (ataque.tipo === 'cura') {
     // Cura o jogador
@@ -148,31 +156,36 @@ const realizarAtaque = (ataque) => {
     console.log(`Você usou ${ataque.nome} e recuperou ${curaTotal} de vida! Sua vida: ${playerStats.value.health}`);
   } else {
     // Jogador ataca
+    let danoCausado;
     switch (ataque.nome) {
       case 'Sintaxe Certeira':
-        bossStats.value.health = Math.max(0, bossStats.value.health - 22);
+        danoCausado = 22;
         break;
       case 'Debug Relâmpago':
-        bossStats.value.health = Math.max(0, bossStats.value.health - 28);
+        danoCausado = 28;
         break;
       case 'Refatoração Rápida':
-        bossStats.value.health = Math.max(0, bossStats.value.health - 18);
+        danoCausado = 18;
         break;
       case 'Stack Overflow':
-        bossStats.value.health = Math.max(0, bossStats.value.health - 35);
+        danoCausado = 35;
         break;
       default:
-        bossStats.value.health = Math.max(0, bossStats.value.health - ataque.dano);
+        danoCausado = ataque.dano;
     }
 
-    console.log(`Você usou ${ataque.nome} causando ${ataque.dano} de dano! Vida do chefe: ${bossStats.value.health}`);
+    // Aplica o dano ao boss
+    const vidaAnterior = bossStats.value.health;
+    bossStats.value.health = Math.max(0, bossStats.value.health - danoCausado);
+    console.log(`Você usou ${ataque.nome} causando ${danoCausado} de dano! Vida do chefe: ${bossStats.value.health}`);
 
-    if (bossStats.value.health <= 0) {
+    // O boss só é derrotado se a vida chegar exatamente a 0
+    if (vidaAnterior > 0 && bossStats.value.health <= 0) {
       showVictoryModal.value = true;
       return;
     }
 
-    // Chefe contra-ataca
+    // Boss contra-ataca apenas se ainda estiver vivo
     const ataquesChefe = chefeBatalha.value.ataques;
     const ataqueChefe = ataquesChefe[Math.floor(Math.random() * ataquesChefe.length)];
 
@@ -181,6 +194,7 @@ const realizarAtaque = (ataque) => {
 
     console.log(`${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano! Sua vida: ${playerStats.value.health}`);
 
+    // Verifica se o jogador foi derrotado após o contra-ataque
     if (playerStats.value.health <= 0) {
       showDefeatModal.value = true;
     }

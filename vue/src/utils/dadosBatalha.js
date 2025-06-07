@@ -85,7 +85,6 @@ export function useDadosJogador() {
   const vidaMaxima = 120;
   const ataquesPadrao = [
     { nome: 'Sintaxe Certeira', dano: 22, tipo: 'ataque' },
-    { nome: 'Debug Relâmpago', dano: 28, tipo: 'ataque' },
     { nome: 'Refatoração Rápida', dano: 18, tipo: 'ataque' },
     { nome: 'Stack Overflow', dano: 35, tipo: 'ataque' },
     { nome: 'Café Restaurador', dano: 25, tipo: 'cura', icon: '☕' }
