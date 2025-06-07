@@ -4,10 +4,19 @@
       <h1>Syntax Fight</h1>
       <h1 class="subtitle">Batalha no DOM</h1>
       <div class="buttons-container">
-        <router-link to="/map"><button>Jogar</button></router-link>
-        <router-link to="/credits"><button>Créditos</button></router-link>
-        <router-link to="/commands"><button>Comandos</button></router-link>
-      </div>
+  <template v-if="!mostrarOpcoes">
+    <router-link to="/map"><button>Jogar</button></router-link>
+    <router-link to="/credits"><button>Créditos</button></router-link>
+    <router-link to="/commands"><button>Comandos</button></router-link>
+    <button @click="mostrarOpcoes = true">Opções</button>
+  </template>
+
+  <template v-else>
+    <label for="volume">Volume da Música: {{ Math.round(volume * 100) }}%</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" v-model="volume" @input="ajustarVolume" />
+    <button @click="mostrarOpcoes = false">Voltar ao Menu</button>
+  </template>
+</div>
     </div>
     <div class="cloud"></div>
   
@@ -183,3 +192,24 @@ button:active {
   
 }
 </style>
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const mostrarOpcoes = ref(false)
+const volume = ref(0.18)
+
+onMounted(() => {
+  const audio = document.getElementById('bg-music')
+  if (audio) {
+    volume.value = audio.volume
+  }
+})
+
+function ajustarVolume() {
+  const audio = document.getElementById('bg-music')
+  if (audio) {
+    audio.volume = volume.value
+    localStorage.setItem('volume', volume.value)
+  }
+}
+</script>
