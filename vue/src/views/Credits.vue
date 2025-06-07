@@ -22,7 +22,7 @@
             </div>
 
             <div class="credit-section">
-              <h2>Design e Ilustrações</h2>
+              <h2>Design e Ilustração</h2>
               <p>Maria Eduarda</p>
               <p>João Paulo</p>
               <p>Heitor Ferrari</p>
@@ -35,7 +35,7 @@
             </div>
 
             <div class="credit-section">
-              <h2>Testes / QA</h2>
+              <h2>Testes e Qualidade</h2>
               <p>Maria Eduarda</p>
               <p>Equipe de QA da Turma X</p>
             </div>
@@ -48,14 +48,20 @@
 
             <div class="credit-section">
               <h2>Tecnologias Utilizadas</h2>
-              <p>Vue.js, HTML5, CSS3, JavaScript</p>
+              <p>Vue.js</p>
+              <p>HTML5</p>
+              <p>CSS3</p>
+              <p>JavaScript</p>
+              <p>Vite</p>
+              <p>Pinia</p>
+              <p>Fontes em estilo retrô</p>
             </div>
 
             <div class="credit-section">
               <h2>Agradecimentos Especiais</h2>
               <p>Professor Moreno</p>
               <p>Professor Hugo Fumero</p>
-              <p>Turma de Desenvolvimento de Sistemas</p>
+              <p>Turma Engenharia de Software</p>
             </div>
 
           </div>
@@ -73,7 +79,7 @@
 
 <style scoped>
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 1s;
+  transition: opacity 0.05s ease-in-out;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
@@ -120,21 +126,45 @@
   height: 300px;
   overflow: hidden;
   position: relative;
+  margin: 20px 0;
 }
 
 .credits-content {
-  animation: roll-up 40s linear infinite;
+  animation: initial-appear 1s ease-out forwards, roll-up 25s linear infinite 1s;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px 0;
+  opacity: 0;
+}
+
+@keyframes initial-appear {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes roll-up {
   0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  95% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  96% {
     transform: translateY(100%);
+    opacity: 1;
   }
   100% {
-    transform: translateY(-100%);
+    transform: translateY(80%);
+    opacity: 1;
   }
 }
 

@@ -1,7 +1,7 @@
 <script setup>
 import HealthBar from '../components/HealthBar.vue'
 import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 
 // Pega os dados do jogador do armazenamento centralizado
@@ -19,6 +19,7 @@ const playerStats = ref({
 
 // Pega o ID do chefe da rota ou usa o primeiro chefe como padrão
 const route = useRoute()
+const router = useRouter()
 const chefeBatalhaId = computed(() => Number(route.query.id) || 1)
 
 // Encontra o chefe com base no ID da rota e inicializa suas estatísticas
@@ -168,7 +169,18 @@ const realizarAtaque = (ataque) => {
     console.log(`Você usou ${ataque.nome} causando ${ataque.dano} de dano! Vida do chefe: ${bossStats.value.health}`);
 
     if (bossStats.value.health <= 0) {
-      showVictoryModal.value = true;
+      // Incrementa as vitórias e chefes derrotados
+      vitorias.value++
+      chefesDerrotados.value++
+      
+      // Verifica se é o último chefe (Hugo Fumero - id 4) e se derrotou todos os chefes
+      if (chefeBatalha.value.id === 4 && chefesDerrotados.value >= 4) {
+        // Redireciona para a tela de vitória final
+        router.push('/victory?final=true')
+      } else {
+        // Mostra o modal de vitória normal
+        showVictoryModal.value = true
+      }
       return;
     }
 
@@ -241,10 +253,42 @@ const realizarAtaque = (ataque) => {
 
     <!-- Modal de Vitória -->
     <div v-if="showVictoryModal" class="modal victory-modal">
-      <div class="modal-content">
-        <h2>Vitória!</h2>
-        <p>Você derrotou {{ chefeBatalha.name }}!</p>
-        <button @click="showVictoryModal = false">Fechar</button>
+      <div class="modal-content victory-content">
+        <div class="victory-header">
+          <h2>🏆 VITÓRIA! 🏆</h2>
+          <div class="victory-effects">
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+          </div>
+        </div>
+        <div class="victory-info">
+          <p class="boss-defeated">Você derrotou {{ chefeBatalha.name }}!</p>
+          <div class="stats-gained">
+            <div class="stat-item">
+              <span class="stat-label">XP Ganho:</span>
+              <span class="stat-value">+100</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Nível:</span>
+              <span class="stat-value">{{ playerStats.level }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="victory-buttons">
+          <router-link to="/map">
+            <button class="continue-btn">
+              <span class="btn-icon">🗺️</span>
+              Continuar Jornada
+            </button>
+          </router-link>
+          <router-link to="/battle">
+            <button class="retry-btn">
+              <span class="btn-icon">⚔️</span>
+              Nova Batalha
+            </button>
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -477,7 +521,126 @@ button[class="action-btn"]:has(.btn-icon:contains("☕")):hover {
   transition: background-color 0.3s ease;
 }
 
-.modal button:hover {
-  background-color: #b5243a;
+/* Estilos atualizados para o modal de vitória */
+.victory-modal .modal-content {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 4px solid #ffce1c;
+  box-shadow: 0 0 30px rgba(255, 206, 28, 0.5);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  overflow: hidden;
+}
+
+.victory-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.victory-header h2 {
+  font-size: 2.5rem;
+  color: #ffce1c;
+  text-shadow: 
+    0 0 10px rgba(255, 206, 28, 0.5),
+    2px 2px 0 #931e30;
+  margin: 0;
+  animation: victory-pulse 2s infinite;
+}
+
+.victory-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #ffce1c, transparent);
+  animation: sparkle 1.5s infinite;
+}
+
+.sparkle:nth-child(1) { left: 20%; animation-delay: 0s; }
+.sparkle:nth-child(2) { left: 50%; animation-delay: 0.5s; }
+.sparkle:nth-child(3) { left: 80%; animation-delay: 1s; }
+
+.victory-info {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.boss-defeated {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.stats-gained {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.stat-value {
+  color: #ffce1c;
+  font-weight: bold;
+}
+
+.victory-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.continue-btn, .retry-btn {
+  min-width: 180px;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-btn {
+  background-color: rgba(46, 204, 113, 0.8);
+  border-color: #2ecc71;
+}
+
+.retry-btn {
+  background-color: rgba(52, 152, 219, 0.8);
+  border-color: #3498db;
+}
+
+.continue-btn:hover, .retry-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+@keyframes victory-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes sparkle {
+  0% { transform: translate(0, 0) scale(0); opacity: 0; }
+  50% { transform: translate(10px, -20px) scale(1); opacity: 1; }
+  100% { transform: translate(20px, -40px) scale(0); opacity: 0; }
 }
 </style>
