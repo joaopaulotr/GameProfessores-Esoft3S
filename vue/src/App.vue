@@ -16,7 +16,7 @@ import { onMounted } from 'vue';
 
 onMounted(() => {
   const audio = document.getElementById('bg-music');
-  
+
   // Inicia a música após o primeiro clique/interação (para contornar bloqueio do navegador)
   const startMusic = () => {
     if (audio) {
@@ -26,7 +26,7 @@ onMounted(() => {
     window.removeEventListener('click', startMusic);
     window.removeEventListener('keydown', startMusic);
   };
-  
+
   window.addEventListener('click', startMusic);
   window.addEventListener('keydown', startMusic);
 });

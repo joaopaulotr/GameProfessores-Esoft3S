@@ -9,8 +9,8 @@ const { vida, ataques, vitorias, derrotas, chefesDerrotados, vidaMaxima } = useD
 
 // Estatísticas do jogador para a batalha atual
 const playerStats = ref({
-   name: 'Aluno',
-   health: vida.value,
+   name: 'Professor',
+   health: vidaMaxima, // Sempre inicia com vida máxima ao entrar na batalha
    maxHealth: vidaMaxima,
    xp: 0,
    maxXp: 100,
@@ -21,41 +21,44 @@ const playerStats = ref({
 const route = useRoute()
 const chefeBatalhaId = computed(() => Number(route.query.id) || 1)
 
-// Encontra o chefe com base no ID da rota
-const chefeBatalha = computed(() => {
+// Encontra o chefe com base no ID da rota e inicializa suas estatísticas
+const chefeBatalha = ref(null)
+const bossStats = ref(null)
+
+onMounted(() => {
+  const audio = document.getElementById('bg-music');
+  if (audio) {
+    audio.pause();
+    audio.src = musicaBatalha;
+    audio.volume = 0.18;
+    audio.currentTime = 0;
+    audio.loop = true;
+    audio.play().catch(e => console.log('Erro ao tocar música de batalha:', e));
+  }
+
+  // Restaura a vida máxima ao entrar na batalha
+  vida.value = vidaMaxima;
+  playerStats.value.health = vidaMaxima;
+
+  // Inicializa os dados da batalha
   const chefe = chefesBatalha.find(c => c.id === chefeBatalhaId.value) || chefesBatalha[0]
-  return {
+
+  chefeBatalha.value = {
     id: chefe.id,
     name: chefe.nome,
-    health: chefe.vida,
-    maxHealth: chefe.vida,
     ataques: chefe.ataques,
     sprite: chefe.sprite,
     estilo: chefe.estilo,
     falas: chefe.falas
   }
+
+  bossStats.value = {
+    health: chefe.vida,
+    maxHealth: chefe.vida
+  }
 })
 
-// Funções de teste
-const damagePlayer = () => {
-   if (playerStats.value.health > 10) {
-      playerStats.value.health -= 10
-      vida.value = playerStats.value.health // Atualiza o armazenamento
-   }
-}
-
-const healPlayer = () => {
-   if (playerStats.value.health < playerStats.value.maxHealth) {
-      playerStats.value.health = Math.min(playerStats.value.maxHealth, playerStats.value.health + 10)
-      vida.value = playerStats.value.health // Atualiza o armazenamento
-   }
-}
-
-const addXP = () => {
-   if (playerStats.value.xp < playerStats.value.maxXp) {
-      playerStats.value.xp = Math.min(playerStats.value.maxXp, playerStats.value.xp + 10)
-   }
-}
+// Removidas funções de teste não utilizadas
 
 // Sistema de level up
 watch(() => playerStats.value.xp, (newXP) => {
@@ -74,6 +77,9 @@ watch(() => playerStats.value.xp, (newXP) => {
    }
 })
 
+const musicaBatalha = new URL('@/assets/music/musicaBatalha.mp3', import.meta.url).href;
+const musicaMapa = new URL('@/assets/music/musicaMapa.mp3', import.meta.url).href;
+
 // Troca a música para a de batalha ao entrar e volta para a do mapa ao sair
 onMounted(() => {
   const audio = document.getElementById('bg-music');
@@ -81,25 +87,43 @@ onMounted(() => {
     // Para a música atual
     audio.pause();
     // Carrega a música de batalha
-    audio.src = require('@/assets/music/musicaBatalha.mp3');
+    audio.src = musicaBatalha;
     audio.volume = 0.18;
     audio.currentTime = 0;
     audio.loop = true;
     // Toca a nova música
     audio.play().catch(e => console.log('Erro ao tocar música de batalha:', e));
   }
-  
+
+  // Restaura a vida máxima ao entrar na batalha
+  vida.value = vidaMaxima;
+  playerStats.value.health = vidaMaxima;
+
   // Inicializa os dados da batalha
-  console.log(`Iniciando batalha contra ${chefeBatalha.value.name}`);
-});
+  const chefe = chefesBatalha.find(c => c.id === chefeBatalhaId.value) || chefesBatalha[0]
+
+  chefeBatalha.value = {
+    id: chefe.id,
+    name: chefe.nome,
+    ataques: chefe.ataques,
+    sprite: chefe.sprite,
+    estilo: chefe.estilo,
+    falas: chefe.falas
+  }
+
+  bossStats.value = {
+    health: chefe.vida,
+    maxHealth: chefe.vida
+  }
+})
 
 onUnmounted(() => {
-  const audio = document.getElementById('bg-music');
+  const audio = document.getElementById('bg-music' );
   if (audio) {
     // Para a música de batalha
-    audio.pause(); 
+    audio.pause();
     // Volta para a música do mapa
-    audio.src = require('@/assets/music/musicaMapa.mp3');
+    audio.src = musicaMapa;
     audio.volume = 0.18;
     audio.currentTime = 0;
     audio.loop = true;
@@ -107,6 +131,61 @@ onUnmounted(() => {
     audio.play().catch(e => console.log('Erro ao tocar música do mapa:', e));
   }
 });
+
+// Referência para o modal de vitória
+const showVictoryModal = ref(false);
+const showDefeatModal = ref(false);
+
+// Adiciona os ataques do jogador
+const realizarAtaque = (ataque) => {
+  if (!bossStats.value?.health > 0 || playerStats.value.health <= 0) return;
+
+  if (ataque.tipo === 'cura') {
+    // Cura o jogador
+    const curaTotal = ataque.dano;
+    playerStats.value.health = Math.min(playerStats.value.maxHealth, playerStats.value.health + curaTotal);
+    vida.value = playerStats.value.health; // Atualiza o armazenamento
+    console.log(`Você usou ${ataque.nome} e recuperou ${curaTotal} de vida! Sua vida: ${playerStats.value.health}`);
+  } else {
+    // Jogador ataca
+    switch (ataque.nome) {
+      case 'Sintaxe Certeira':
+        bossStats.value.health = Math.max(0, bossStats.value.health - 22);
+        break;
+      case 'Debug Relâmpago':
+        bossStats.value.health = Math.max(0, bossStats.value.health - 28);
+        break;
+      case 'Refatoração Rápida':
+        bossStats.value.health = Math.max(0, bossStats.value.health - 18);
+        break;
+      case 'Stack Overflow':
+        bossStats.value.health = Math.max(0, bossStats.value.health - 35);
+        break;
+      default:
+        bossStats.value.health = Math.max(0, bossStats.value.health - ataque.dano);
+    }
+
+    console.log(`Você usou ${ataque.nome} causando ${ataque.dano} de dano! Vida do chefe: ${bossStats.value.health}`);
+
+    if (bossStats.value.health <= 0) {
+      showVictoryModal.value = true;
+      return;
+    }
+
+    // Chefe contra-ataca
+    const ataquesChefe = chefeBatalha.value.ataques;
+    const ataqueChefe = ataquesChefe[Math.floor(Math.random() * ataquesChefe.length)];
+
+    playerStats.value.health = Math.max(0, playerStats.value.health - ataqueChefe.dano);
+    vida.value = playerStats.value.health; // Atualiza o armazenamento
+
+    console.log(`${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano! Sua vida: ${playerStats.value.health}`);
+
+    if (playerStats.value.health <= 0) {
+      showDefeatModal.value = true;
+    }
+  }
+}
 </script>
 
 <template>
@@ -116,7 +195,7 @@ onUnmounted(() => {
         <h1>Tela de Batalha</h1>
         <div class="level-display">Nível {{ playerStats.level }}</div>
       </div>
-      
+
       <div class="battle-interface text-center">
         <div class="player-status">
           <HealthBar
@@ -126,21 +205,6 @@ onUnmounted(() => {
             :xp="playerStats.xp"
             :maxXp="playerStats.maxXp"
           />
-        </div>
-        
-        <div class="test-buttons">
-          <button @click="damagePlayer" class="damage-btn">
-            <span class="btn-icon">💔</span>
-            Tomar Dano (-10)
-          </button>
-          <button @click="healPlayer" class="heal-btn">
-            <span class="btn-icon">💖</span>
-            Curar (+10)
-          </button>
-          <button @click="addXP" class="xp-btn">
-            <span class="btn-icon">⭐</span>
-            Ganhar XP (+10)
-          </button>
         </div>
 
         <div class="battle-arena">
@@ -152,28 +216,44 @@ onUnmounted(() => {
 
       <div class="bottom-controls">
         <div class="action-buttons">
-          <button class="action-btn">
+          <button
+            v-for="ataque in ataques"
+            :key="ataque.nome"
+            @click="realizarAtaque(ataque)"
+            class="action-btn"
+          >
             <span class="btn-icon">⚔️</span>
-            Atacar
-          </button>
-          <button class="action-btn">
-            <span class="btn-icon">🛡️</span>
-            Defender
-          </button>
-          <button class="action-btn">
-            <span class="btn-icon">📚</span>
-            Habilidades
+            {{ ataque.nome }}
+            <span class="damage-value">({{ ataque.dano }})</span>
           </button>
         </div>
 
         <div class="menu-buttons">
-          <router-link to="/">
+          <router-link to="/map">
             <button class="menu-btn">
               <span class="btn-icon">🏠</span>
               Voltar ao Menu
             </button>
           </router-link>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal de Vitória -->
+    <div v-if="showVictoryModal" class="modal victory-modal">
+      <div class="modal-content">
+        <h2>Vitória!</h2>
+        <p>Você derrotou {{ chefeBatalha.name }}!</p>
+        <button @click="showVictoryModal = false">Fechar</button>
+      </div>
+    </div>
+
+    <!-- Modal de Derrota -->
+    <div v-if="showDefeatModal" class="modal defeat-modal">
+      <div class="modal-content">
+        <h2>Derrota!</h2>
+        <p>Você foi derrotado por {{ chefeBatalha.name }}.</p>
+        <button @click="showDefeatModal = false">Fechar</button>
       </div>
     </div>
   </div>
@@ -244,6 +324,11 @@ onUnmounted(() => {
   top: 117px;
   left: 1275px;
   z-index: 10;
+  background: #103040;
+  padding: 15px;
+  border: 4px solid #4898d8;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
 }
 
 .battle-arena {
@@ -311,46 +396,34 @@ button {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-button:hover {
+/* Estilo especial para o botão de cura */
+button[class="action-btn"]:has(.btn-icon:contains("☕")) {
+  background-color: rgba(34, 139, 34, 0.9) !important;
+  border-color: #98FB98;
+  color: #98FB98;
+}
+
+button[class="action-btn"]:has(.btn-icon:contains("☕")):hover {
+  background-color: rgba(50, 160, 50, 0.9) !important;
   transform: translateY(-2px) scale(1.02);
-  background-color: rgba(185, 38, 57, 0.9);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
 }
 
-button:active {
-  transform: translateY(1px);
-}
-
-.btn-icon {
-  font-size: 1.2em;
-}
-
-.test-buttons {
-  position: fixed;
-  top: 200px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  z-index: 10;
-}
-
-.damage-btn { background-color: rgba(231, 76, 60, 0.9); }
-.heal-btn { background-color: rgba(46, 204, 113, 0.9); }
-.xp-btn { background-color: rgba(52, 152, 219, 0.9); }
-
-.damage-btn:hover { background-color: rgba(231, 76, 60, 1); }
-.heal-btn:hover { background-color: rgba(46, 204, 113, 1); }
-.xp-btn:hover { background-color: rgba(52, 152, 219, 1); }
-
-.action-btn {
-  background-color: rgba(147, 30, 48, 0.9);
-  min-width: 180px;
-}
-
+/* Estilo para o botão de menu */
 .menu-btn {
-  background-color: rgba(44, 62, 80, 0.9);
-  min-width: 250px;
+  background-color: rgba(40, 40, 40, 0.9) !important;
+  border-color: #808080;
+  color: #d3d3d3;
+}
+
+.menu-btn:hover {
+  background-color: rgba(60, 60, 60, 0.9) !important;
+  border-color: #a0a0a0;
+}
+
+.damage-value {
+  font-size: 0.8em;
+  opacity: 0.8;
+  margin-left: 5px;
 }
 
 @keyframes glow {
@@ -361,5 +434,50 @@ button:active {
 
 .arena-container {
   animation: glow 3s infinite;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1e1e1e;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  color: #ffce1c;
+  margin-bottom: 1rem;
+}
+
+.modal p {
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.modal button {
+  padding: 10px 20px;
+  background-color: #931e30;
+  color: #ffce1c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal button:hover {
+  background-color: #b5243a;
 }
 </style>
