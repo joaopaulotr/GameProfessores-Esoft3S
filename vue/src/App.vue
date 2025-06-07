@@ -2,38 +2,70 @@
   <div id="app">
     <audio
       src="@/assets/music/musicaMapa.mp3"
-      autoplay
+      preload="auto"
       loop
       id="bg-music"
       style="display:none;"
     ></audio>
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
+
+let audioElement = null;
 
 onMounted(() => {
-  const audio = document.getElementById('bg-music');
+  audioElement = document.getElementById('bg-music');
+  if (audioElement) {
+    audioElement.volume = 0.18;
+  }
 
-  // Inicia a música após o primeiro clique/interação (para contornar bloqueio do navegador)
   const startMusic = () => {
-    if (audio) {
-      audio.volume = 0.18;
-      audio.play().catch(() => {});
+    if (audioElement) {
+      audioElement.play().catch(() => {});
     }
+    cleanup();
+  };
+
+  const cleanup = () => {
     window.removeEventListener('click', startMusic);
     window.removeEventListener('keydown', startMusic);
   };
 
   window.addEventListener('click', startMusic);
   window.addEventListener('keydown', startMusic);
+
+  // Limpar os event listeners quando o componente for desmontado
+  onUnmounted(() => {
+    cleanup();
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.src = '';
+      audioElement = null;
+    }
+  });
 });
 </script>
 
 <style>
-body{
+body {
   margin: 0;
+  overscroll-behavior: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
