@@ -63,17 +63,17 @@ const gameMap = ref([
 function startBattle() {
   if (bossInteractionActive.value && currentBoss.value) {
     console.log('Iniciando batalha com', currentBoss.value.nome);
-    
+
     // Toca som de início de batalha
     // playSound('battle-start');
-    
+
     // Redirecionamento para batalha
     router.push(`/battle?id=${currentBoss.value.id}`);
   } else if (bossNearButUnavailable.value && nearbyUnavailableBoss.value) {
     // Feedback quando tenta batalhar com professor indisponível
     console.log(`Você precisa derrotar ${nearbyUnavailableBoss.value.chefesNecessarios} chefes antes!`);
     // playSound('professor-unavailable');
-    
+
     // Mostrar uma mensagem temporária
     showUnavailableMessage();
   } else {
@@ -87,12 +87,12 @@ let unavailableMessageTimeout = null;
 
 function showUnavailableMessage() {
   unavailableMessageVisible.value = true;
-  
+
   // Limpa timeout existente se houver
   if (unavailableMessageTimeout) {
     clearTimeout(unavailableMessageTimeout);
   }
-  
+
   // Define novo timeout
   unavailableMessageTimeout = setTimeout(() => {
     unavailableMessageVisible.value = false;
@@ -105,10 +105,10 @@ function updatePlayerPosition(e) {
     x: e.detail.x,
     y: e.detail.y
   };
-  
+
   // Verifica proximidade com bosses
   const distance = 100; // Distância para interação (pixels)
-  
+
   // Reseta estados de interação
   const wasInteractionActive = bossInteractionActive.value;
   bossInteractionActive.value = false;
@@ -116,26 +116,26 @@ function updatePlayerPosition(e) {
   bossNearButUnavailable.value = false;
   nearbyUnavailableBoss.value = null;
   showProximityIndicator.value = false;
-  
+
   // Array para armazenar quais bosses estão próximos
   let proximityStatus = [];
-  
+
   // Verifica cada boss
   bossesPositions.forEach(bossPos => {
     const boss = chefesBatalha.find(b => b.id === bossPos.bossId);
     if (boss) {
       const dx = Math.abs(playerPosition.value.x - bossPos.x);
       const dy = Math.abs(playerPosition.value.y - bossPos.y);
-      
+
       // Verifica proximidade
       const isNearby = (dx < distance && dy < distance);
-      
+
       // Armazenamos o status de proximidade para cada boss
       proximityStatus.push({
         bossId: boss.id,
         isNear: isNearby
       });
-      
+
       if (isNearby) {
         // Verifica se o boss está disponível baseado nos chefes derrotados
         if (chefesDerrotados.value >= (boss.chefesNecessarios || 0)) {
@@ -143,12 +143,12 @@ function updatePlayerPosition(e) {
           currentBoss.value = boss;
           bossInteractionActive.value = true;
           console.log('Perto do professor disponível:', boss.nome);
-          
+
           // Mostra o indicador de proximidade
           showProximityIndicator.value = true;
           proximityIndicatorPosition.value = { x: bossPos.x, y: bossPos.y };
-          
-          // Toca som de aproximação apenas quando acabou de entrar na área 
+
+          // Toca som de aproximação apenas quando acabou de entrar na área
           if (!wasInteractionActive) {
             // Som de aproximação desativado até termos o arquivo
             // playSound('professor-approach');
@@ -162,7 +162,7 @@ function updatePlayerPosition(e) {
       }
     }
   });
-  
+
   // Emite evento personalizado para cada boss com status de proximidade
   proximityStatus.forEach(status => {
     document.dispatchEvent(new CustomEvent('professorProximity', {
@@ -184,7 +184,7 @@ function handleKeyDown(e) {
 
 onMounted(() => {
   console.log('GameMap montado, adicionando event listeners');
-  
+
   // Adiciona listeners
   window.addEventListener('keydown', handleKeyDown);
   document.addEventListener('playerMoved', updatePlayerPosition);
@@ -193,7 +193,7 @@ onMounted(() => {
 // Limpeza de eventos quando o componente é desmontado
 onUnmounted(() => {
   console.log('GameMap desmontado, removendo event listeners');
-  
+
   window.removeEventListener('keydown', handleKeyDown);
   document.removeEventListener('playerMoved', updatePlayerPosition);
 });
@@ -205,17 +205,17 @@ onUnmounted(() => {
     <div class="map-container" ref="mapRef">
       <Tile :map="gameMap" :tile-size="tileSize" />
       <PlayerSprite :map="gameMap" :tile-size="tileSize" :map-width="mapWidth" :map-height="mapHeight" />
-      
+
       <!-- Renderiza os bosses no mapa nas posições definidas -->
       <template v-for="position in bossesPositions" :key="position.bossId">
-        <ProfessorBoss 
-          v-if="chefesBatalha.find(b => b.id === position.bossId)" 
-          :boss="chefesBatalha.find(b => b.id === position.bossId)" 
-          :x="position.x" 
+        <ProfessorBoss
+          v-if="chefesBatalha.find(b => b.id === position.bossId)"
+          :boss="chefesBatalha.find(b => b.id === position.bossId)"
+          :x="position.x"
           :y="position.y"
         />
       </template>
-      
+
       <!-- Indicador visual de proximidade com professor -->
       <ProximityIndicator
         v-if="showProximityIndicator"
@@ -228,23 +228,23 @@ onUnmounted(() => {
         :messages="dialogMessagesInicio"
         @close="dialogActive = false"
       />
-      
+
       <!-- Mostra dica para pressionar E quando perto de um boss disponível -->
       <div v-if="bossInteractionActive" class="interaction-prompt pokemon-button" :class="{ 'flash': bossInteractionActive }">
         <span class="key-prompt">E</span> Batalhar com {{ currentBoss?.nome }}
       </div>
-      
+
       <!-- Mostra dica quando está próximo de um professor indisponível -->
       <div v-if="bossNearButUnavailable && nearbyUnavailableBoss" class="interaction-prompt pokemon-button blocked-prompt">
         <span class="lock-icon">🔒</span> Professor {{ nearbyUnavailableBoss.nome }} bloqueado
       </div>
-      
+
       <!-- Mostra mensagem quando tenta interagir com professor indisponível -->
       <div v-if="unavailableMessageVisible" class="unavailable-message pokemon-button warning-message">
         <span class="warning-icon">⚠️</span> Você precisa derrotar {{ nearbyUnavailableBoss?.chefesNecessarios }} professores antes!
       </div>
     </div>
-    
+
     <div class="botoes-acao">
       <router-link to="/">
         <button class="pokemon-button">Voltar ao Menu</button>
@@ -293,7 +293,7 @@ h1 {
   position: relative;
   overflow: hidden;
   margin: 2rem auto;
-  background: url('@/assets/images/mapa.png') no-repeat center;
+  background: url('@/assets/images/MapaDefinitivo.png') no-repeat center;
   background-size: 100% 100%;
   image-rendering: pixelated;
 }
