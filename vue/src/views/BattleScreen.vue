@@ -132,14 +132,14 @@ onUnmounted(() => {
   }
 });
 
-// Referência para o modal de vitória
-const showVictoryModal = ref(false);
-const showDefeatModal = ref(false);
+// Importa o router para navegação
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 // Adiciona os ataques do jogador
 const realizarAtaque = (ataque) => {
   // Verifica se a batalha já acabou
-  if (showVictoryModal.value || showDefeatModal.value) return;
+  if (bossStats.value.health <= 0 || playerStats.value.health <= 0) return;
 
   // Verifica se alguém já foi derrotado
   if (bossStats.value.health <= 0 || playerStats.value.health <= 0) {
@@ -159,16 +159,13 @@ const realizarAtaque = (ataque) => {
     let danoCausado;
     switch (ataque.nome) {
       case 'Sintaxe Certeira':
-        danoCausado = 22;
+        danoCausado = 20;
         break;
       case 'Debug Relâmpago':
-        danoCausado = 28;
-        break;
-      case 'Refatoração Rápida':
-        danoCausado = 18;
+        danoCausado = 25;
         break;
       case 'Stack Overflow':
-        danoCausado = 35;
+        danoCausado = 30;
         break;
       default:
         danoCausado = ataque.dano;
@@ -181,7 +178,14 @@ const realizarAtaque = (ataque) => {
 
     // O boss só é derrotado se a vida chegar exatamente a 0
     if (vidaAnterior > 0 && bossStats.value.health <= 0) {
-      showVictoryModal.value = true;
+      // Redireciona para a tela de vitória
+      router.push({
+        path: '/victory',
+        query: {
+          bossId: chefeBatalha.value.id,
+          final: chefesDerrotados.length === chefesBatalha.length
+        }
+      });
       return;
     }
 
@@ -196,7 +200,15 @@ const realizarAtaque = (ataque) => {
 
     // Verifica se o jogador foi derrotado após o contra-ataque
     if (playerStats.value.health <= 0) {
-      showDefeatModal.value = true;
+      // Redireciona para a tela de derrota
+      router.push({
+        path: '/defeat',
+        query: {
+          bossId: chefeBatalha.value.id,
+          damage: danoCausado,
+          time: '2:30' // Você pode adicionar um timer real aqui se desejar
+        }
+      });
     }
   }
 }
@@ -250,24 +262,6 @@ const realizarAtaque = (ataque) => {
             </button>
           </router-link>
         </div>
-      </div>
-    </div>
-
-    <!-- Modal de Vitória -->
-    <div v-if="showVictoryModal" class="modal victory-modal">
-      <div class="modal-content">
-        <h2>Vitória!</h2>
-        <p>Você derrotou {{ chefeBatalha.name }}!</p>
-        <button @click="showVictoryModal = false">Fechar</button>
-      </div>
-    </div>
-
-    <!-- Modal de Derrota -->
-    <div v-if="showDefeatModal" class="modal defeat-modal">
-      <div class="modal-content">
-        <h2>Derrota!</h2>
-        <p>Você foi derrotado por {{ chefeBatalha.name }}.</p>
-        <button @click="showDefeatModal = false">Fechar</button>
       </div>
     </div>
   </div>
