@@ -1,6 +1,6 @@
 <script setup>
 import HealthBar from '../components/HealthBar.vue'
-import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 
@@ -11,10 +11,7 @@ const { vida, ataques, vitorias, derrotas, chefesDerrotados, vidaMaxima } = useD
 const playerStats = ref({
    name: 'Professor',
    health: vidaMaxima, // Sempre inicia com vida máxima ao entrar na batalha
-   maxHealth: vidaMaxima,
-   xp: 0,
-   maxXp: 100,
-   level: 1
+   maxHealth: vidaMaxima
 })
 
 // Pega o ID do chefe da rota ou usa o primeiro chefe como padrão
@@ -25,62 +22,9 @@ const chefeBatalhaId = computed(() => Number(route.query.id) || 1)
 const chefeBatalha = ref(null)
 const bossStats = ref(null)
 
-onMounted(() => {
-  const audio = document.getElementById('bg-music');
-  if (audio) {
-    audio.pause();
-    audio.src = musicaBatalha;
-    audio.volume = 0.18;
-    audio.currentTime = 0;
-    audio.loop = true;
-    audio.play().catch(e => console.log('Erro ao tocar música de batalha:', e));
-  }
-
-  // Restaura a vida máxima ao entrar na batalha
-  vida.value = vidaMaxima;
-  playerStats.value.health = vidaMaxima;
-
-  // Inicializa os dados da batalha
-  const chefe = chefesBatalha.find(c => c.id === chefeBatalhaId.value) || chefesBatalha[0]
-
-  chefeBatalha.value = {
-    id: chefe.id,
-    name: chefe.nome,
-    ataques: chefe.ataques,
-    sprite: chefe.sprite,
-    estilo: chefe.estilo,
-    falas: chefe.falas
-  }
-
-  bossStats.value = {
-    health: chefe.vida,
-    maxHealth: chefe.vida
-  }
-})
-
-// Removidas funções de teste não utilizadas
-
-// Sistema de level up
-watch(() => playerStats.value.xp, (newXP) => {
-   if (newXP >= playerStats.value.maxXp) {
-      // Level up!
-      playerStats.value.level++
-      playerStats.value.xp = 0
-      // Aumenta o máximo de XP necessário para o próximo nível
-      playerStats.value.maxXp += Math.floor(playerStats.value.maxXp * 0.5)
-      // Aumenta o HP máximo e cura totalmente
-      playerStats.value.maxHealth += 20
-      playerStats.value.health = playerStats.value.maxHealth
-
-      // Exibe mensagem de level up (você pode adicionar um componente de notificação depois)
-      alert(`Level Up! Você alcançou o nível ${playerStats.value.level}!`)
-   }
-})
-
 const musicaBatalha = new URL('@/assets/music/musicaBatalha.mp3', import.meta.url).href;
 const musicaMapa = new URL('@/assets/music/musicaMapa.mp3', import.meta.url).href;
 
-// Troca a música para a de batalha ao entrar e volta para a do mapa ao sair
 onMounted(() => {
   const audio = document.getElementById('bg-music');
   if (audio) {
@@ -219,49 +163,76 @@ const realizarAtaque = (ataque) => {
     <div class="battle-overlay">
       <div class="mc-header">
         <h1>Tela de Batalha</h1>
-        <div class="level-display">Nível {{ playerStats.level }}</div>
       </div>
 
-      <div class="battle-interface text-center">
-        <div class="player-status">
-          <HealthBar
-            :name="playerStats.name"
-            :health="playerStats.health"
-            :maxHealth="playerStats.maxHealth"
-            :xp="playerStats.xp"
-            :maxXp="playerStats.maxXp"
-          />
+      <!-- Barras de vida fora da arena de batalha -->
+      <div class="health-bars-container">
+        <!-- Barra de vida do jogador -->
+        <div class="player-health-bar">
+          <div class="health-container">
+            <h3>{{ playerStats.name }}</h3>
+            <HealthBar
+              :name="playerStats.name"
+              :health="playerStats.health"
+              :maxHealth="playerStats.maxHealth"
+            />
+          </div>
         </div>
 
-        <div class="battle-arena">
-          <div class="arena-container">
-            <!-- Área de batalha -->
+        <!-- Barra de vida do professor -->
+        <div v-if="bossStats" class="boss-health-bar">
+          <div class="health-container">
+            <h3>{{ chefeBatalha?.name }}</h3>
+            <HealthBar
+              :name="chefeBatalha?.name"
+              :health="bossStats.health"
+              :maxHealth="bossStats.maxHealth"
+            />
           </div>
         </div>
       </div>
 
-      <div class="bottom-controls">
-        <div class="action-buttons">
-          <button
-            v-for="ataque in ataques"
-            :key="ataque.nome"
-            @click="realizarAtaque(ataque)"
-            class="action-btn"
-          >
-            <span class="btn-icon">⚔️</span>
-            {{ ataque.nome }}
-            <span class="damage-value">({{ ataque.dano }})</span>
-          </button>
+      <div class="battle-interface text-center">
+        <div class="battle-arena">
+          <div class="arena-container">
+            <!-- Área de batalha -->
+            <div v-if="chefeBatalha" class="battle-sprites">
+              <!-- Sprite do jogador -->
+              <div class="player-sprite">
+                <img src="@/assets/images/Player2.png" alt="Jogador" />
+              </div>
+              
+              <!-- Sprite do professor -->
+              <div class="boss-sprite">
+                <img :src="chefeBatalha.sprite" :alt="chefeBatalha.name" />
+              </div>
+            </div>
+          </div>
+          <div class="botoes-acao">
+            <div class="falas">Fala Exemplo</div>
+            <div class="action-buttons">
+              <button
+                v-for="ataque in ataques"
+                :key="ataque.nome"
+                @click="realizarAtaque(ataque)"
+                class="pokemon-button"
+                :class="{ 'cura-button': ataque.tipo === 'cura' }"
+              >
+                <span class="btn-icon">{{ ataque.tipo === 'cura' ? '☕' : '⚔️' }}</span>
+                {{ ataque.nome }}
+                <span class="damage-value">({{ ataque.dano }})</span>
+              </button>
+            </div>
         </div>
+      </div>
 
-        <div class="menu-buttons">
-          <router-link to="/map">
-            <button class="menu-btn">
-              <span class="btn-icon">🏠</span>
-              Voltar ao Menu
-            </button>
-          </router-link>
-        </div>
+
+        <router-link to="/map">
+          <button class="pokemon-button menu-button">
+            <span class="btn-icon">🏠</span>
+            Voltar ao Mapa
+          </button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -291,11 +262,12 @@ const realizarAtaque = (ataque) => {
 
 .mc-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 .mc-header h1 {
   font-size: 3rem;
+  margin-top: 2rem;
   color: #ffce1c;
   text-shadow:
     4px 4px 0 #931e30,
@@ -306,20 +278,6 @@ const realizarAtaque = (ataque) => {
     10px 10px 0 rgba(147, 30, 48, 0.2);
 }
 
-.level-display {
-  font-family: 'Press Start 2P', cursive;
-  color: #ffce1c;
-  font-size: 1.2rem;
-  text-align: center;
-  margin-top: 1rem;
-  text-shadow: 2px 2px 0 #931e30;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 2px solid #931e30;
-  border-radius: 4px;
-  display: inline-block;
-}
-
 .battle-interface {
   width: 100%;
   max-width: 1300px;
@@ -327,16 +285,101 @@ const realizarAtaque = (ataque) => {
   position: relative;
 }
 
-.player-status {
-  position: absolute;
-  top: 117px;
-  left: 1275px;
+.health-bars-container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto 2rem auto;
+  position: relative;
+  height: 100px;
+}
+
+.player-health-bar {
+  position: fixed;
+  top: 120px;
+  left: 20px;
   z-index: 10;
-  background: #103040;
+  background: rgba(0, 0, 0, 0.8);
   padding: 15px;
-  border: 4px solid #4898d8;
-  border-radius: 10px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
+  image-rendering: pixelated;
+}
+
+.player-health-bar::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  pointer-events: none;
+}
+
+.boss-health-bar {
+  position: fixed;
+  top: 120px;
+  right: 20px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
+  image-rendering: pixelated;
+}
+
+.boss-health-bar::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  pointer-events: none;
+}
+
+.health-container h3 {
+  color: #ffce1c;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 0 #931e30;
+}
+
+.battle-sprites {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+}
+
+.player-sprite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-sprite img {
+  width: 150px;
+  height: 150px;
+  image-rendering: pixelated;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.boss-sprite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boss-sprite img {
+  width: 200px;
+  height: 200px;
+  image-rendering: pixelated;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
 }
 
 .battle-arena {
@@ -347,15 +390,17 @@ const realizarAtaque = (ataque) => {
 }
 
 .arena-container {
-  width: 90%;
-  height: 500px;
-  background: rgba(30, 30, 30, 0.8);
+  width: 1600px;
+  height: 640px;
+  background-color: white;
   border: 4px solid #931e30;
-  box-shadow: 0 0 0 4px #ffce1c,
-              inset 0 0 50px rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
   position: relative;
   overflow: hidden;
+  margin: 2rem auto;
+  background: url('@/assets/images/imgFundo3.png') no-repeat center;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
 }
 
 .arena-container::before {
@@ -366,18 +411,26 @@ const realizarAtaque = (ataque) => {
   right: 4px;
   bottom: 4px;
   border: 2px solid #ffce1c;
-  border-radius: 4px;
   pointer-events: none;
+  z-index: 10;
 }
 
-.bottom-controls {
+.botoes-acao {
+  top: 75%;
+  position: absolute;
+}
+
+.falas{
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
-  max-width: 1200px;
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+  text-align: center;
+  color: #ffce1c;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.2rem;
+  text-shadow: 2px 2px 0 #931e30;
 }
 
 .action-buttons {
@@ -386,62 +439,82 @@ const realizarAtaque = (ataque) => {
   justify-content: center;
 }
 
-button {
+.pokemon-button {
+  background-color: white;
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
+  position: relative;
   font-family: 'Press Start 2P', cursive;
-  padding: 15px 25px;
-  background-color: rgba(147, 30, 48, 0.9);
-  color: #ffce1c;
-  border: 2px solid #ffce1c;
-  border-radius: 8px;
+  font-size: 1rem;
+  padding: 12px 20px;
+  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  image-rendering: pixelated;
+  transition: all 0.15s;
   display: flex;
   align-items: center;
   gap: 10px;
   min-width: 200px;
   justify-content: center;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.pokemon-button::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  pointer-events: none;
+}
+
+.pokemon-button:hover {
+  transform: scale(1.05);
+  background-color: #f0f0f0;
+}
+
+.pokemon-button:active {
+  transform: scale(0.97);
+  background-color: #e0e0e0;
 }
 
 /* Estilo especial para o botão de cura */
-button[class="action-btn"]:has(.btn-icon:contains("☕")) {
-  background-color: rgba(34, 139, 34, 0.9) !important;
-  border-color: #98FB98;
-  color: #98FB98;
+.cura-button {
+  background-color: #98FB98 !important;
+  border-color: #228B22;
+  color: #006400 !important;
 }
 
-button[class="action-btn"]:has(.btn-icon:contains("☕")):hover {
-  background-color: rgba(50, 160, 50, 0.9) !important;
-  transform: translateY(-2px) scale(1.02);
+.cura-button::before {
+  border-color: #228B22;
+}
+
+.cura-button:hover {
+  background-color: #90EE90 !important;
 }
 
 /* Estilo para o botão de menu */
-.menu-btn {
-  background-color: rgba(40, 40, 40, 0.9) !important;
-  border-color: #808080;
-  color: #d3d3d3;
+.menu-button {
+  background-color: #f5f5f5;
+  border-color: #666;
+  color: #333 !important;
 }
 
-.menu-btn:hover {
-  background-color: rgba(60, 60, 60, 0.9) !important;
-  border-color: #a0a0a0;
+.menu-button::before {
+  border-color: #666;
+}
+
+.menu-button:hover {
+  background-color: #e8e8e8;
 }
 
 .damage-value {
   font-size: 0.8em;
   opacity: 0.8;
   margin-left: 5px;
-}
-
-@keyframes glow {
-  0% { box-shadow: 0 0 20px #ffce1c; }
-  50% { box-shadow: 0 0 20px #ffc; }
-  100% { box-shadow: 0 0 20px yellow; }
-}
-
-.arena-container {
-  animation: glow 3s infinite;
 }
 
 .modal {
@@ -460,19 +533,23 @@ button[class="action-btn"]:has(.btn-icon:contains("☕")):hover {
 .modal-content {
   background: #1e1e1e;
   padding: 2rem;
-  border-radius: 8px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border: 4px solid #931e30;
+  image-rendering: pixelated;
 }
 
 .modal h2 {
   color: #ffce1c;
   margin-bottom: 1rem;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .modal p {
   color: #fff;
   margin-bottom: 2rem;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.8rem;
 }
 
 .modal button {
@@ -480,9 +557,10 @@ button[class="action-btn"]:has(.btn-icon:contains("☕")):hover {
   background-color: #931e30;
   color: #ffce1c;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: 'Press Start 2P', cursive;
+  image-rendering: pixelated;
 }
 
 .modal button:hover {

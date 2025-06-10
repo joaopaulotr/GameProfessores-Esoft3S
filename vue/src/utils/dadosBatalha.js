@@ -5,7 +5,7 @@ export const chefesBatalha = [
     id: 1,
     nome: "Moreno (Algoritmos)",
     vida: 120,
-    sprite: ('@/assets/professores/moreno-sprite.png'),
+    sprite: new URL('@/assets/images/moreno1.png', import.meta.url).href,
     estilo: "Algoritmos e lógica",
     chefesNecessarios: 0, // Primeiro boss, sempre disponível
     ataques: [
@@ -24,7 +24,7 @@ export const chefesBatalha = [
     id: 2,
     nome: "Cidão (Arquitetura de Computadores)",
     vida: 140,
-    sprite: ('@/assets/professores/cidao-sprite.png'),
+    sprite: new URL('@/assets/images/cidao1.png', import.meta.url).href,
     estilo: "Arquitetura e hardware",
     chefesNecessarios: 1, // Precisa derrotar o Moreno primeiro
     ataques: [
@@ -43,7 +43,7 @@ export const chefesBatalha = [
     id: 3,
     nome: "Gostosinho (Redes de Computadores)",
     vida: 135,
-    sprite: ('@/assets/professores/gostosinho-sprite.png'),
+    sprite: new URL('@/assets/images/backplayer3.png', import.meta.url).href,
     estilo: "Redes e comunicação",
     chefesNecessarios: 2, // Precisa derrotar Moreno e Cidão
     ataques: [
@@ -62,7 +62,7 @@ export const chefesBatalha = [
     id: 4,
     nome: "Hugo Fumero (Front-End)",
     vida: 160,
-    sprite: ('@/assets/professores/fumero-sprite.png'),
+    sprite: new URL('@/assets/images/backplayer4.png', import.meta.url).href,
     estilo: "Front-End Supremo",
     chefesNecessarios: 3, // Precisa derrotar os 3 anteriores
     ataques: [

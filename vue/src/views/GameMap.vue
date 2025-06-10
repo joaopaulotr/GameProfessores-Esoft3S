@@ -284,7 +284,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  background-color: #81bcff;
+  background-color: #1e2a56;
   color: #fff;
 }
 
