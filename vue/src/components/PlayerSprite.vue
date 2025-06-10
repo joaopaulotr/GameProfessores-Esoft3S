@@ -13,8 +13,8 @@ const props = defineProps({
 const animationSpeed = 120 // em milissegundos
 let lastFrameChange = 0
 const step = 3
-const charW = 30
-const charH = 30
+const charW = 48
+const charH = 48
 
 const position = ref({
   x: (props.mapWidth * props.tileSize) / 2 - 25,
@@ -28,15 +28,16 @@ const keysPressed = ref({})
 
 let lastTime = performance.now()
 
+// Importa todos os frames walkplayer1 até walkplayer6
+const walkFrames = Object.values(import.meta.glob('@/assets/images/walkplayer*.png', { eager: true, import: 'default' }))
+const totalFrames = walkFrames.length
+// Fallback para evitar erro se não houver frames
+if (totalFrames === 0) {
+  walkFrames.push(playerIdle)
+}
+
 const frames = {
-  down: [
-    new URL('@/assets/images/walkplayer1.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer2.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer3.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer4.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer5.png', import.meta.url).href,
-    new URL('@/assets/images/walkplayer6.png', import.meta.url).href
-  ],
+  down: walkFrames,
   up: [
     new URL('@/assets/images/backplayer1.png', import.meta.url).href,
     new URL('@/assets/images/backplayer2.png', import.meta.url).href,
@@ -81,8 +82,8 @@ const offset = computed(() => {
   let left = props.viewportWidth / 2 - position.value.x - charW / 2
   let top = props.viewportHeight / 2 - position.value.y - charH / 2
 
-  left = Math.min(0, Math.max(props.viewportWidth - props.mapWidth * props.tileSize, left))
-  top = Math.min(0, Math.max(props.viewportHeight - props.mapHeight * props.tileSize, top))
+  left = Math.min(0, Math.max(props.viewportWidth - props.mapWidth * props.tileSize * 2, left))
+  top = Math.min(0, Math.max(props.viewportHeight - props.mapHeight * props.tileSize * 2, top))
 
   return { left, top }
 })
@@ -252,7 +253,8 @@ const scale = computed(() => {
       :style="{
         top: position.y + 'px',
         left: position.x + 'px',
-        transform: `scale(${scale})`
+        width: charW + 'px',
+        height: charH + 'px'
       }"
     />
   </div>
@@ -268,8 +270,8 @@ const scale = computed(() => {
 
 .character {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 48px;
+  height: 48px;
   image-rendering: pixelated;
 }
 </style>
