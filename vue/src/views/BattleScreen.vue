@@ -156,6 +156,14 @@ const realizarAtaque = (ataque) => {
     }
   }
 }
+
+// Função para definir a área da grade com base no índice
+const gridAreaByIndex = (idx) => {
+  // 0 1
+  // 2 3
+  const areas = ['a', 'b', 'c', 'd'];
+  return areas[idx] || 'd';
+};
 </script>
 
 <template>
@@ -210,15 +218,16 @@ const realizarAtaque = (ataque) => {
           </div>
           <div class="botoes-acao">
             <div class="falas">Fala Exemplo</div>
-            <div class="action-buttons">
+            <div class="action-buttons-grid">
               <button
-                v-for="ataque in ataques"
+                v-for="(ataque, idx) in ataques"
                 :key="ataque.nome"
                 @click="realizarAtaque(ataque)"
                 class="pokemon-button"
                 :class="{ 'cura-button': ataque.tipo === 'cura' }"
+                :style="{ gridArea: gridAreaByIndex(idx) }"
               >
-                <span class="btn-icon">{{ ataque.tipo === 'cura' ? '☕' : '⚔️' }}</span>
+                <span class="btn-icon"></span>
                 {{ ataque.nome }}
                 <span class="damage-value">({{ ataque.dano }})</span>
               </button>
@@ -416,27 +425,95 @@ const realizarAtaque = (ataque) => {
 }
 
 .botoes-acao {
-  top: 75%;
-  position: absolute;
-}
-
-.falas{
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
+  padding-left: 40px;
+  padding-right: 40px;
   width: 100%;
-  text-align: center;
-  color: #ffce1c;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1.2rem;
-  text-shadow: 2px 2px 0 #931e30;
+  gap: 2rem;
+  display: flex;
+  top: 70%;
+  position: absolute;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.action-buttons {
+.falas {
+  width: 100%;
+  height: 110px;
+  text-align: center;
+  color: #222;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1rem;
+  background-color: white;
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
+  padding: 8px 10px;
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
   justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  max-height: 110px;
+  image-rendering: pixelated;
+  z-index: 20;
+  position: relative;
+}
+
+.falas::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+.action-buttons-grid {
+  display: grid;
+  grid-template-areas:
+    'a b'
+    'c d';
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px 8px;
+  width: 100%;
+  max-height: 110px;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+.action-buttons-grid .pokemon-button {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  font-size: 0.75rem;
+  padding: 4px 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  .botoes-acao {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    position: static;
+  }
+  .falas, .action-buttons-grid {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    height: 70px;
+    max-height: 70px;
+  }
+  .action-buttons-grid {
+    gap: 4px 4px;
+  }
+  .action-buttons-grid .pokemon-button {
+    font-size: 0.7rem;
+    padding: 2px 0;
+  }
 }
 
 .pokemon-button {
