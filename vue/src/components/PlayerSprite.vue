@@ -113,6 +113,14 @@ function handleKeyPress(event) {
   if (!isColliding(newX, newY)) {
     position.value = { x: newX, y: newY }
 
+    // Emite evento de movimento do jogador para o sistema de câmera
+    document.dispatchEvent(new CustomEvent('playerMoved', {
+      detail: {
+        x: position.value.x,
+        y: position.value.y
+      }
+    }))
+
     if (previousKeyPressed === event.keyCode) {
       if (!frameTimer) {
         frameTimer = setInterval(() => {
@@ -162,6 +170,14 @@ function gameLoop(timestamp) {
   }
   if (moved && !isColliding(newPos.x, newPos.y)) {
     position.value = newPos
+
+    // Emite evento de movimento do jogador para o sistema de câmera
+    document.dispatchEvent(new CustomEvent('playerMoved', {
+      detail: {
+        x: position.value.x,
+        y: position.value.y
+      }
+    }))
 
   if (timestamp - lastFrameChange > animationSpeed) {
     frameIndex.value = (frameIndex.value + 1) % frames[direction.value].length

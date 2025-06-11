@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainMenu from '@/views/MainMenu.vue';
-import GameMap from '@/views/GameMap.vue';
+import GameMapWithZoom from '@/views/GameMapWithZoom.vue';
 import BattleScreen from '@/views/BattleScreen.vue';
 import Credits from '@/views/Credits.vue';
 import Instructions from '@/views/Instructions.vue';
@@ -13,7 +13,7 @@ import OptionsView from '@/views/OptionsView.vue';
 
 const routes = [
   { path: '/', component: MainMenu },
-  { path: '/map', component: GameMap },
+  { path: '/map', component: GameMapWithZoom },
   { path: '/battle', component: BattleScreen },
   { path: '/credits', component: Credits },
   { path: '/instructions', component: Instructions },
