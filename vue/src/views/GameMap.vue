@@ -50,14 +50,14 @@ function updateCamera(playerX, playerY) {
   // Centraliza a câmera no jogador
   const viewportWidth = 1600   // largura do container do mapa
   const viewportHeight = 640   // altura do container do mapa
-  
+
   camera.value.x = playerX - (viewportWidth / camera.value.zoom) / 2
   camera.value.y = playerY - (viewportHeight / camera.value.zoom) / 2
-  
+
   // Limita a câmera para não sair dos limites do mapa
   const mapPixelWidth = mapWidth * tileSize
   const mapPixelHeight = mapHeight * tileSize
-  
+
   camera.value.x = Math.max(0, Math.min(camera.value.x, mapPixelWidth - viewportWidth / camera.value.zoom))
   camera.value.y = Math.max(0, Math.min(camera.value.y, mapPixelHeight - viewportHeight / camera.value.zoom))
 }
@@ -234,8 +234,8 @@ onUnmounted(() => {
   <div class="game-map">
     <h1>Mapa do Jogo</h1>
     <div class="map-viewport">
-      <div 
-        class="map-container" 
+      <div
+        class="map-container"
         ref="mapRef"
         :style="{
           transform: `scale(${camera.zoom}) translate(${-camera.x}px, ${-camera.y}px)`,
@@ -262,15 +262,10 @@ onUnmounted(() => {
         :y="proximityIndicatorPosition.y"
       />
 
-      <DialogBox
-        v-if="dialogActiveInicio"
-        :messages="dialogMessagesInicio"
-        @close="dialogActive = false"
-      />
 
       <!-- Mostra dica para pressionar E quando perto de um boss disponível -->
       <div v-if="bossInteractionActive" class="interaction-prompt pokemon-button" :class="{ 'flash': bossInteractionActive }">
-        <span class="key-prompt">E</span> Batalhar com {{ currentBoss?.nome }}
+         <span class="key-prompt">E</span> Batalhar com {{ currentBoss?.nome }}
       </div>
 
       <!-- Mostra dica quando está próximo de um professor indisponível -->
@@ -280,23 +275,29 @@ onUnmounted(() => {
 
       <!-- Mostra mensagem quando tenta interagir com professor indisponível -->
       <div v-if="unavailableMessageVisible" class="unavailable-message pokemon-button warning-message">
-        <span class="warning-icon">⚠️</span> Você precisa derrotar {{ nearbyUnavailableBoss?.chefesNecessarios }} professores antes!
+         <span class="warning-icon">⚠️</span> Você precisa derrotar {{ nearbyUnavailableBoss?.chefesNecessarios }} professores antes!
       </div>
-      </div>
-    </div>
+   </div>
+</div>
 
-    <div class="botoes-acao">
-      <router-link to="/">
-        <button class="pokemon-button">Voltar ao Menu</button>
-      </router-link>
-      <router-link to="/battle">
-        <button class="pokemon-button battle-button">Ir para Batalha!</button>
-      </router-link>
-    </div>
-    <div class="map-controls">
-      <!-- Controles de navegação -->
-    </div>
-  </div>
+
+<div class="botoes-acao">
+   <DialogBox
+     v-if="dialogActiveInicio"
+     :messages="dialogMessagesInicio"
+     @close="dialogActive = false"
+   />
+   <router-link to="/">
+      <button class="pokemon-button">Voltar ao Menu</button>
+   </router-link>
+   <router-link to="/battle">
+      <button class="pokemon-button battle-button">Ir para Batalha!</button>
+   </router-link>
+</div>
+<div class="map-controls">
+   <!-- Controles de navegação -->
+</div>
+</div>
 </template>
 
 <style scoped>

@@ -12,9 +12,9 @@ const props = defineProps({
 
 const animationSpeed = 120 // em milissegundos
 let lastFrameChange = 0
-const step = 3
-const charW = 48
-const charH = 48
+const step = 2.5
+const charW = 128
+const charH = 128
 
 const position = ref({
   x: (props.mapWidth * props.tileSize) / 2 - 25,
@@ -98,7 +98,7 @@ function handleKeyPress(event) {
 
   // Ignora tecla E para permitir que o GameMap a processe
   if (event.key === 'e' || event.key === 'E') return
-  
+
   let newX = position.value.x
   let newY = position.value.y
 
@@ -194,7 +194,7 @@ function handleKeyDown(e) {
 }
 function handleKeyUp(e) {
   keysPressed.value[e.key] = false
-} 
+}
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
@@ -286,8 +286,8 @@ const scale = computed(() => {
 
 .character {
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: 128px;
+  height: 128px;
   image-rendering: pixelated;
 }
 </style>
