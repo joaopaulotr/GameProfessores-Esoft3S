@@ -43,7 +43,7 @@ export const chefesBatalha = [
     id: 3,
     nome: "Gostosinho (Redes de Computadores)",
     vida: 135,
-    sprite: new URL('@/assets/images/backplayer3.png', import.meta.url).href,
+    sprite: new URL('@/assets/images/joaoferlini1.png', import.meta.url).href,
     estilo: "Redes e comunicação",
     chefesNecessarios: 2, // Precisa derrotar Moreno e Cidão
     ataques: [

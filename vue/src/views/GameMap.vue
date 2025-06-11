@@ -282,6 +282,7 @@ onUnmounted(() => {
       <div v-if="unavailableMessageVisible" class="unavailable-message pokemon-button warning-message">
         <span class="warning-icon">⚠️</span> Você precisa derrotar {{ nearbyUnavailableBoss?.chefesNecessarios }} professores antes!
       </div>
+      </div>
     </div>
 
     <div class="botoes-acao">
