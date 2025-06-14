@@ -100,24 +100,27 @@ const realizarAtaque = async (ataque) => {
     const curaTotal = ataque.dano;
     playerStats.value.health = Math.min(playerStats.value.maxHealth, playerStats.value.health + curaTotal);
     vida.value = playerStats.value.health; // Atualiza o armazenamento
-    textoFala.value = `${playerStats.name} usou ${ataque.nome} e recuperou ${curaTotal} de vida!`;
+    textoFala.value = `Aluno usou ${ataque.nome} e recuperou ${curaTotal} de vida!`;
   } else {
     // Jogador ataca
-    let danoCausado = ataque.dano; // Usa o dano definido no dadosBatalha.js
+    let danoCausado = ataque.dano;
 
     // Aplica o dano ao boss e atualiza a fala
     const vidaAnterior = bossStats.value.health;
     bossStats.value.health = Math.max(0, bossStats.value.health - danoCausado);
-    textoFala.value = `${playerStats.name} usou ${ataque.nome} causando ${danoCausado} de dano!`;
+    textoFala.value = `Aluno usou ${ataque.nome} causando ${danoCausado} de dano!`;
 
     // O boss só é derrotado se a vida chegar exatamente a 0
     if (vidaAnterior > 0 && bossStats.value.health <= 0) {
+      // Incrementa o contador de chefes derrotados
+      chefesDerrotados.value++;
+      
       // Redireciona para a tela de vitória
       router.push({
         path: '/victory',
         query: {
           bossId: chefeBatalha.value.id,
-          final: chefesDerrotados.length === chefesBatalha.length
+          final: chefesDerrotados.value === chefesBatalha.length
         }
       });
       return;
