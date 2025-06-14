@@ -64,10 +64,10 @@ function updateCamera(playerX, playerY) {
 
 // Posicionamento dos bosses no mapa (em pixels)
 const bossesPositions = [
-  { bossId: 1, x: 200, y: 200 },  // Moreno (Algoritmos) - canto superior esquerdo
-  { bossId: 2, x: 800, y: 150 },  // Cidão (Arquitetura) - parte superior
-  { bossId: 3, x: 500, y: 400 },  // Gostosinho (Redes) - centro
-  { bossId: 4, x: 1300, y: 500 }  // Hugo Fumero (Front-End) - canto inferior direito
+  { bossId: 1, x: 900, y: 2400 },  // Moreno (Algoritmos) - canto superior esquerdo
+  { bossId: 2, x: 1600, y: 1350 },  // Cidão (Arquitetura) - parte superior
+  { bossId: 3, x: 1900, y: 2000 },  // Gostosinho (Redes) - centro
+  { bossId: 4, x: 3400, y: 2700 }  // Hugo Fumero (Front-End) - canto inferior direito
 ]
 
 // Exemplo simples de um mapa 16×12

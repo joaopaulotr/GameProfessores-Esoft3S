@@ -6,6 +6,7 @@ export const chefesBatalha = [
     nome: "Moreno (Algoritmos)",
     vida: 120,
     sprite: new URL('@/assets/images/moreno1.png', import.meta.url).href,
+    
     estilo: "Algoritmos e lógica",
     chefesNecessarios: 0, // Primeiro boss, sempre disponível
     ataques: [
@@ -90,7 +91,18 @@ export const chefesBatalha = [
       { nome: "Cache Mortal", dano: 27 },
       { nome: "Pipeline Quebrado", dano: 33 },
       { nome: "Overclock Selvagem", dano: 29 },
-      { nome: "Tempestade de Barramentos", dano: 38 }
+      { nome: "Tempestade de Barramentos", 
+        dano: 38,
+      sprite:[ new URL('@/assets/images/cidaotempestade1.png', import.meta.url).href,
+                new URL('@/assets/images/cidaotempestade2.png', import.meta.url).href,
+                new URL('@/assets/images/cidaotempestade3.png', import.meta.url).href,
+                new URL('@/assets/images/cidaotempestade4.png', import.meta.url).href,
+                new URL('@/assets/images/cidaotempestade5.png', import.meta.url).href,
+                new URL('@/assets/images/cidaotempestade6.png', import.meta.url).href,
+                new URL('@/assets/images/cidaotempestade7.png', import.meta.url).href,
+                new URL('@/assets/images/cidaotempestade8.png', import.meta.url).href
+               
+        ]}
     ],
     falas: [
       "Aqui é arquitetura raiz!",
