@@ -9,7 +9,21 @@ export const chefesBatalha = [
     estilo: "Algoritmos e lógica",
     chefesNecessarios: 0, // Primeiro boss, sempre disponível
     ataques: [
-      { nome: "Laço Infinito", dano: 25 },
+      { nome: "Laço Infinito", 
+        dano: 25,
+        sprite:[ new URL('@/assets/images/morenolaço1.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço2.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço3.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço4.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço5.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço6.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço7.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço8.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço9.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço10.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço11.png', import.meta.url).href,
+                new URL('@/assets/images/morenolaço12.png', import.meta.url).href
+        ]},
       { nome: "Recursão Mortal", dano: 30 },
       { nome: "Busca Binária", dano: 20 },
       { nome: "Explosão de Pseudocódigo", dano: 35 }
