@@ -84,8 +84,8 @@ export function useDadosJogador() {
   // Vida máxima e ataques podem ser customizados conforme o progresso
   const vidaMaxima = 120;
   const ataquesPadrao = [
-    { nome: 'Sintaxe Certeira', dano: 22, tipo: 'ataque', icon: '🐱‍🏍'},
-    { nome: 'Refatoração Rápida', dano: 18, tipo: 'ataque' },
+    { nome: 'Sintaxe Certeira', dano: 20, tipo: 'ataque', icon: '🐱‍🏍'},
+    { nome: 'Refatoração Rápida', dano: 25, tipo: 'ataque' },
     { nome: 'Stack Overflow', dano: 35, tipo: 'ataque' },
     { nome: 'Café Restaurador', dano: 25, tipo: 'cura', icon: '☕' }
   ];
