@@ -149,10 +149,71 @@ export const chefesBatalha = [
     estilo: "Redes e comunicação",
     chefesNecessarios: 2, // Precisa derrotar Moreno e Cidão
     ataques: [
-      { nome: "Pacote Perdido", dano: 29 },
-      { nome: "Broadcast Fatal", dano: 31 },
-      { nome: "Tempestade de Ping", dano: 26 },
-      { nome: "Firewall Implacável", dano: 39 }
+      { nome: "Pacote Perdido",
+         dano: 29,
+        sprite:[ new URL('@/assets/images/ferlinipacote1.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote2.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote3.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote4.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote5.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote6.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote7.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote8.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote9.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote10.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote11.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote12.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote13.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinipacote14.png', import.meta.url).href
+        ]},
+      { nome: "Broadcast Fatal", dano: 31,
+        sprite:[ new URL('@/assets/images/ferlinilutafatal1.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal2.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal3.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal4.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal5.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal6.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal7.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal8.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal9.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal10.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinilutafatal11.png', import.meta.url).href
+              
+        ]
+       },
+      { nome: "Tempestade de Ping", dano: 26,
+        sprite:[ new URL('@/assets/images/ferliniluta.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta1.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta2.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta3.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta4.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta5.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta6.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta7.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta8.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta9.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta10.png', import.meta.url).href,
+                new URL('@/assets/images/ferliniluta11.png', import.meta.url).href
+                
+
+        ]},
+      { nome: "Firewall Implacável",
+         dano: 39,
+         sprite:[ new URL('@/assets/images/ferlinifirewall1.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall2.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall3.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall4.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall5.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall6.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall7.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall8.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall9.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall10.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall11.png', import.meta.url).href,
+                new URL('@/assets/images/ferlinifirewall12.png', import.meta.url).href
+               
+        ]},
+         
     ],
     falas: [
       "Rede lenta? Aqui não!",
