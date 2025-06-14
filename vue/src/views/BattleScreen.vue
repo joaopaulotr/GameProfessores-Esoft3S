@@ -1,6 +1,6 @@
 <script setup>
 import HealthBar from '../components/HealthBar.vue'
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 
@@ -83,6 +83,36 @@ onUnmounted(() => {
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
+// Estado para animação de ataque do boss
+const bossAttackSprites = ref([])
+const bossAttackName = ref('')
+const bossAttackFrame = ref(0)
+let bossAttackInterval = null
+let bossAttackTimeout = null
+
+// Estado para animação de idle do boss
+const bossIdleSprites = computed(() => {
+  // Sempre retorna apenas o sprite estático do boss
+  return chefeBatalha.value ? [chefeBatalha.value.sprite] : []
+})
+const bossIdleFrame = ref(0)
+let bossIdleInterval = null
+
+// Não faz mais loop de idle, sempre mostra frame 0
+watch(
+  () => chefeBatalha.value,
+  () => {
+    bossIdleFrame.value = 0
+    if (bossIdleInterval) clearInterval(bossIdleInterval)
+  },
+  { immediate: true }
+)
+
+onUnmounted(() => {
+  if (bossIdleInterval) clearInterval(bossIdleInterval)
+  if (bossAttackInterval) clearInterval(bossAttackInterval)
+})
+
 // Adiciona os ataques do jogador
 const realizarAtaque = async (ataque) => {
   // Verifica se a batalha já acabou
@@ -134,20 +164,36 @@ const realizarAtaque = async (ataque) => {
       const ataquesChefe = chefeBatalha.value.ataques;
       const ataqueChefe = ataquesChefe[Math.floor(Math.random() * ataquesChefe.length)];
 
-      playerStats.value.health = Math.max(0, playerStats.value.health - ataqueChefe.dano);
-      vida.value = playerStats.value.health; // Atualiza o armazenamento
+      // Se o ataque do boss tem sprites, anima
+      if (Array.isArray(ataqueChefe.sprite) && ataqueChefe.sprite.length > 0) {
+        bossAttackSprites.value = ataqueChefe.sprite;
+        bossAttackName.value = ataqueChefe.nome;
+        bossAttackFrame.value = 0;
+        if (bossAttackInterval) clearInterval(bossAttackInterval);
+        let frameAtual = 0;
+        bossAttackInterval = setInterval(() => {
+          bossAttackFrame.value++;
+          frameAtual++;
+          if (bossAttackFrame.value >= bossAttackSprites.value.length) {
+            clearInterval(bossAttackInterval);
+            bossAttackSprites.value = [];
+            bossAttackName.value = '';
+            bossAttackFrame.value = 0;
+          }
+        }, 180); // Aumentado o delay para 180ms para animação mais lenta
+      }
 
+      playerStats.value.health = Math.max(0, playerStats.value.health - ataqueChefe.dano);
+      vida.value = playerStats.value.health;
       textoFala.value = `${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano!`;
 
-      // Verifica se o jogador foi derrotado após o contra-ataque
       if (playerStats.value.health <= 0) {
-        // Redireciona para a tela de derrota
         router.push({
           path: '/defeat',
           query: {
             bossId: chefeBatalha.value.id,
             damage: danoCausado,
-            time: '2:30' // Você pode adicionar um timer real aqui se desejar
+            time: '2:30'
           }
         });
       }
@@ -201,18 +247,26 @@ const gridAreaByIndex = (idx) => {
       <div class="battle-interface text-center">
         <div class="battle-arena">
           <div class="arena-container">
-            <!-- Área de batalha -->
-            <div v-if="chefeBatalha" class="battle-sprites">
-              <!-- Sprite do jogador -->
-              <div class="player-sprite">
-                <img src="@/assets/images/Player2.png" alt="Jogador" />
-              </div>
-              
-              <!-- Sprite do professor -->
-              <div class="boss-sprite">
-                <img :src="chefeBatalha.sprite" :alt="chefeBatalha.name" />
-              </div>
+          <!-- Área de batalha -->
+          <div v-if="chefeBatalha" class="battle-sprites">
+            <!-- Sprite do boss (agora à esquerda) -->
+            <div class="boss-sprite" :class="{ 'boss-attacking': bossAttackSprites.length }">
+              <img
+                v-if="bossAttackSprites.length"
+                :src="bossAttackSprites[bossAttackFrame]"
+                :alt="bossAttackName || chefeBatalha.name"
+              />
+              <img
+                v-else
+                :src="bossIdleSprites[bossIdleFrame]"
+                :alt="chefeBatalha.name"
+              />
             </div>
+            <!-- Sprite do jogador (agora à direita) -->
+            <div class="player-sprite">
+              <img src="@/assets/images/Player2.png" alt="Jogador" />
+            </div>
+          </div>
           </div>
           <div class="botoes-acao">
             <div class="falas">{{ textoFala }}</div>
@@ -379,14 +433,29 @@ const gridAreaByIndex = (idx) => {
 .boss-sprite {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  height: 100%;
+  min-width: 220px;
+  margin-left: 180px; /* ainda mais para a direita */
+  position: relative;
 }
 
 .boss-sprite img {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   image-rendering: pixelated;
   filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
+  object-fit: contain;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  /* Garante que o centro do sprite fique fixo na vertical */
+}
+
+.boss-sprite.boss-attacking img {
+  /* Compensa o deslocamento do boss durante a animação de ataque */
+  transform: translateY(-50%) translateX(40px);
 }
 
 .battle-arena {
@@ -640,5 +709,49 @@ const gridAreaByIndex = (idx) => {
 
 .modal button:hover {
   background-color: #b5243a;
+}
+
+.boss-attack-animation {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none;
+  padding-left: 32px;
+}
+.attack-name {
+  background: #931e30;
+  color: #ffce1c;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.1rem;
+  padding: 6px 18px;
+  border-radius: 8px;
+  border: 2px solid #ffce1c;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px #000a;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 #222;
+  animation: boss-attack-flash 2s linear;
+}
+.attack-sprite {
+  width: 180px;
+  height: 180px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 16px #ffce1c) brightness(1.1);
+  animation: boss-attack-pop 2s linear;
+}
+@keyframes boss-attack-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+@keyframes boss-attack-pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  20% { transform: scale(1.1); opacity: 1; }
+  80% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.7); opacity: 0; }
 }
 </style>
