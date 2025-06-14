@@ -34,8 +34,8 @@ const dialogMessagesInicio = [
   'Pressione E para interagir com objetos.'
 ]
 
-const mapWidth = 25   // número de colunas
-const mapHeight = 10  // número de linhas
+const mapWidth = 77   // número de colunas
+const mapHeight = 59  // número de linhas
 const tileSize = 64   // pixels por tile
 
 // Sistema de câmera com zoom
@@ -72,16 +72,12 @@ const bossesPositions = [
 
 // Exemplo simples de um mapa 16×12
 const gameMap = ref([
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  // linha 0 - toda de 1 (topo)
+  Array(77).fill(1),
+  // linhas 1 até 62 - bordas com 1, centro com 0
+  ...Array.from({ length: 62 }, () => [1, ...Array(75).fill(0), 1]),
+  // linha 63 - toda de 1 (base)
+  Array(77).fill(1)
 ])
 
 // Função para iniciar a batalha quando perto de um boss
@@ -286,7 +282,7 @@ h1 {
 
 .map-viewport {
   width: 1600px;
-  height: 640px;
+  height: 740px;
   border: 4px solid #931e30;
   box-shadow: 0 0 0 4px #ffce1c;
   position: relative;
@@ -296,8 +292,8 @@ h1 {
 }
 
 .map-container {
-  width: 1600px;
-  height: 640px;
+  width: 4960px;
+  height: 3800px;
   position: relative;
   background: url('@/assets/images/MapaDefinitivo.png') no-repeat center;
   background-size: 100% 100%;

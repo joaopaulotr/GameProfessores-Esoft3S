@@ -62,8 +62,8 @@ onUnmounted(() => {
   z-index: 20;
 }
 .boss-sprite {
-  width: 64px;
-  height: 64px;
+  width: 94px;
+  height: 94px;
   image-rendering: pixelated;
   filter: drop-shadow(0 0 8px #ffce1c);
   transition: all 0.3s ease-in-out;
