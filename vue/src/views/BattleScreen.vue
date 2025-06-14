@@ -22,6 +22,9 @@ const chefeBatalhaId = computed(() => Number(route.query.id) || 1)
 const chefeBatalha = ref(null)
 const bossStats = ref(null)
 
+// Variável para controlar o texto das falas
+const textoFala = ref('Escolha seu ataque!')
+
 const musicaBatalha = new URL('@/assets/music/musicaBatalha.mp3', import.meta.url).href;
 const musicaMapa = new URL('@/assets/music/musicaMapa.mp3', import.meta.url).href;
 
@@ -81,7 +84,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 // Adiciona os ataques do jogador
-const realizarAtaque = (ataque) => {
+const realizarAtaque = async (ataque) => {
   // Verifica se a batalha já acabou
   if (bossStats.value.health <= 0 || playerStats.value.health <= 0) return;
 
@@ -97,62 +100,57 @@ const realizarAtaque = (ataque) => {
     const curaTotal = ataque.dano;
     playerStats.value.health = Math.min(playerStats.value.maxHealth, playerStats.value.health + curaTotal);
     vida.value = playerStats.value.health; // Atualiza o armazenamento
-    console.log(`Você usou ${ataque.nome} e recuperou ${curaTotal} de vida! Sua vida: ${playerStats.value.health}`);
+    textoFala.value = `Aluno usou ${ataque.nome} e recuperou ${curaTotal} de vida!`;
   } else {
     // Jogador ataca
-    let danoCausado;
-    switch (ataque.nome) {
-      case 'Sintaxe Certeira':
-        danoCausado = 20;
-        break;
-      case 'Debug Relâmpago':
-        danoCausado = 25;
-        break;
-      case 'Stack Overflow':
-        danoCausado = 30;
-        break;
-      default:
-        danoCausado = ataque.dano;
-    }
+    let danoCausado = ataque.dano;
 
-    // Aplica o dano ao boss
+    // Aplica o dano ao boss e atualiza a fala
     const vidaAnterior = bossStats.value.health;
     bossStats.value.health = Math.max(0, bossStats.value.health - danoCausado);
-    console.log(`Você usou ${ataque.nome} causando ${danoCausado} de dano! Vida do chefe: ${bossStats.value.health}`);
+    textoFala.value = `Aluno usou ${ataque.nome} causando ${danoCausado} de dano!`;
 
     // O boss só é derrotado se a vida chegar exatamente a 0
     if (vidaAnterior > 0 && bossStats.value.health <= 0) {
+      // Incrementa o contador de chefes derrotados
+      chefesDerrotados.value++;
+      
       // Redireciona para a tela de vitória
       router.push({
         path: '/victory',
         query: {
           bossId: chefeBatalha.value.id,
-          final: chefesDerrotados.length === chefesBatalha.length
+          final: chefesDerrotados.value === chefesBatalha.length
         }
       });
       return;
     }
 
+    // Espera 2 segundos antes do contra-ataque do boss
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
     // Boss contra-ataca apenas se ainda estiver vivo
-    const ataquesChefe = chefeBatalha.value.ataques;
-    const ataqueChefe = ataquesChefe[Math.floor(Math.random() * ataquesChefe.length)];
+    if (bossStats.value.health > 0) {
+      const ataquesChefe = chefeBatalha.value.ataques;
+      const ataqueChefe = ataquesChefe[Math.floor(Math.random() * ataquesChefe.length)];
 
-    playerStats.value.health = Math.max(0, playerStats.value.health - ataqueChefe.dano);
-    vida.value = playerStats.value.health; // Atualiza o armazenamento
+      playerStats.value.health = Math.max(0, playerStats.value.health - ataqueChefe.dano);
+      vida.value = playerStats.value.health; // Atualiza o armazenamento
 
-    console.log(`${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano! Sua vida: ${playerStats.value.health}`);
+      textoFala.value = `${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano!`;
 
-    // Verifica se o jogador foi derrotado após o contra-ataque
-    if (playerStats.value.health <= 0) {
-      // Redireciona para a tela de derrota
-      router.push({
-        path: '/defeat',
-        query: {
-          bossId: chefeBatalha.value.id,
-          damage: danoCausado,
-          time: '2:30' // Você pode adicionar um timer real aqui se desejar
-        }
-      });
+      // Verifica se o jogador foi derrotado após o contra-ataque
+      if (playerStats.value.health <= 0) {
+        // Redireciona para a tela de derrota
+        router.push({
+          path: '/defeat',
+          query: {
+            bossId: chefeBatalha.value.id,
+            damage: danoCausado,
+            time: '2:30' // Você pode adicionar um timer real aqui se desejar
+          }
+        });
+      }
     }
   }
 }
@@ -217,7 +215,7 @@ const gridAreaByIndex = (idx) => {
             </div>
           </div>
           <div class="botoes-acao">
-            <div class="falas">Fala Exemplo</div>
+            <div class="falas">{{ textoFala }}</div>
             <div class="action-buttons-grid">
               <button
                 v-for="(ataque, idx) in ataques"
