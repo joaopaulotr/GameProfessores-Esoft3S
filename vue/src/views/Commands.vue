@@ -6,31 +6,31 @@
         <div class="command-section">
           <h2>Movimentação</h2>
           <ul>
+            <br>
             <li><span class="command-key">↑↓←→</span> Mover</li>
-            <li><span class="command-key">Shift</span> Correr</li>
           </ul>
         </div>
 
         <div class="command-section">
           <h2>Interação</h2>
           <ul>
+            <br>
             <li><span class="command-key">E</span> Interagir</li>
-            <li><span class="command-key">Esc</span> Menu</li>
           </ul>
         </div>
 
         <div class="command-section">
           <h2>Batalha</h2>
           <ul>
+            <br>
             <li><span class="command-key">1-4</span> Ataques</li>
-            <li><span class="command-key">C</span> Cura</li>
           </ul>
         </div>
 
         <div class="command-section">
           <h2>Dicas</h2>
           <ul>
-            <li>Use itens sabiamente</li>
+            <li>Use ataques sabiamente</li>
             <li>Observe padrões</li>
           </ul>
         </div>

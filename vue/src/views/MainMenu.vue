@@ -6,6 +6,7 @@
       <div class="buttons-container">
   <template v-if="!mostrarOpcoes">
     <router-link to="/map"><button>Jogar</button></router-link>
+    <button @click="resetGame">Novo Jogo</button>
     <router-link to="/credits"><button>Créditos</button></router-link>
     <router-link to="/commands"><button>Comandos</button></router-link>
     <button @click="mostrarOpcoes = true">Opções</button>
@@ -194,7 +195,9 @@ button:active {
 </style>
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const mostrarOpcoes = ref(false)
 const volume = ref(0.18)
 
@@ -211,5 +214,11 @@ function ajustarVolume() {
     audio.volume = volume.value
     localStorage.setItem('volume', volume.value)
   }
+}
+
+function resetGame() {
+  localStorage.clear()
+  router.push('/map')
+  window.location.reload()
 }
 </script>

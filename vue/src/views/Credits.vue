@@ -33,19 +33,7 @@
               <p>Música 01 – "Battle Loop"</p>
               <p>Música 02 – "Menu Theme"</p>
             </div>
-
-            <div class="credit-section">
-              <h2>Testes e Qualidade</h2>
-              <p>Maria Eduarda</p>
-              <p>Equipe de QA da Turma X</p>
-            </div>
-
-            <div class="credit-section">
-              <h2>Documentação Técnica</h2>
-              <p>Gabriel Santos Furlanette</p>
-              <p>Eduardo Barella</p>
-            </div>
-
+            
             <div class="credit-section">
               <h2>Tecnologias Utilizadas</h2>
               <p>Vue.js</p>
