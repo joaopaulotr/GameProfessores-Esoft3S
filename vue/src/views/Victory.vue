@@ -34,7 +34,7 @@
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Dano Total:</span>
-                  <span class="stat-value">1337</span>
+                  <span class="stat-value">120</span>
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Combo Máximo:</span>
@@ -51,7 +51,7 @@
           <div class="rewards-container">
             <div class="reward-item">
               <span class="reward-icon">⭐</span>
-              <span class="reward-text">{{ isFinalVictory ? 'Título: "Syntax Master"' : 'Desbloqueado: "Mestre do Debug"' }}</span>
+              <span class="reward-text">{{ isFinalVictory ? 'Título: "Syntax Master"' : 'Desbloqueado: "Mestre do Debug"'  }}</span>
             </div>
             <div class="reward-item" v-if="isFinalVictory">
               <span class="reward-icon">👑</span>
@@ -59,7 +59,7 @@
             </div>
             <div class="reward-item">
               <span class="reward-icon">🎮</span>
-              <span class="reward-text">{{ isFinalVictory ? 'Todas as Habilidades Desbloqueadas!' : 'Nova Habilidade: "Refatoração Supreme"' }}</span>
+              <span class="reward-text">{{ isFinalVictory ? 'Todas as Habilidades Desbloqueadas!' : 'Nova Habilidade: "Refatoração Suprema"' }}</span>
             </div>
           </div>
         </div>
@@ -69,12 +69,6 @@
             <button class="continue-btn">
               <span class="btn-icon">🗺️</span>
               Continuar Jornada
-            </button>
-          </router-link>
-          <router-link to="/battle">
-            <button class="retry-btn">
-              <span class="btn-icon">⚔️</span>
-              Nova Batalha
             </button>
           </router-link>
           <router-link to="/">
@@ -253,13 +247,15 @@ h1 {
 }
 
 .buttons-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: space-evenly;
   gap: 1rem;
   margin-top: 2rem;
+  width: 100%;
 }
 
 button {
+  flex: 1;
   width: 100%;
   padding: 12px;
   font-size: 0.9rem;

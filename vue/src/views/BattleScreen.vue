@@ -193,7 +193,6 @@ const realizarAtaque = async (ataque) => {
           query: {
             bossId: chefeBatalha.value.id,
             damage: danoCausado,
-            time: '2:30'
           }
         });
       }
@@ -264,7 +263,7 @@ const gridAreaByIndex = (idx) => {
             </div>
             <!-- Sprite do jogador (agora à direita) -->
             <div class="player-sprite">
-              <img src="@/assets/images/Player2.png" alt="Jogador" />
+              <img src="@/assets/images/walkplayer2.png" alt="Jogador" />
             </div>
           </div>
           </div>

@@ -74,11 +74,6 @@ export const chefesBatalha = [
                 new URL('@/assets/images/morenobomba14.png', import.meta.url).href
               ]}
     ],
-    falas: [
-      "Bem-vindo ao mundo dos algoritmos!",
-      "Se perder nos meus loops é fácil, sair... nem tanto!",
-      "A lógica é a chave, mas será que você tem a senha?"
-    ]
   },
   {
     id: 2,
@@ -135,16 +130,11 @@ export const chefesBatalha = [
                
         ]}
     ],
-    falas: [
-      "Aqui é arquitetura raiz!",
-      "Se não entende o hardware, não passa daqui!",
-      "Vou te dar um deadlock que você nunca mais esquece!"
-    ]
   },
   {
     id: 3,
     nome: "Gostosinho (Redes de Computadores)",
-    vida: 135,
+    vida: 150,
     sprite: new URL('@/assets/images/joaoferlini1.png', import.meta.url).href,
     estilo: "Redes e comunicação",
     chefesNecessarios: 2, // Precisa derrotar Moreno e Cidão
@@ -215,11 +205,6 @@ export const chefesBatalha = [
         ]},
          
     ],
-    falas: [
-      "Rede lenta? Aqui não!",
-      "Vou congestionar sua mente com meus pacotes!",
-      "Se não souber roteamento, vai ficar sem conexão!"
-    ]
   },
   {
     id: 4,
@@ -284,11 +269,6 @@ export const chefesBatalha = [
 
         ]},
     ],
-    falas: [
-      "Chegou ao topo do front-end!",
-      "Aqui até o botão some do layout!",
-      "Se não passar por mim, seu deploy nunca será estável!"
-    ]
   }
 ];
 
