@@ -50,6 +50,12 @@ Feito com HTML, CSS, JavaScript e Vue, o game simula combates dinâmicos e inter
 
 ---
 
+## 🎮 Link do deploy 
+
+https://syntaxfight.netlify.app/
+
+---
+
 ## 📄 Licença
 
 Projeto acadêmico sem fins lucrativos.  
