@@ -474,7 +474,7 @@ const gridAreaByIndex = (idx) => {
   position: relative;
   overflow: hidden;
   margin: 2rem auto;
-  background: url('@/assets/images/imgFundo3.png') no-repeat center;
+  background: url('@/assets/images/FundoBatalha.jpeg') no-repeat center;
   background-size: 100% 100%;
   image-rendering: pixelated;
 }
