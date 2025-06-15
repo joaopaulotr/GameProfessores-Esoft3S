@@ -113,6 +113,55 @@ onUnmounted(() => {
   if (bossAttackInterval) clearInterval(bossAttackInterval)
 })
 
+// Estado para animação de ataque do player
+const playerIdleSprite = '@/assets/images/walkplayer2.png';
+const currentPlayerAttackSprites = ref([]); // Array de sprites do ataque atual
+const playerAttackFrame = ref(0);
+const isPlayerAttacking = ref(false);
+let playerAttackInterval = null;
+
+// Estado para animação de idle do player (andando para a esquerda)
+const playerIdleSprites = [
+  new URL('@/assets/images/walkright1.png', import.meta.url).href
+  
+ 
+];
+const playerIdleFrame = ref(0);
+let playerIdleInterval = null;
+
+function animarAtaquePlayer(sprites) {
+  if (!sprites || !sprites.length) return;
+  currentPlayerAttackSprites.value = sprites;
+  isPlayerAttacking.value = true;
+  playerAttackFrame.value = 0;
+  if (playerAttackInterval) clearInterval(playerAttackInterval);
+  playerAttackInterval = setInterval(() => {
+    playerAttackFrame.value++;
+    if (playerAttackFrame.value >= currentPlayerAttackSprites.value.length) {
+      clearInterval(playerAttackInterval);
+      isPlayerAttacking.value = false;
+      playerAttackFrame.value = 0;
+      currentPlayerAttackSprites.value = [];
+    }
+  }, 120);
+}
+
+onMounted(() => {
+  if (playerIdleInterval) clearInterval(playerIdleInterval);
+  playerIdleInterval = setInterval(() => {
+    if (!isPlayerAttacking.value) {
+      playerIdleFrame.value = (playerIdleFrame.value + 1) % playerIdleSprites.length;
+    }
+  }, 120);
+});
+
+onUnmounted(() => {
+  if (bossIdleInterval) clearInterval(bossIdleInterval)
+  if (bossAttackInterval) clearInterval(bossAttackInterval)
+  if (playerAttackInterval) clearInterval(playerAttackInterval)
+  if (playerIdleInterval) clearInterval(playerIdleInterval)
+})
+
 // Adiciona os ataques do jogador
 const realizarAtaque = async (ataque) => {
   // Verifica se a batalha já acabou
@@ -133,6 +182,9 @@ const realizarAtaque = async (ataque) => {
     textoFala.value = `Aluno usou ${ataque.nome} e recuperou ${curaTotal} de vida!`;
   } else {
     // Jogador ataca
+    if (Array.isArray(ataque.sprite) && ataque.sprite.length > 0) {
+      animarAtaquePlayer(ataque.sprite);
+    }
     let danoCausado = ataque.dano;
 
     // Aplica o dano ao boss e atualiza a fala
@@ -263,7 +315,16 @@ const gridAreaByIndex = (idx) => {
             </div>
             <!-- Sprite do jogador (agora à direita) -->
             <div class="player-sprite">
-              <img src="@/assets/images/walkplayer2.png" alt="Jogador" />
+              <img
+                v-if="isPlayerAttacking && currentPlayerAttackSprites.length"
+                :src="currentPlayerAttackSprites[playerAttackFrame]"
+                alt="Player Attack"
+              />
+              <img
+                v-else
+                :src="playerIdleSprites[playerIdleFrame]"
+                alt="Jogador"
+              />
             </div>
           </div>
           </div>
@@ -423,11 +484,12 @@ const gridAreaByIndex = (idx) => {
 }
 
 .player-sprite img {
-  width: 150px;
-  height: 150px;
+  width: 470px;
+  height: 470px;
   image-rendering: pixelated;
   filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
   margin-right: 480px;
+  margin-top: 230px; /* Move o player para baixo na arena de batalha */
 }
 
 .boss-sprite {
@@ -441,8 +503,8 @@ const gridAreaByIndex = (idx) => {
 }
 
 .boss-sprite img {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   image-rendering: pixelated;
   filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
   object-fit: contain;

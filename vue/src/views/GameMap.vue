@@ -11,6 +11,7 @@ import { playSound } from '../utils/audioUtils.js'
 
 const router = useRouter()
 const { chefesDerrotados } = useDadosJogador()
+const chefesDerrotadosNumero = computed(() => Number(chefesDerrotados.value) || 0)
 const dialogActiveInicio = ref(true)
 const playerPosition = ref({ x: 400, y: 300 })
 const bossInteractionActive = ref(false)
@@ -246,13 +247,13 @@ onUnmounted(() => {
         <Tile :map="gameMap" :tile-size="tileSize" />
         <PlayerSprite :map="gameMap" :tile-size="tileSize" :map-width="mapWidth" :map-height="mapHeight" />
 
-      <!-- Renderiza os bosses no mapa nas posições definidas -->
+      <!-- Renderiza todos os bosses, bloqueando visualmente os indisponíveis -->
       <template v-for="position in bossesPositions" :key="position.bossId">
         <ProfessorBoss
-          v-if="chefesBatalha.find(b => b.id === position.bossId)"
           :boss="chefesBatalha.find(b => b.id === position.bossId)"
           :x="position.x"
           :y="position.y"
+          :bloqueado="chefesDerrotadosNumero < (chefesBatalha.find(b => b.id === position.bossId)?.chefesNecessarios || 0)"
         />
       </template>
 

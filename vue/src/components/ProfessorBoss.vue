@@ -14,6 +14,10 @@ const props = defineProps({
   y: {
     type: Number,
     required: true
+  },
+  bloqueado: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -39,16 +43,17 @@ onUnmounted(() => {
 <template>
   <div
     class="professor-boss"
-    :class="{ 'player-nearby': isPlayerNearby }"
+    :class="{ 'player-nearby': isPlayerNearby, 'boss-locked': bloqueado }"
     :style="{
       left: `${x}px`,
       top: `${y}px`
     }"
-    title="Desafiar {{ boss.nome }}"
+    :title="bloqueado ? 'Bloqueado' : `Desafiar ${boss.nome}`"
   >
-    <img :src="boss.sprite" :alt="boss.nome" class="boss-sprite" />
-    <div class="boss-label" :class="{ 'label-highlight': isPlayerNearby }">
+    <img :src="boss.sprite" :alt="boss.nome" class="boss-sprite" :class="{ 'locked': bloqueado }" />
+    <div class="boss-label" :class="{ 'label-highlight': isPlayerNearby, 'locked-label': bloqueado }">
       {{ boss.nome }}
+      <span v-if="bloqueado" class="lock-icon">🔒</span>
     </div>
   </div>
 </template>
@@ -118,5 +123,19 @@ onUnmounted(() => {
 @keyframes pulse-label {
   0% { transform: translateY(-2px) scale(1); }
   100% { transform: translateY(-2px) scale(1.05); }
+}
+
+.boss-sprite.locked {
+  filter: grayscale(1) brightness(0.6) opacity(0.7) drop-shadow(0 0 8px #888);
+}
+.locked-label {
+  color: #888 !important;
+}
+.lock-icon {
+  margin-left: 6px;
+  font-size: 1.1em;
+}
+.boss-locked {
+  pointer-events: none;
 }
 </style>

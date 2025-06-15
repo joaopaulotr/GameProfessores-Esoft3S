@@ -108,14 +108,14 @@ export const chefesBatalha = [
         ]},
       { nome: "Overclock Selvagem", 
         dano: 29,
-      sprite:[ new URL('@/assets/images/cidaooverclock1.png', import.meta.url).href,
-                new URL('@/assets/images/cidaooverclock2.png', import.meta.url).href,
-                new URL('@/assets/images/cidaooverclock3.png', import.meta.url).href,
-                new URL('@/assets/images/cidaooverclock4.png', import.meta.url).href,
-                new URL('@/assets/images/cidaooverclock5.png', import.meta.url).href,
-                new URL('@/assets/images/cidaooverclock6.png', import.meta.url).href,
-                new URL('@/assets/images/cidaooverclock7.png', import.meta.url).href,
-                new URL('@/assets/images/cidaooverclock8.png', import.meta.url).href
+      sprite:[ new URL('@/assets/images/cidaooverlock1.png', import.meta.url).href,
+                new URL('@/assets/images/cidaooverlock2.png', import.meta.url).href,
+                new URL('@/assets/images/cidaooverlock3.png', import.meta.url).href,
+                new URL('@/assets/images/cidaooverlock4.png', import.meta.url).href,
+                new URL('@/assets/images/cidaooverlock5.png', import.meta.url).href,
+                new URL('@/assets/images/cidaooverlock6.png', import.meta.url).href,
+                new URL('@/assets/images/cidaooverlock7.png', import.meta.url).href,
+                new URL('@/assets/images/cidaooverlock8.png', import.meta.url).href
         ]},
       { nome: "Tempestade de Barramentos", 
         dano: 38,
@@ -185,6 +185,7 @@ export const chefesBatalha = [
                 new URL('@/assets/images/ferliniluta10.png', import.meta.url).href,
                 new URL('@/assets/images/ferliniluta11.png', import.meta.url).href
                 
+                
 
         ]},
       { nome: "Firewall Implacável",
@@ -215,18 +216,18 @@ export const chefesBatalha = [
     chefesNecessarios: 3, // Precisa derrotar os 3 anteriores
     ataques: [
       { nome: "CSS Caótico", dano: 35,
-        sprite:[ new URL('@/assets/images/hugoboss.png', import.meta.url).href,
-               new URL('@/assets/images/hugoboss1.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss2.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss3.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss4.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss5.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss6.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss7.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss8.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss9.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss10.png', import.meta.url).href,
-                new URL('@/assets/images/hugoboss11.png', import.meta.url).href
+        sprite:[
+               new URL('@/assets/images/hugo boss1.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss2.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss3.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss4.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss5.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss6.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss7.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss8.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss9.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss10.png', import.meta.url).href,
+                new URL('@/assets/images/hugo boss11.png', import.meta.url).href
     ]},
       { nome: "React Devastador", dano: 40,
         sprite:[ new URL('@/assets/images/reacthugo1.png', import.meta.url).href,
@@ -277,9 +278,47 @@ export function useDadosJogador() {
   // Vida máxima e ataques podem ser customizados conforme o progresso
   const vidaMaxima = 120;
   const ataquesPadrao = [
-    { nome: 'Sintaxe Certeira', dano: 20, tipo: 'ataque', icon: '🐱‍🏍'},
-    { nome: 'Refatoração Rápida', dano: 25, tipo: 'ataque' },
-    { nome: 'Stack Overflow', dano: 35, tipo: 'ataque' },
+    { nome: 'Sintaxe Certeira', dano: 20,
+      sprite:[ new URL('@/assets/images/playersintaxe1.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe2.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe3.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe4.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe5.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe6.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe7.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe8.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe9.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe10.png', import.meta.url).href,
+              new URL('@/assets/images/playersintaxe11.png', import.meta.url).href
+      ],
+      tipo: 'ataque', icon: '🐱‍🏍'},
+    { nome: 'Refatoração Rápida', dano: 25,
+      sprite:[ new URL('@/assets/images/playerrefatoracao1.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao2.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao3.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao4.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao5.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao6.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao7.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao8.png', import.meta.url).href,
+              new URL('@/assets/images/playerrefatoracao9.png', import.meta.url).href
+      ],
+      tipo: 'ataque' },
+    { nome: 'Stack Overflow', dano: 35,
+      sprite:[ new URL ('@/assets/images/playerstack1.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack2.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack3.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack4.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack5.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack6.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack7.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack8.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack9.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack10.png', import.meta.url).href,
+              new URL('@/assets/images/playerstack11.png', import.meta.url).href
+           
+      ],
+      tipo: 'ataque' },
     { nome: 'Café Restaurador', dano: 25, tipo: 'cura', icon: '☕' }
   ];
 
