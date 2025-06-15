@@ -33,6 +33,8 @@ Feito com HTML, CSS, JavaScript e Vue, o game simula combates dinâmicos e inter
 2. Gustavo Mazeto Pasquini - 24183078-2  
 3. Heitor Ferrrari Crivelin - 24015780-2
 4. Maria Eduarda Furlan Scomparin - 24021296-2
+5. Gabriel Santos Furlanette - 24000873-2
+6. Eduardo Barella 24088000 - 2
 
 ---
 
