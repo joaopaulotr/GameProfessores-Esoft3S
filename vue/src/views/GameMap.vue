@@ -81,6 +81,7 @@ const gameMap = ref([
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ])
 
@@ -238,7 +239,7 @@ onUnmounted(() => {
         class="map-container"
         ref="mapRef"
         :style="{
-          transform: `scale(${camera.zoom}) translate(${-camera.x}px, ${-camera.y}px)`,
+          transform: `scale(${camera.x}) translate(${-camera.x}px, ${-camera.y}px)`,
           transformOrigin: '0 0'
         }"
       >
@@ -289,9 +290,6 @@ onUnmounted(() => {
    />
    <router-link to="/">
       <button class="pokemon-button">Voltar ao Menu</button>
-   </router-link>
-   <router-link to="/battle">
-      <button class="pokemon-button battle-button">Ir para Batalha!</button>
    </router-link>
 </div>
 <div class="map-controls">

@@ -249,9 +249,6 @@ onUnmounted(() => {
       <router-link to="/">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
-      <router-link to="/battle">
-        <button class="pokemon-button battle-button">Ir para Batalha!</button>
-      </router-link>
     </div>
   </div>
 </template>
