@@ -428,6 +428,7 @@ const gridAreaByIndex = (idx) => {
   height: 150px;
   image-rendering: pixelated;
   filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
+  margin-right: 480px;
 }
 
 .boss-sprite {
