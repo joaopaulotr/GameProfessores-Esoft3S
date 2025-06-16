@@ -114,18 +114,14 @@ onUnmounted(() => {
 })
 
 // Estado para animação de ataque do player
-const playerIdleSprite = '@/assets/images/walkplayer2.png';
+const playerIdleSprite = new URL('@/assets/images/walkplayer2.png', import.meta.url).href;
 const currentPlayerAttackSprites = ref([]); // Array de sprites do ataque atual
 const playerAttackFrame = ref(0);
 const isPlayerAttacking = ref(false);
 let playerAttackInterval = null;
 
-// Estado para animação de idle do player (andando para a esquerda)
-const playerIdleSprites = [
-  new URL('@/assets/images/walkright1.png', import.meta.url).href
-  
- 
-];
+// Estado para idle do player (imagem estática)
+const playerIdleSprites = [playerIdleSprite];
 const playerIdleFrame = ref(0);
 let playerIdleInterval = null;
 
@@ -147,19 +143,14 @@ function animarAtaquePlayer(sprites) {
 }
 
 onMounted(() => {
-  if (playerIdleInterval) clearInterval(playerIdleInterval);
-  playerIdleInterval = setInterval(() => {
-    if (!isPlayerAttacking.value) {
-      playerIdleFrame.value = (playerIdleFrame.value + 1) % playerIdleSprites.length;
-    }
-  }, 120);
+  // Remove a animação contínua do personagem
+  playerIdleFrame.value = 0;
 });
 
 onUnmounted(() => {
   if (bossIdleInterval) clearInterval(bossIdleInterval)
   if (bossAttackInterval) clearInterval(bossAttackInterval)
   if (playerAttackInterval) clearInterval(playerAttackInterval)
-  if (playerIdleInterval) clearInterval(playerIdleInterval)
 })
 
 // Adiciona os ataques do jogador
