@@ -8,11 +8,13 @@ import Victory from '@/views/Victory.vue';
 import Defeat from '@/views/Defeat.vue';
 import Commands from '@/views/Commands.vue';    
 import OptionsView from '@/views/OptionsView.vue';
+import Intro from '@/views/intro.vue'
+
 
 
 
 const routes = [
-  { path: '/', component: MainMenu },
+  { path: '/menu', component: MainMenu },
   { path: '/map', component: GameMapWithZoom },
   { path: '/battle', component: BattleScreen },
   { path: '/credits', component: Credits },
@@ -20,8 +22,8 @@ const routes = [
   { path: '/victory', component: Victory },
   { path: '/defeat', component: Defeat },
   { path: '/commands', component: Commands },
-  { path: '/', component: MainMenu }, // seu menu principal
   { path: '/options', component: OptionsView }, // nova rota
+  { path: '/', component: Intro }, // nova rota
 ];
 
 export default createRouter({
