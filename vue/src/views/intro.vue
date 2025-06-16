@@ -51,6 +51,9 @@
   .titulo {
       font-size: 3rem;
       margin-bottom: 20px;
+      color: #ffce1c;
+      text-shadow: 2px 2px 0 #000;
+      letter-spacing: 2px;
     }
   .intro-container {
     display: flex;
@@ -67,12 +70,13 @@
   }
   
   .intro-text {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  max-width: 700px;
-  margin-bottom: 2rem;
-  white-space: pre-wrap;
-  animation: fadeIn 0.5s ease-in-out;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 700px;
+    margin-bottom: 2rem;
+    white-space: pre-wrap;
+    animation: fadeIn 0.5s ease-in-out;
+    margin-top: 10px;
 }
 @keyframes fadeIn {
   from {
@@ -95,7 +99,22 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
+    animation: pulse 1.8s infinite;
   }
+    @keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px #ffce1c;
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px #ffce1c;
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px #ffce1c;
+    }
+}
   
   .btn-continuar:hover {
     background-color: #e5b700;
