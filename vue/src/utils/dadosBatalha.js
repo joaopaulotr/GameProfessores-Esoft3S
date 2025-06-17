@@ -319,7 +319,24 @@ export function useDadosJogador() {
            
       ],
       tipo: 'ataque' },
-    { nome: 'Café Restaurador', dano: 25, tipo: 'cura', icon: '☕' }
+    { nome: 'Café Restaurador',
+       dano: 25, 
+       sprite:[ new URL('@/assets/images/drinkcoffee1.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee2.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee3.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee4.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee5.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee6.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee7.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee8.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee9.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee10.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee11.png', import.meta.url).href,
+                new URL('@/assets/images/drinkcoffee12.png', import.meta.url).href
+
+              
+      ],
+       tipo: 'cura', icon: '☕' }
   ];
 
   // Armazenamento persistente dos dados do jogador

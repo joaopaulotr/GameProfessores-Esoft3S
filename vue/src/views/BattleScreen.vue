@@ -114,7 +114,7 @@ onUnmounted(() => {
 })
 
 // Estado para animação de ataque do player
-const playerIdleSprite = new URL('@/assets/images/walkplayer2.png', import.meta.url).href;
+const playerIdleSprite = new URL('@/assets/images/walkright1.png', import.meta.url).href;
 const currentPlayerAttackSprites = ref([]); // Array de sprites do ataque atual
 const playerAttackFrame = ref(0);
 const isPlayerAttacking = ref(false);
@@ -165,6 +165,11 @@ const realizarAtaque = async (ataque) => {
     return;
   }
 
+  // Sempre anima o ataque do player, seja ataque ou cura
+  if (Array.isArray(ataque.sprite) && ataque.sprite.length > 0) {
+    animarAtaquePlayer(ataque.sprite);
+  }
+
   if (ataque.tipo === 'cura') {
     // Cura o jogador
     const curaTotal = ataque.dano;
@@ -173,11 +178,7 @@ const realizarAtaque = async (ataque) => {
     textoFala.value = `Aluno usou ${ataque.nome} e recuperou ${curaTotal} de vida!`;
   } else {
     // Jogador ataca
-    if (Array.isArray(ataque.sprite) && ataque.sprite.length > 0) {
-      animarAtaquePlayer(ataque.sprite);
-    }
     let danoCausado = ataque.dano;
-
     // Aplica o dano ao boss e atualiza a fala
     const vidaAnterior = bossStats.value.health;
     bossStats.value.health = Math.max(0, bossStats.value.health - danoCausado);

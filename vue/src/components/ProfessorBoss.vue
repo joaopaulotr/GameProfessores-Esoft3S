@@ -50,10 +50,9 @@ onUnmounted(() => {
     }"
     :title="bloqueado ? 'Bloqueado' : `Desafiar ${boss.nome}`"
   >
-    <img :src="boss.sprite" :alt="boss.nome" class="boss-sprite" :class="{ 'locked': bloqueado }" />
-    <div class="boss-label" :class="{ 'label-highlight': isPlayerNearby, 'locked-label': bloqueado }">
+    <img :src="boss.sprite" :alt="boss.nome" class="boss-sprite" />
+    <div class="boss-label" :class="{ 'label-highlight': isPlayerNearby }">
       {{ boss.nome }}
-      <span v-if="bloqueado" class="lock-icon">🔒</span>
     </div>
   </div>
 </template>
@@ -125,16 +124,6 @@ onUnmounted(() => {
   100% { transform: translateY(-2px) scale(1.05); }
 }
 
-.boss-sprite.locked {
-  filter: grayscale(1) brightness(0.6) opacity(0.7) drop-shadow(0 0 8px #888);
-}
-.locked-label {
-  color: #888 !important;
-}
-.lock-icon {
-  margin-left: 6px;
-  font-size: 1.1em;
-}
 .boss-locked {
   pointer-events: none;
 }
