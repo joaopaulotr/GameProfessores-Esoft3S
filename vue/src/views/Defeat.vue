@@ -74,7 +74,7 @@ const bossId = route.query.bossId;
 const tips = [
   "Use o 'Café Restaurador' estrategicamente para recuperar vida durante a batalha!",
   "Alterne entre ataques fortes e fracos para otimizar o dano!",
-  "Observe o padrão de ataques do professor para se defender melhor!",
+  "É possivel usar o café restaurador e atacar logo em seguida!",
   "Mantenha sua vida acima de 50% para maior segurança!"
 ];
 

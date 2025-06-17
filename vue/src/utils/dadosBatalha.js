@@ -210,7 +210,7 @@ export const chefesBatalha = [
   {
     id: 4,
     nome: "Hugo Fumero (Front-End)",
-    vida: 160,
+    vida: 180,
     sprite: new URL('@/assets/images/hugo.png', import.meta.url).href,
     estilo: "Front-End Supremo",
     chefesNecessarios: 3, // Precisa derrotar os 3 anteriores
@@ -336,7 +336,7 @@ export function useDadosJogador() {
 
               
       ],
-       tipo: 'cura', icon: '☕' }
+       tipo: 'cura'}
   ];
 
   // Armazenamento persistente dos dados do jogador
