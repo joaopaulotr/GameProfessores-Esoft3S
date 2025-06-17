@@ -310,7 +310,7 @@ onUnmounted(() => {
      :messages="dialogMessagesInicio"
      @close="dialogActive = false"
    />
-   <router-link to="/">
+   <router-link to="/menu">
       <button class="pokemon-button">Voltar ao Menu</button>
    </router-link>
    <button class="pokemon-button" @click="openMiniMap" title="Mini Mapa (M)">M</button>

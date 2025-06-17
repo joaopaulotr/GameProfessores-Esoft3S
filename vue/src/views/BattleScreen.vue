@@ -9,7 +9,7 @@ const { vida, ataques, vitorias, derrotas, chefesDerrotados, vidaMaxima } = useD
 
 // Estatísticas do jogador para a batalha atual
 const playerStats = ref({
-   name: 'Professor',
+   name: 'Aluno',
    health: vidaMaxima, // Sempre inicia com vida máxima ao entrar na batalha
    maxHealth: vidaMaxima
 })
@@ -340,10 +340,10 @@ const gridAreaByIndex = (idx) => {
       </div>
 
 
-        <router-link to="/map">
+        <router-link to="/">
           <button class="pokemon-button menu-button">
             <span class="btn-icon">🏠</span>
-            Voltar ao Mapa
+            Voltar ao Menu
           </button>
         </router-link>
       </div>

@@ -291,7 +291,7 @@ export function useDadosJogador() {
               new URL('@/assets/images/playersintaxe10.png', import.meta.url).href,
               new URL('@/assets/images/playersintaxe11.png', import.meta.url).href
       ],
-      tipo: 'ataque', icon: '🐱‍🏍'},
+      tipo: 'ataque'},
     { nome: 'Refatoração Rápida', dano: 25,
       sprite:[ new URL('@/assets/images/playerrefatoracao1.png', import.meta.url).href,
               new URL('@/assets/images/playerrefatoracao2.png', import.meta.url).href,
