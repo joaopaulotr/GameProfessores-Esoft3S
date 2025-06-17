@@ -6,6 +6,7 @@ import ProfessorBoss from '../components/ProfessorBoss.vue'
 import ProximityIndicator from '../components/ProximityIndicator.vue'
 import Tile from '../components/Tile.vue'
 import DialogBox from '../components/DialogBox.vue'
+import MiniMap from '../components/MiniMap.vue'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 import { playSound } from '../utils/audioUtils.js'
 
@@ -164,9 +165,24 @@ function updatePlayerPosition(e) {
   });
 }
 
+const miniMapVisible = ref(false)
+
+function openMiniMap() {
+  miniMapVisible.value = true
+}
+function closeMiniMap() {
+  miniMapVisible.value = false
+}
+function toggleMiniMap() {
+  miniMapVisible.value = !miniMapVisible.value
+}
+
 function handleKeyDown(e) {
   if (e.key === 'e' || e.key === 'E') {
     startBattle();
+  }
+  if (e.key === 'm' || e.key === 'M') {
+    toggleMiniMap();
   }
 }
 
@@ -197,7 +213,7 @@ onUnmounted(() => {
         class="map-container" 
         ref="mapRef"
         :style="{
-          transform: `scale(${camera.zoom}) translate(${-camera.x}px, ${-camera.y}px)`,
+          transform: `scale(${camera.zoom}) translate(${-camera.x}px, ${-camera.y}px)` ,
           transformOrigin: '0 0'
         }"
       >
@@ -244,11 +260,20 @@ onUnmounted(() => {
         <span class="warning-icon">⚠️</span> Você precisa derrotar {{ nearbyUnavailableBoss?.chefesNecessarios }} professores antes!
       </div>
     </div>
-
     <div class="botoes-acao">
       <router-link to="/">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
+      <button class="pokemon-button" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
+      <div v-if="miniMapVisible" style="display:inline-block; vertical-align:middle; margin-left: 16px;">
+        <MiniMap
+          :player="playerPosition"
+          :bosses="bossesPositions"
+          :map-width="mapWidth * tileSize"
+          :map-height="mapHeight * tileSize"
+          :on-close="closeMiniMap"
+        />
+      </div>
     </div>
   </div>
 </template>

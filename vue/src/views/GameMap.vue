@@ -6,6 +6,7 @@ import ProfessorBoss from '../components/ProfessorBoss.vue'
 import ProximityIndicator from '../components/ProximityIndicator.vue'
 import Tile from '../components/Tile.vue'
 import DialogBox from '../components/DialogBox.vue'
+import MiniMap from '../components/MiniMap.vue'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 import { playSound } from '../utils/audioUtils.js'
 
@@ -204,11 +205,24 @@ function updatePlayerPosition(e) {
   });
 }
 
+// Controle de visibilidade do mini mapa
+const miniMapVisible = ref(false)
+
+function openMiniMap() {
+  miniMapVisible.value = true;
+}
+function closeMiniMap() {
+  miniMapVisible.value = false;
+}
+
 // Função para tratar o pressionamento da tecla E
 function handleKeyDown(e) {
   if (e.key === 'e' || e.key === 'E') {
     console.log('Tecla E pressionada');
     startBattle();
+  }
+  if (e.key === 'm' || e.key === 'M') {
+    miniMapVisible.value = !miniMapVisible.value;
   }
 }
 
@@ -221,8 +235,6 @@ onMounted(() => {
   window.addEventListener('keydown', handleKeyDown);
   document.addEventListener('playerMoved', updatePlayerPosition);
 });
-
-// Limpeza de eventos quando o componente é desmontado
 onUnmounted(() => {
   console.log('GameMap desmontado, removendo event listeners');
   musicaMapa.pause();
@@ -234,13 +246,22 @@ onUnmounted(() => {
 
 <template>
   <div class="game-map">
+    <!-- Removido o botão flutuante mini-map-btn para evitar duplicidade -->
+    <MiniMap
+      v-if="miniMapVisible"
+      :player="playerPosition"
+      :bosses="bossesPositions"
+      :map-width="mapWidth * tileSize"
+      :map-height="mapHeight * tileSize"
+      :on-close="closeMiniMap"
+    />
     <h1>Mapa do Jogo</h1>
     <div class="map-viewport">
       <div
         class="map-container"
         ref="mapRef"
         :style="{
-          transform: `scale(${camera.x}) translate(${-camera.x}px, ${-camera.y}px)`,
+          transform: `scale(${camera.x}) translate(${-camera.x}px, ${-camera.y}px)` ,
           transformOrigin: '0 0'
         }"
       >
@@ -292,6 +313,16 @@ onUnmounted(() => {
    <router-link to="/">
       <button class="pokemon-button">Voltar ao Menu</button>
    </router-link>
+   <button class="pokemon-button" @click="openMiniMap" title="Mini Mapa (M)">M</button>
+   <div v-if="miniMapVisible" style="display:inline-block; vertical-align:middle; margin-left: 16px;">
+     <MiniMap
+      :player="playerPosition"
+      :bosses="bossesPositions"
+      :map-width="mapWidth * tileSize"
+      :map-height="mapHeight * tileSize"
+      :on-close="closeMiniMap"
+    />
+   </div>
 </div>
 <div class="map-controls">
    <!-- Controles de navegação -->
