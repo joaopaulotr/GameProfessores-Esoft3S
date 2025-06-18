@@ -11,7 +11,7 @@ import { playSound } from '../utils/audioUtils.js'
 
 const router = useRouter()
 const { chefesDerrotados } = useDadosJogador()
-const playerPosition = ref({ x: 400, y: 300 })
+const playerPosition = ref({ x: 2439, y: 1839 })
 const bossInteractionActive = ref(false)
 const currentBoss = ref(null)
 const bossNearButUnavailable = ref(false)
@@ -68,6 +68,7 @@ const gameMap = ref([
   // linha 63 - toda de 1 (base)
   Array(77).fill(1)
 ])
+
 
 // Função para iniciar a batalha quando perto de um boss
 function startBattle() {
@@ -153,28 +154,22 @@ function updatePlayerPosition(e) {
   });
 }
 
-const miniMapVisible = ref(false)
-
-function openMiniMap() {
-  miniMapVisible.value = true
-}
-function closeMiniMap() {
-  miniMapVisible.value = false
-}
-function toggleMiniMap() {
-  miniMapVisible.value = !miniMapVisible.value
-}
-
 function handleKeyDown(e) {
   if (e.key === 'e' || e.key === 'E') {
     startBattle();
   }
-  if (e.key === 'm' || e.key === 'M') {
-    toggleMiniMap();
-  }
+}
+
+const miniMapVisible = ref(false)
+function toggleMiniMap() {
+  miniMapVisible.value = !miniMapVisible.value
+}
+function closeMiniMap() {
+  miniMapVisible.value = false
 }
 
 onMounted(() => {
+  updateCamera(playerPosition.value.x, playerPosition.value.y);
   //musicaMapa.play().catch(err => {
   //  console.warn('A reprodução automática foi bloqueada pelo navegador.', err);
   //});
@@ -182,7 +177,6 @@ onMounted(() => {
   document.addEventListener('playerMoved', updatePlayerPosition);
   
   // Inicializa a câmera na posição inicial do jogador
-  updateCamera(playerPosition.value.x, playerPosition.value.y);
 });
 
 onUnmounted(() => {
@@ -248,17 +242,16 @@ onUnmounted(() => {
       <router-link to="/menu">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
-      <button class="pokemon-button" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
-      <div v-if="miniMapVisible" style="display:inline-block; vertical-align:middle; margin-left: 16px;">
-        <MiniMap
-          :player="playerPosition"
-          :bosses="bossesPositions"
-          :map-width="mapWidth * tileSize"
-          :map-height="mapHeight * tileSize"
-          :on-close="closeMiniMap"
-        />
-      </div>
+      <button class="pokemon-button mini-map-toggle" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
     </div>
+    <MiniMap
+      v-if="miniMapVisible"
+      :player="playerPosition"
+      :bosses="bossesPositions"
+      :map-width="mapWidth * tileSize"
+      :map-height="mapHeight * tileSize"
+      :on-close="closeMiniMap"
+    />
   </div>
 </template>
 
@@ -467,5 +460,26 @@ h1 {
   10% { opacity: 1; transform: translateX(-50%) translateY(0); }
   80% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+.mini-map-toggle {
+  margin-left: 0.5rem;
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffce1c;
+  color: #931e30;
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, 0 4px 16px #000a;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.mini-map-toggle:hover {
+  background: #fff3cd;
+  transform: scale(1.08);
 }
 </style>
