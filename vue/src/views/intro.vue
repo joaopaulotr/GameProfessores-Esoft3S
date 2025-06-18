@@ -2,13 +2,14 @@
     <div class="intro-container">
       <h1 class="titulo">Syntax Fight</h1>
       <p class="intro-text">{{ textoDigitado }}<span class="cursor">|</span></p>
-      <RouterLink to="/intro-video"><button  class="btn-continuar">Continuar</button></RouterLink>
+      <RouterLink to="/intro-video"><button  class="btn-continuar" @click="pararSomTeclado">Continuar</button></RouterLink>
     </div>
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, onUnmounted } from 'vue';
   import { useRouter } from 'vue-router';
+  import { Howl } from 'howler'; // Importar Howl
   
   const router = useRouter();
   const textoCompleto = `Em Syntax Fight: Batalha no DOM, Você é um aluno exausto que adormece na sala de informática. Onde de repente, é puxado para dentro do computador por um estranho brilho vindo da tela. Agora, preso em um mundo digital corrompido, precisa enfrentar professores transformados em bugs assustadores.
@@ -18,13 +19,30 @@ Para escapar, será necessário usar lógica, coragem e vencer cada batalha cont
 A luta pela sua liberdade — e sanidade — começa agora.`;
   const textoDigitado = ref('');
   let i = 0;
-  
+  const somTeclado = new Howl({
+  src: ['src/assets/music/SomTeclado8.mp3'],
+  loop: true, // Queremos que o som se repita enquanto digita
+  volume: 0.8, // Ajuste o volume conforme necessário
+});
+
   const digitar = () => {
-    if (i < textoCompleto.length) {
-      textoDigitado.value += textoCompleto[i];
-      i++;
-      setTimeout(digitar, 50); // velocidade da digitação
-    }
+    if (i === 0) {
+    // Inicia o som apenas na primeira vez
+    somTeclado.play();
+  }
+
+  if (i < textoCompleto.length) {
+    textoDigitado.value += textoCompleto[i];
+    i++;
+    setTimeout(digitar, 50); // velocidade da digitação
+  } else {
+    // Quando a digitação termina, para o som
+    somTeclado.stop();
+  }
+  };
+
+  const pararSomTeclado = () => {
+    somTeclado.stop();
   };
   
   const irParaMenu = () => {
@@ -34,6 +52,10 @@ A luta pela sua liberdade — e sanidade — começa agora.`;
   onMounted(() => {
     digitar();
   });
+  onUnmounted(() => {
+    somTeclado.stop();
+  });
+
   </script>
   
   <style scoped>
