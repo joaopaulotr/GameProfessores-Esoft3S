@@ -2,66 +2,51 @@
   <div class="menu-screen">
     <div class="menu-container">
       <h1>Syntax Fight</h1>
-      <h2 class="subtitle">Batalha no DOM</h2>
+      <h1 class="subtitle">Batalha no DOM</h1>
 
       <div class="buttons-container">
-        <button v-if="jogado" @click="continuarJogo">Continuar</button>
         <router-link to="/map"><button>Jogar</button></router-link>
         <button v-if="jogado" @click="resetGame">Novo Jogo</button>
         <router-link to="/credits"><button>Créditos</button></router-link>
         <router-link to="/commands"><button>Comandos</button></router-link>
       </div>
+      
     </div>
 
+    <div class="cloud"></div>
+  
     <div class="falling-leaves">
-      <div
-        class="leaf"
-        v-for="n in 10"
-        :key="n"
-        :style="{
-          left: `${n * 10}%`,
-          animationDuration: `${6 + Math.random() * 4}s`,
-          animationDelay: `${Math.random() * 3}s`,
-        }"
-      ></div>
+      <div class="leaf" style="left: 5%;  animation-duration: 6s;  animation-delay: 0s;"></div>
+      <div class="leaf" style="left: 15%; animation-duration: 7s;  animation-delay: 1.5s;"></div>
+      <div class="leaf" style="left: 25%; animation-duration: 6.5s; animation-delay: 3s;"></div>
+      <div class="leaf" style="left: 35%; animation-duration: 8s;  animation-delay: 2s;"></div>
+      <div class="leaf" style="left: 45%; animation-duration: 9s;  animation-delay: 0.5s;"></div>
+      <div class="leaf" style="left: 55%; animation-duration: 7.5s; animation-delay: 1s;"></div>
+      <div class="leaf" style="left: 65%; animation-duration: 6s;  animation-delay: 3.5s;"></div>
+      <div class="leaf" style="left: 75%; animation-duration: 8.5s; animation-delay: 2.5s;"></div>
+      <div class="leaf" style="left: 85%; animation-duration: 10s; animation-delay: 4s;"></div>
+      <div class="leaf" style="left: 95%; animation-duration: 7s;  animation-delay: 0.8s;"></div>
     </div>
-
-    <!-- Áudios -->
-    <audio ref="hoverSound" src="@/assets/sounds/hover.mp3"></audio>
-    <audio ref="clickSound" src="@/assets/sounds/click.mp3"></audio>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStorage } from '@vueuse/core'
+import { useStorage } from '@vueuse/core';
 
 const router = useRouter()
 const jogado = ref(false)
-const hoverSound = ref(null)
-const clickSound = ref(null)
 
 onMounted(() => {
-  const valorBossDerrotados = useStorage('chefesDerrotados').value
+  const valorBossDerrotados = useStorage('chefesDerrotados').value;
   jogado.value = Boolean(valorBossDerrotados)
 })
+
 
 function resetGame() {
   localStorage.clear()
   router.replace('/')
-}
-
-function continuarJogo() {
-  router.push('/map')
-}
-
-function playHoverSound() {
-  hoverSound.value?.play()
-}
-
-function playClickSound() {
-  clickSound.value?.play()
 }
 </script>
 
@@ -74,126 +59,122 @@ function playClickSound() {
   height: 100vh;
   background: #24b5f8 url('@/assets/images/background.png') center/cover no-repeat fixed;
   color: #fff;
-  overflow: hidden;
-  animation: fadeIn 1.2s ease-in-out;
 }
 
 .menu-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 30px;
-  background: rgba(0, 0, 0, 0.65);
-  border-radius: 20px;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
   box-shadow:
-    0 0 0 4px #931e30cc,
-    0 0 0 8px #ffce1c88,
-    0 0 40px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  max-width: 95%;
-  width: 480px;
-  animation: scaleIn 0.8s ease-in-out;
+    0 0 0 4px rgba(147, 30, 48, 0.8),
+    0 0 0 8px rgba(255, 206, 28, 0.5),
+    0 0 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  max-width: 90%;
+  width: 500px;
 }
 
 h1 {
-  font-size: 3.8rem;
+  font-size: 4.5rem;
   margin: 0;
   text-align: center;
   color: #ffce1c;
-  text-shadow: 3px 3px 0 #931e30, 5px 5px 0 rgba(0, 0, 0, 0.4);
+  text-shadow:
+    4px 4px 0 #931e30,
+    2px 4px 0 #931e30,
+    4px 2px 0 #931e30,
+    6px 6px 0 rgba(147, 30, 48, 0.6),
+    8px 8px 0 rgba(147, 30, 48, 0.4),
+    10px 10px 0 rgba(147, 30, 48, 0.2);
 }
 
 .subtitle {
-  font-size: 1.2rem;
-  margin: 12px 0 28px;
-  color: #ffffffdd;
-  text-shadow: 1px 1px 0 #931e30, 2px 2px 0 rgba(147, 30, 48, 0.6);
+  font-size: 1rem;
+  margin: 10px 0 25px 0;
+  color: #fff;
+  text-shadow:
+    2px 2px 0 #931e30,
+    1px 2px 0 #931e30,
+    2px 1px 0 #931e30,
+    3px 3px 0 rgba(147, 30, 48, 0.6);
+  letter-spacing: 2px;
   font-weight: bold;
   animation: pulse 2s infinite alternate;
-  letter-spacing: 1.5px;
 }
 
 .buttons-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 15px;
   margin-top: 20px;
 }
 
 button {
-  width: 260px;
+  width: 250px;
   font-size: 1rem;
-  padding: 12px 0;
+  padding: 8px 0;
   font-family: 'Press Start 2P', cursive;
-  background: linear-gradient(to bottom, #ffce1c 0%, #b88b00 100%);
-  border: 2px solid #931e30;
-  border-radius: 10px;
-  color: #1a1a1a;
+  background: transparent;
+  border: none;
+  color: white;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  box-shadow: 0 4px 0 #931e30;
-  transition: all 0.3s ease;
+  letter-spacing: 2px;
+  transition: all 0.2s ease;
   position: relative;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.5),
+    1px 1px 0 rgba(0, 0, 0, 0.5);
 }
 
 button:hover {
   cursor: pointer;
-  transform: scale(1.06);
-  background: linear-gradient(to bottom, #fff36e, #e7a600);
-  box-shadow: 0 0 15px #ffce1caa;
-  color: #000;
-}
-
-button:active {
-  transform: scale(0.97);
-  box-shadow: 0 0 8px #931e30aa;
-}
-
-button:focus {
-  outline: none;
-}
-
-button::before {
-  content: "▶";
-  position: absolute;
-  left: 10px;
-  color: #931e30;
-  opacity: 0;
-  transition: opacity 0.2s;
+  transform: scale(1.05);
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.7),
+    1px 1px 0 rgba(0, 0, 0, 0.7);
 }
 
 button:hover::before {
-  opacity: 1;
+  content: "►";
+  position: absolute;
+  left: 5px;
+  bottom: 15px;
+  color: #ffce1c;
 }
 
-.falling-leaves {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
+button:active {
+  transform: scale(0.98);
 }
 
-.leaf {
-  position: absolute;
-  top: -60px;
-  width: 40px;
-  height: 40px;
-  background: url('@/assets/images/leaf.png') no-repeat center;
-  background-size: cover;
-  animation: fallLeaf linear infinite;
-  opacity: 0.8;
+@keyframes pulse {
+  from {
+    text-shadow:
+      2px 2px 0 #931e30,
+      1px 2px 0 #931e30,
+      2px 1px 0 #931e30,
+      3px 3px 0 rgba(147, 30, 48, 0.6);
+  }
+  to {
+    text-shadow:
+      2px 2px 0 #931e30,
+      1px 2px 0 #931e30,
+      2px 1px 0 #931e30,
+      4px 4px 0 rgba(147, 30, 48, 0.4);
+  }
 }
 
 @keyframes fallLeaf {
   0% {
     transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 1;
   }
   50% {
     transform: translateX(50px) translateY(300px) rotate(180deg);
+    opacity: 0.8;
   }
   100% {
     transform: translateX(-50px) translateY(600px) rotate(360deg);
@@ -201,32 +182,14 @@ button:hover::before {
   }
 }
 
-@keyframes pulse {
-  from {
-    text-shadow: 1px 1px 0 #931e30, 2px 2px 0 #931e30;
-  }
-  to {
-    text-shadow: 2px 2px 0 #931e30, 4px 4px 0 rgba(147, 30, 48, 0.5);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scaleIn {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+.leaf {
+  position: absolute;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  background: url('@/assets/images/leaf.png') no-repeat center;
+  background-size: cover;
+  animation: fallLeaf ease-in-out infinite;
 }
 </style>
+
