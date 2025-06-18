@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -93,6 +93,7 @@ const currentFrame = ref(0);
 const animationDone = ref(false);
 
 onMounted(() => {
+  // NÃO tocar música do mapa na tela de derrota!
   if (bossId == 2) {
     let frame = 0;
     const interval = setInterval(() => {

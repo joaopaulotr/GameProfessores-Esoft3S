@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
@@ -30,13 +30,19 @@ const visibleText = ref([]);
 const introText = [
   "Achou que poderia escapar facilmente?...",
   "Você passou pelas minhas aulas... mas nunca realmente entendeu o verdadeiro poder do Front-End.",
-  "Agora, verá o que acontece quando um componente quebra... e todo o sistema cai junto."
+  "Agora, verá o que acontece quando um componente quebra... e todo o sistema cai junto.",
+  "Prepare-se para enfrentar o Bug final, e enfim verá se é digno para escapar deste mundo digital corrompido.",
 ];
 
 let currentIndex = 0;
 const textInterval = 2000; // 2 segundos entre cada linha
 
+const bgMusic = typeof window !== 'undefined' ? document.getElementById('bg-music') : null;
+
 onMounted(() => {
+  // Pausa a música de fundo
+  if (bgMusic) bgMusic.pause();
+
   const timer = setInterval(() => {
     if (currentIndex < introText.length) {
       visibleText.value.push(introText[currentIndex]);
@@ -46,6 +52,11 @@ onMounted(() => {
       showContinue.value = true;
     }
   }, textInterval);
+});
+
+onUnmounted(() => {
+  // Retoma a música de fundo ao sair
+  if (bgMusic) bgMusic.play();
 });
 
 const goToVideo = () => {
