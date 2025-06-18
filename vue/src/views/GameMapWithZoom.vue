@@ -153,24 +153,9 @@ function updatePlayerPosition(e) {
   });
 }
 
-const miniMapVisible = ref(false)
-
-function openMiniMap() {
-  miniMapVisible.value = true
-}
-function closeMiniMap() {
-  miniMapVisible.value = false
-}
-function toggleMiniMap() {
-  miniMapVisible.value = !miniMapVisible.value
-}
-
 function handleKeyDown(e) {
   if (e.key === 'e' || e.key === 'E') {
     startBattle();
-  }
-  if (e.key === 'm' || e.key === 'M') {
-    toggleMiniMap();
   }
 }
 
@@ -248,8 +233,7 @@ onUnmounted(() => {
       <router-link to="/menu">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
-      <button class="pokemon-button" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
-      <div v-if="miniMapVisible" style="display:inline-block; vertical-align:middle; margin-left: 16px;">
+      <div style="position: absolute; margin-left: 16px;">
         <MiniMap
           :player="playerPosition"
           :bosses="bossesPositions"

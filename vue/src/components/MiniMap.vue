@@ -19,7 +19,6 @@
         title="Boss"
       ></div>
     </div>
-    <div class="mini-map-close">Clique fora para fechar</div>
   </div>
 </template>
 
@@ -60,12 +59,9 @@ function onClose() {
 <style scoped>
 .mini-map-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.55);
+  bottom: 20px; left: 20px;
   z-index: 99999;
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .mini-map-bg {
   position: relative;
@@ -112,12 +108,5 @@ function onClose() {
   border-radius: 50%;
   z-index: 2;
   box-shadow: 0 0 8px #f00;
-}
-.mini-map-close {
-  text-align: center;
-  color: #fff;
-  font-size: 0.9rem;
-  margin-top: 8px;
-  text-shadow: 1px 1px 2px #000;
 }
 </style>
