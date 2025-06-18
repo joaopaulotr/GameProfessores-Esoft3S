@@ -56,12 +56,14 @@ function onClose() {
 <style scoped>
 .mini-map-fixed {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 99999;
+  top: 50%;
+  right: 32px;
+  transform: translateY(-50%);
+  z-index: 2000;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-end;
+  background: none;
 }
 .mini-map-bg {
   position: relative;

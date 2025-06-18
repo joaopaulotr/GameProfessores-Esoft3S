@@ -160,6 +160,14 @@ function handleKeyDown(e) {
   }
 }
 
+const miniMapVisible = ref(false)
+function toggleMiniMap() {
+  miniMapVisible.value = !miniMapVisible.value
+}
+function closeMiniMap() {
+  miniMapVisible.value = false
+}
+
 onMounted(() => {
   updateCamera(playerPosition.value.x, playerPosition.value.y);
   //musicaMapa.play().catch(err => {
@@ -234,16 +242,16 @@ onUnmounted(() => {
       <router-link to="/menu">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
-      <div style="position: absolute; margin-left: 16px;">
-        <MiniMap
-          :player="playerPosition"
-          :bosses="bossesPositions"
-          :map-width="mapWidth * tileSize"
-          :map-height="mapHeight * tileSize"
-          :on-close="closeMiniMap"
-        />
-      </div>
+      <button class="pokemon-button mini-map-toggle" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
     </div>
+    <MiniMap
+      v-if="miniMapVisible"
+      :player="playerPosition"
+      :bosses="bossesPositions"
+      :map-width="mapWidth * tileSize"
+      :map-height="mapHeight * tileSize"
+      :on-close="closeMiniMap"
+    />
   </div>
 </template>
 
@@ -452,5 +460,26 @@ h1 {
   10% { opacity: 1; transform: translateX(-50%) translateY(0); }
   80% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+.mini-map-toggle {
+  margin-left: 0.5rem;
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffce1c;
+  color: #931e30;
+  border: 4px solid #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, 0 4px 16px #000a;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.mini-map-toggle:hover {
+  background: #fff3cd;
+  transform: scale(1.08);
 }
 </style>
