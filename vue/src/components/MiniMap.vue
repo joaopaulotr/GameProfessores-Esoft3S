@@ -23,21 +23,6 @@
 </template>
 
 <script setup>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { computed } from 'vue';
-let mapMiniSrc = '';
-try {
-  mapMiniSrc = new URL('@/assets/images/MapaMini.png', import.meta.url).href;
-} catch (e) {
-  mapMiniSrc = '';
-}
-=======
-import { computed } from 'vue'
->>>>>>> Stashed changes
-=======
-import { computed } from 'vue'
->>>>>>> Stashed changes
 const props = defineProps({
   player: { type: Object, required: true },
   bosses: { type: Array, required: true },
@@ -45,31 +30,24 @@ const props = defineProps({
   mapHeight: { type: Number, required: true },
   onClose: { type: Function, default: null }
 });
+
 const miniWidth = 300;
 const miniHeight = 150;
-<<<<<<< Updated upstream
-const scaleX = computed(() => miniWidth / props.mapWidth);
-const scaleY = computed(() => miniHeight / props.mapHeight);
-const playerStyle = computed(() => ({
-  left: `${props.player.x * scaleX.value - 6}px`,
-  top: `${props.player.y * scaleY.value - 6}px`
-}));
-=======
 const scaleX = miniWidth / props.mapWidth;
 const scaleY = miniHeight / props.mapHeight;
 
-const playerStyle = computed(() => ({
+const playerStyle = {
   left: `${props.player.x * scaleX - 6}px`,
   top: `${props.player.y * scaleY - 6}px`
-}));
+};
 
->>>>>>> Stashed changes
 function bossStyle(boss) {
   return {
-    left: `${boss.x * scaleX.value - 6}px`,
-    top: `${boss.y * scaleY.value - 6}px`
+    left: `${boss.x * scaleX - 6}px`,
+    top: `${boss.y * scaleY - 6}px`
   };
 }
+
 function onClose() {
   if (props.onClose) props.onClose();
 }

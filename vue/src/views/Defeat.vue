@@ -1,8 +1,17 @@
 <template>
-  <div class="defeat-screen">
+  <div class="defeat-screen" :class="{ terror: bossId == 2 && !animationDone }">
     <div class="blood-vignette"></div>
-    
-    <div class="defeat-overlay">
+    <div v-if="bossId == 2 && !animationDone" class="terror-animation">
+      <img class="terror-bg" src="@/assets/images/salaterror.jpg" />
+      <img
+        v-for="(sprite, idx) in cidaoSprites"
+        :key="sprite"
+        :src="sprite"
+        class="cidao-fatal"
+        :style="{ opacity: idx === currentFrame ? 1 : 0 }"
+      />
+    </div>
+    <div v-else class="defeat-overlay">
       <div class="menu-container">
         <div class="defeat-header">
           <h2>💀 GAME OVER 💀</h2>
@@ -59,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -67,19 +76,37 @@ const battleStats = ref({
   damageDone: route.query.damage || 0,
   battleTime: route.query.time || '0:00'
 });
-
 const bossId = route.query.bossId;
-
-// Lista de dicas para mostrar quando perder
 const tips = [
   "Use o 'Café Restaurador' estrategicamente para recuperar vida durante a batalha!",
   "Alterne entre ataques fortes e fracos para otimizar o dano!",
   "É possivel usar o café restaurador e atacar logo em seguida!",
   "Mantenha sua vida acima de 50% para maior segurança!"
 ];
-
-// Seleciona uma dica aleatória
 const randomTip = tips[Math.floor(Math.random() * tips.length)];
+
+// --- Animação Cidão Fatal ---
+const cidaoSprites = Array.from({ length: 32 }, (_, i) =>
+  new URL(`../assets/images/cidaofatal${i+1}.png`, import.meta.url).href
+);
+const currentFrame = ref(0);
+const animationDone = ref(false);
+
+onMounted(() => {
+  if (bossId == 2) {
+    let frame = 0;
+    const interval = setInterval(() => {
+      currentFrame.value = frame;
+      frame++;
+      if (frame >= cidaoSprites.length) {
+        clearInterval(interval);
+        setTimeout(() => {
+          animationDone.value = true;
+        }, 500); // Pequena pausa antes de mostrar tela normal
+      }
+    }, 60); // 60ms por frame (ajuste para velocidade desejada)
+  }
+});
 </script>
 
 <style scoped>
@@ -306,6 +333,44 @@ button:active {
 .btn-icon {
   font-size: 1rem;
   animation: float 2s ease-in-out infinite;
+}
+
+.defeat-screen.terror {
+  background: #000 !important;
+}
+
+.terror-animation {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.terror-bg {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 1;
+  left: 0;
+  top: 0;
+}
+
+.cidao-fatal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 600px;
+  height: auto;
+  max-width: 90vw;
+  max-height: 90vh;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.1s;
 }
 
 @keyframes float {

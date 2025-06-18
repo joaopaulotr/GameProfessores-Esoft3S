@@ -69,7 +69,6 @@ const gameMap = ref([
   Array(77).fill(1)
 ])
 
-gamemap.value[0][0] = 1 // canto superior esquerdo
 
 // Função para iniciar a batalha quando perto de um boss
 function startBattle() {
@@ -160,44 +159,30 @@ function updatePlayerPosition(e) {
   });
 }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-const miniMapVisible = ref(false)
 
-function openMiniMap() {
-  miniMapVisible.value = true
+const miniMapVisible = ref(false)
+function toggleMiniMap() {
+  miniMapVisible.value = !miniMapVisible.value
 }
 function closeMiniMap() {
   miniMapVisible.value = false
 }
-function toggleMiniMap() {
-  miniMapVisible.value = !miniMapVisible.value
-}
 
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
 function handleKeyDown(e) {
   if (e.key === 'e' || e.key === 'E') {
     startBattle();
   }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
   if (e.key === 'm' || e.key === 'M') {
     toggleMiniMap();
   }
 }
 
 
-=======
-}
 
->>>>>>> Stashed changes
-=======
-}
 
->>>>>>> Stashed changes
+
 onMounted(() => {
   updateCamera(playerPosition.value.x, playerPosition.value.y);
   //musicaMapa.play().catch(err => {
@@ -272,31 +257,16 @@ onUnmounted(() => {
       <router-link to="/menu">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
-      <!-- MiniMap sempre visível -->
-      <div style="position: absolute; margin-left: 16px;">
-        <MiniMap
-          :player="playerPosition"
-          :bosses="bossesPositions"
-          :map-width="mapWidth * tileSize"
-          :map-height="mapHeight * tileSize"
-        />
-      </div>
+      <button class="pokemon-button mini-map-toggle" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
     </div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    <div v-if="miniMapVisible">
-      <MiniMap
+    <MiniMap
+      v-if="miniMapVisible"
       :player="playerPosition"
       :bosses="bossesPositions"
       :map-width="mapWidth * tileSize"
       :map-height="mapHeight * tileSize"
       :on-close="closeMiniMap"
-      />
-    </div>
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    />
   </div>
 </template>
 
