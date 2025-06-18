@@ -154,19 +154,27 @@ function updatePlayerPosition(e) {
   });
 }
 
-function handleKeyDown(e) {
-  if (e.key === 'e' || e.key === 'E') {
-    startBattle();
-  }
-}
-
 const miniMapVisible = ref(false)
-function toggleMiniMap() {
-  miniMapVisible.value = !miniMapVisible.value
+
+function openMiniMap() {
+  miniMapVisible.value = true
 }
 function closeMiniMap() {
   miniMapVisible.value = false
 }
+function toggleMiniMap() {
+  miniMapVisible.value = !miniMapVisible.value
+}
+
+function handleKeyDown(e) {
+  if (e.key === 'e' || e.key === 'E') {
+    startBattle();
+  }
+  if (e.key === 'm' || e.key === 'M') {
+    toggleMiniMap();
+  }
+}
+
 
 onMounted(() => {
   updateCamera(playerPosition.value.x, playerPosition.value.y);
@@ -244,14 +252,15 @@ onUnmounted(() => {
       </router-link>
       <button class="pokemon-button mini-map-toggle" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
     </div>
-    <MiniMap
-      v-if="miniMapVisible"
+    <div v-if="miniMapVisible">
+      <MiniMap
       :player="playerPosition"
       :bosses="bossesPositions"
       :map-width="mapWidth * tileSize"
       :map-height="mapHeight * tileSize"
       :on-close="closeMiniMap"
-    />
+      />
+    </div>
   </div>
 </template>
 
@@ -323,16 +332,7 @@ h1 {
   transition: all 0.15s;
 }
 
-.pokemon-button::before {
-  content: '';
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  right: 4px;
-  bottom: 4px;
-  border: 2px solid #ffce1c;
-  pointer-events: none;
-}
+
 
 .pokemon-button:hover {
   transform: scale(1.05);
