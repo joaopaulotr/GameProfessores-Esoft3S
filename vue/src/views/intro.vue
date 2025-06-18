@@ -23,7 +23,7 @@ Você está pronto para lutar até o último ponto e vírgula?`;
     if (i < textoCompleto.length) {
       textoDigitado.value += textoCompleto[i];
       i++;
-      setTimeout(digitar, 25); // velocidade da digitação
+      setTimeout(digitar, 50); // velocidade da digitação
     }
   };
   
