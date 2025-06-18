@@ -11,7 +11,7 @@ import { playSound } from '../utils/audioUtils.js'
 
 const router = useRouter()
 const { chefesDerrotados } = useDadosJogador()
-const playerPosition = ref({ x: 400, y: 300 })
+const playerPosition = ref({ x: 2439, y: 1839 })
 const bossInteractionActive = ref(false)
 const currentBoss = ref(null)
 const bossNearButUnavailable = ref(false)
@@ -175,6 +175,7 @@ function handleKeyDown(e) {
 }
 
 onMounted(() => {
+  updateCamera(playerPosition.value.x, playerPosition.value.y);
   //musicaMapa.play().catch(err => {
   //  console.warn('A reprodução automática foi bloqueada pelo navegador.', err);
   //});
@@ -182,7 +183,6 @@ onMounted(() => {
   document.addEventListener('playerMoved', updatePlayerPosition);
   
   // Inicializa a câmera na posição inicial do jogador
-  updateCamera(playerPosition.value.x, playerPosition.value.y);
 });
 
 onUnmounted(() => {
