@@ -3,7 +3,7 @@
       ref="videoPlayer"
       @ended="onVideoEnd"
       class="full-screen-video"
-      src="/src/assets/videos/Garoto_e_Tela_Uma_Aventura.mp4"
+      src="/src/assets/videos/VideoDef.mp4"
       autoplay
     ></video>
     <div class="skip-hint">Clique em qualquer lugar para pular</div>
