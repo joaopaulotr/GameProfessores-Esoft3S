@@ -7,7 +7,7 @@
       <div class="buttons-container">
   <template v-if="!mostrarOpcoes">
     <router-link to="/map"><button>Jogar</button></router-link>
-    <button @click="resetGame">Novo Jogo</button>
+    <button v-if="jogado" @click="resetGame">Novo Jogo</button>
     <router-link to="/credits"><button>Créditos</button></router-link>
     <router-link to="/commands"><button>Comandos</button></router-link>
     <button @click="mostrarOpcoes = true">Opções</button>
@@ -41,11 +41,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStorage } from '@vueuse/core';
 
 const router = useRouter()
 const showOptions = ref(false)
 const volume = ref(0.18)
 const audioElement = ref(null)
+const jogado = ref(false)
 
 const leaves = [
   { left: '5%', duration: '6s', delay: '0s' },
@@ -61,6 +63,9 @@ const leaves = [
 ]
 
 onMounted(() => {
+  const valorBossDerrotados = useStorage('chefesDerrotados').value;
+  jogado.value = Boolean(valorBossDerrotados)
+
   audioElement.value = document.getElementById('bg-music')
   if (audioElement.value) {
     const savedVolume = localStorage.getItem('volume')
@@ -78,8 +83,7 @@ function updateVolume() {
 
 function resetGame() {
   localStorage.clear()
-  router.push('/map')
-  window.location.reload()
+  router.replace('/')
 }
 </script>
 
