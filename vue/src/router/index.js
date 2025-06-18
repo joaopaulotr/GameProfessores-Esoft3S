@@ -8,12 +8,9 @@ import Victory from '@/views/Victory.vue';
 import Defeat from '@/views/Defeat.vue';
 import Commands from '@/views/Commands.vue';    
 import OptionsView from '@/views/OptionsView.vue';
-import Intro from '@/views/intro.vue'
+import Intro from '@/views/intro.vue';
+import IntroVideo from '@/views/IntroVideo.vue';
 import { audioManager } from '../utils/audioManager'; // PASSO 1: Importe nosso gerenciador
-
-
-
-
 
 const routes = [
   //{ path: '/menu', component: MainMenu },
@@ -26,6 +23,7 @@ const routes = [
   { path: '/commands', component: Commands },
   { path: '/options', component: OptionsView },
   { path: '/', component: Intro },
+  { path: '/intro-video', component: IntroVideo },
   { 
     path: '/menu', 
     name: 'MainMenu',
@@ -34,7 +32,7 @@ const routes = [
   },
   { 
     path: '/map', 
-    name: 'GameMapWithZoom',
+    name: 'GameMap',
     component: GameMapWithZoom,
     meta: { soundtrack: 'map' } // Toca a música do mapa
   }

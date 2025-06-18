@@ -2,7 +2,7 @@
     <div class="intro-container">
       <h1 class="titulo">Syntax Fight</h1>
       <p class="intro-text">{{ textoDigitado }}<span class="cursor">|</span></p>
-      <RouterLink to="/menu"><button  class="btn-continuar">Continuar</button></RouterLink>
+      <RouterLink to="/intro-video"><button  class="btn-continuar">Continuar</button></RouterLink>
     </div>
   </template>
   
