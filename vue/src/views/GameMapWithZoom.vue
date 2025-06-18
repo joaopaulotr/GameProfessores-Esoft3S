@@ -332,8 +332,6 @@ h1 {
   transition: all 0.15s;
 }
 
-
-
 .pokemon-button:hover {
   transform: scale(1.05);
   background-color: #f0f0f0;
