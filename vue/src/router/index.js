@@ -10,6 +10,7 @@ import Commands from '@/views/Commands.vue';
 import OptionsView from '@/views/OptionsView.vue';
 import Intro from '@/views/intro.vue';
 import IntroVideo from '@/views/IntroVideo.vue';
+import BossFightVideo from '@/views/BossFightVideo.vue';
 import { audioManager } from '../utils/audioManager'; // PASSO 1: Importe nosso gerenciador
 
 const routes = [
@@ -24,6 +25,7 @@ const routes = [
   { path: '/options', component: OptionsView },
   { path: '/', component: Intro },
   { path: '/intro-video', component: IntroVideo },
+  { path: '/boss-fight-video', component: BossFightVideo },
   { 
     path: '/menu', 
     name: 'MainMenu',

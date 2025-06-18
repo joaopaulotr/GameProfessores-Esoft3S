@@ -74,7 +74,12 @@ const gameMap = ref([
 function startBattle() {
   if (bossInteractionActive.value && currentBoss.value) {
     console.log('Iniciando batalha com', currentBoss.value.nome);
-    router.push(`/battle?id=${currentBoss.value.id}`);
+    // Se for o Hugo (ID 4), mostra o vídeo primeiro
+    if (currentBoss.value.id === 4) {
+      router.push(`/boss-fight-video?id=${currentBoss.value.id}`);
+    } else {
+      router.push(`/battle?id=${currentBoss.value.id}`);
+    }
   } else if (bossNearButUnavailable.value && nearbyUnavailableBoss.value) {
     console.log(`Você precisa derrotar ${nearbyUnavailableBoss.value.chefesNecessarios} chefes antes!`);
     showUnavailableMessage();
