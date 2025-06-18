@@ -154,7 +154,12 @@ onUnmounted(() => {
 })
 
 // Adiciona os ataques do jogador
+const canAttack = ref(true); // Controla se o jogador pode atacar
+
 const realizarAtaque = async (ataque) => {
+  if (!canAttack.value || !isPlayerTurn.value) return;
+  canAttack.value = false;
+
   // Verifica se a batalha já acabou ou se não é o turno do jogador
   if (bossStats.value.health <= 0 || playerStats.value.health <= 0 || !isPlayerTurn.value) return;
 
@@ -306,6 +311,11 @@ const realizarAtaque = async (ataque) => {
       }
     }
   }
+
+  // No final do ataque do jogador (antes de liberar o turno novamente):
+  setTimeout(() => {
+    canAttack.value = true;
+  }, 1000);
 }
 
 // Contadores de golpes
@@ -425,6 +435,7 @@ const getTurnText = computed(() => {
                 class="pokemon-button"
                 :class="{ 'cura-button': ataque.tipo === 'cura' }"
                 :style="{ gridArea: gridAreaByIndex(idx) }"
+                :disabled="!canAttack"
               >
                 <span class="btn-icon"></span>
                 {{ ataque.nome }}
