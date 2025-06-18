@@ -4,35 +4,26 @@
       <h1>Syntax Fight</h1>
       <h1 class="subtitle">Batalha no DOM</h1>
       <div class="buttons-container">
-  <template v-if="!mostrarOpcoes">
-    <router-link to="/map"><button>Jogar</button></router-link>
-    <button @click="resetGame">Novo Jogo</button>
-    <router-link to="/credits"><button>Créditos</button></router-link>
-    <router-link to="/commands"><button>Comandos</button></router-link>
-    <button @click="mostrarOpcoes = true">Opções</button>
-  </template>
-
-  <template v-else>
-    <label for="volume">Volume da Música: {{ Math.round(volume * 100) }}%</label>
-    <input type="range" id="volume" min="0" max="1" step="0.01" v-model="volume" @input="ajustarVolume" />
-    <button @click="mostrarOpcoes = false">Voltar ao Menu</button>
-  </template>
-</div>
+        <router-link to="/map"><button>Jogar</button></router-link>
+        <button @click="resetGame">Novo Jogo</button>
+        <router-link to="/credits"><button>Créditos</button></router-link>
+        <router-link to="/commands"><button>Comandos</button></router-link>
+      </div>
     </div>
     <div class="cloud"></div>
-  
-  <div class="falling-leaves">
-    <div class="leaf" style="left: 5%;  animation-duration: 6s;  animation-delay: 0s;"></div>
-    <div class="leaf" style="left: 15%; animation-duration: 7s;  animation-delay: 1.5s;"></div>
-    <div class="leaf" style="left: 25%; animation-duration: 6.5s; animation-delay: 3s;"></div>
-    <div class="leaf" style="left: 35%; animation-duration: 8s;  animation-delay: 2s;"></div>
-    <div class="leaf" style="left: 45%; animation-duration: 9s;  animation-delay: 0.5s;"></div>
-    <div class="leaf" style="left: 55%; animation-duration: 7.5s; animation-delay: 1s;"></div>
-    <div class="leaf" style="left: 65%; animation-duration: 6s;  animation-delay: 3.5s;"></div>
-    <div class="leaf" style="left: 75%; animation-duration: 8.5s; animation-delay: 2.5s;"></div>
-    <div class="leaf" style="left: 85%; animation-duration: 10s; animation-delay: 4s;"></div>
-    <div class="leaf" style="left: 95%; animation-duration: 7s;  animation-delay: 0.8s;"></div>
-  </div>
+
+    <div class="falling-leaves">
+      <div class="leaf" style="left: 5%;  animation-duration: 6s;  animation-delay: 0s;"></div>
+      <div class="leaf" style="left: 15%; animation-duration: 7s;  animation-delay: 1.5s;"></div>
+      <div class="leaf" style="left: 25%; animation-duration: 6.5s; animation-delay: 3s;"></div>
+      <div class="leaf" style="left: 35%; animation-duration: 8s;  animation-delay: 2s;"></div>
+      <div class="leaf" style="left: 45%; animation-duration: 9s;  animation-delay: 0.5s;"></div>
+      <div class="leaf" style="left: 55%; animation-duration: 7.5s; animation-delay: 1s;"></div>
+      <div class="leaf" style="left: 65%; animation-duration: 6s;  animation-delay: 3.5s;"></div>
+      <div class="leaf" style="left: 75%; animation-duration: 8.5s; animation-delay: 2.5s;"></div>
+      <div class="leaf" style="left: 85%; animation-duration: 10s; animation-delay: 4s;"></div>
+      <div class="leaf" style="left: 95%; animation-duration: 7s;  animation-delay: 0.8s;"></div>
+    </div>
   </div>
 </template>
 

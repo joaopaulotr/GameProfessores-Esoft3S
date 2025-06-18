@@ -12,7 +12,7 @@ const props = defineProps({
 
 const animationSpeed = 120 // em milissegundos
 let lastFrameChange = 0
-const step = 2.5
+const step = 2.0
 const charW = 128
 const charH = 128
 
