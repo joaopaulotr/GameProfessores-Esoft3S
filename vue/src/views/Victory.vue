@@ -1,48 +1,47 @@
 <template>
   <div class="victory-screen">
-    <!-- Reduzindo o número de fogos de artifício -->
     <div class="fireworks">
       <div class="firework" v-for="n in isFinalVictory ? 6 : 3" :key="n"></div>
     </div>
 
     <div class="menu-container">
       <div class="victory-header">
-        <h1>{{ isFinalVictory ? 'VITÓRIA SUPREMA!' : 'Vitória!' }}</h1>
+        <h1>{{ isFinalVictory ? 'VITÓRIA FINAL!' : 'Vitória!' }}</h1>
         <div class="trophy">🏆</div>
       </div>
 
       <div class="content-wrapper">
         <div class="victory-message">
-          <p class="main-message">{{ isFinalVictory ? 'Você é o Mestre da Sintaxe!' : 'Você Dominou a Sintaxe!' }}</p>
-          <p class="sub-message">{{ isFinalVictory ? 'Todos os Bugs foram Exterminados!' : 'O Bug foi Derrotado!' }}</p>
+          <p class="main-message">{{ isFinalVictory ? 'Mestre da Sintaxe!' : 'Você venceu!' }}</p>
+          <p class="sub-message">{{ isFinalVictory ? 'Todos os bugs foram derrotados!' : 'Bug eliminado!' }}</p>
           
           <div v-if="isFinalVictory" class="final-victory-message">
-            <p>Parabéns! Você derrotou todos os professores e provou ser um verdadeiro mestre da programação!</p>
+            <p>Você venceu todos os professores! Parabéns!</p>
             <div class="achievement-unlocked">
               <span class="achievement-icon">🌟</span>
-              <span class="achievement-text">Conquista Desbloqueada: "Syntax Master"</span>
+              <span class="achievement-text">"Syntax Master"</span>
             </div>
           </div>
 
           <div class="stats-container">
             <div class="stat-box">
-              <div class="stat-header">Estatísticas da Batalha</div>
+              <div class="stat-header">Resumo da Batalha</div>
               <div class="stat-grid">
                 <div class="stat-item">
-                  <span class="stat-label">XP Ganho:</span>
-                  <span class="stat-value">+100 XP</span>
+                  <span class="stat-label">XP:</span>
+                  <span class="stat-value">+100</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-label">Dano Total:</span>
+                  <span class="stat-label">Dano:</span>
                   <span class="stat-value">1337</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-label">Combo Máximo:</span>
+                  <span class="stat-label">Combo:</span>
                   <span class="stat-value">x3</span>
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Bônus:</span>
-                  <span class="stat-value">+50 XP</span>
+                  <span class="stat-value">+50</span>
                 </div>
               </div>
             </div>
@@ -51,15 +50,15 @@
           <div class="rewards-container">
             <div class="reward-item">
               <span class="reward-icon">⭐</span>
-              <span class="reward-text">{{ isFinalVictory ? 'Título: "Syntax Master"' : 'Desbloqueado: "Mestre do Debug"' }}</span>
+              <span class="reward-text">{{ isFinalVictory ? 'Título: "Syntax Master"' : 'Novo título desbloqueado!' }}</span>
             </div>
             <div class="reward-item" v-if="isFinalVictory">
               <span class="reward-icon">👑</span>
-              <span class="reward-text">Forma Final: "Programador Supremo"</span>
+              <span class="reward-text">Forma Final: "Dev Supremo"</span>
             </div>
             <div class="reward-item">
               <span class="reward-icon">🎮</span>
-              <span class="reward-text">{{ isFinalVictory ? 'Todas as Habilidades Desbloqueadas!' : 'Nova Habilidade: "Refatoração Supreme"' }}</span>
+              <span class="reward-text">{{ isFinalVictory ? 'Todas as habilidades desbloqueadas!' : 'Nova habilidade adquirida!' }}</span>
             </div>
           </div>
         </div>
@@ -68,19 +67,19 @@
           <router-link to="/map">
             <button class="continue-btn">
               <span class="btn-icon">🗺️</span>
-              Continuar Jornada
+              Continuar
             </button>
           </router-link>
           <router-link to="/battle">
             <button class="retry-btn">
               <span class="btn-icon">⚔️</span>
-              Nova Batalha
+              Revanche
             </button>
           </router-link>
           <router-link to="/menu">
             <button class="menu-btn">
               <span class="btn-icon">🏠</span>
-              Menu Principal
+              Menu
             </button>
           </router-link>
         </div>
