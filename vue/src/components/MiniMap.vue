@@ -1,14 +1,16 @@
-<!-- MiniMap.vue (exemplo simplificado) -->
+<!-- MiniMap.vue (otimizado e dinâmico) -->
 <template>
   <div class="mini-map-fixed">
     <div class="mini-map-bg">
       <img src="@/assets/images/MapaMini.png" class="mini-map-image" />
-      <!-- Player -->
+      
+      <!-- Player (agora se move com reatividade) -->
       <div
         class="mini-player"
         :style="playerStyle"
         title="Você"
       ></div>
+
       <!-- Bosses -->
       <div
         v-for="boss in bosses"
@@ -23,6 +25,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
   player: { type: Object, required: true },
   bosses: { type: Array, required: true },
@@ -33,18 +37,20 @@ const props = defineProps({
 
 const miniWidth = 300;
 const miniHeight = 150;
-const scaleX = miniWidth / props.mapWidth;
-const scaleY = miniHeight / props.mapHeight;
 
-const playerStyle = {
-  left: `${props.player.x * scaleX - 6}px`,
-  top: `${props.player.y * scaleY - 6}px`
-};
+const scaleX = computed(() => miniWidth / props.mapWidth);
+const scaleY = computed(() => miniHeight / props.mapHeight);
+
+// 🔁 Torna o ponto do jogador reativo
+const playerStyle = computed(() => ({
+  left: `${props.player.x * scaleX.value - 6}px`,
+  top: `${props.player.y * scaleY.value - 6}px`
+}));
 
 function bossStyle(boss) {
   return {
-    left: `${boss.x * scaleX - 6}px`,
-    top: `${boss.y * scaleY - 6}px`
+    left: `${boss.x * scaleX.value - 6}px`,
+    top: `${boss.y * scaleY.value - 6}px`
   };
 }
 
