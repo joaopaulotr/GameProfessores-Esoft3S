@@ -320,7 +320,7 @@ export function useDadosJogador() {
       ],
       tipo: 'ataque' },
     { nome: 'Café Restaurador',
-       dano: 25, 
+       dano: 55, 
        sprite:[ new URL('@/assets/images/drinkcoffee1.png', import.meta.url).href,
                 new URL('@/assets/images/drinkcoffee2.png', import.meta.url).href,
                 new URL('@/assets/images/drinkcoffee3.png', import.meta.url).href,

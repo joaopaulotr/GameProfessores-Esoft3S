@@ -155,8 +155,8 @@ onUnmounted(() => {
 
 // Adiciona os ataques do jogador
 const realizarAtaque = async (ataque) => {
-  // Verifica se a batalha já acabou
-  if (bossStats.value.health <= 0 || playerStats.value.health <= 0) return;
+  // Verifica se a batalha já acabou ou se não é o turno do jogador
+  if (bossStats.value.health <= 0 || playerStats.value.health <= 0 || !isPlayerTurn.value) return;
 
   // Verifica se alguém já foi derrotado
   if (bossStats.value.health <= 0 || playerStats.value.health <= 0) {
@@ -164,6 +164,9 @@ const realizarAtaque = async (ataque) => {
     if (playerStats.value.health <= 0) showDefeatModal.value = true;
     return;
   }
+  
+  // Muda o turno para o boss
+  isPlayerTurn.value = false;
 
   // Sempre anima o ataque do player, seja ataque ou cura
   if (Array.isArray(ataque.sprite) && ataque.sprite.length > 0) {
@@ -176,6 +179,54 @@ const realizarAtaque = async (ataque) => {
     playerStats.value.health = Math.min(playerStats.value.maxHealth, playerStats.value.health + curaTotal);
     vida.value = playerStats.value.health; // Atualiza o armazenamento
     textoFala.value = `Aluno usou ${ataque.nome} e recuperou ${curaTotal} de vida!`;
+    
+    // Espera 2 segundos antes do contra-ataque do boss (mesmo para cura)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Boss contra-ataca após a cura
+    if (bossStats.value.health > 0) {
+      const ataquesChefe = chefeBatalha.value.ataques;
+      const ataqueChefe = ataquesChefe[Math.floor(Math.random() * ataquesChefe.length)];
+
+      // Se o ataque do boss tem sprites, anima
+      if (Array.isArray(ataqueChefe.sprite) && ataqueChefe.sprite.length > 0) {
+        bossAttackSprites.value = ataqueChefe.sprite;
+        bossAttackName.value = ataqueChefe.nome;
+        bossAttackFrame.value = 0;
+        if (bossAttackInterval) clearInterval(bossAttackInterval);
+        let frameAtual = 0;
+        bossAttackInterval = setInterval(() => {
+          bossAttackFrame.value++;
+          frameAtual++;
+          if (bossAttackFrame.value >= bossAttackSprites.value.length) {
+            clearInterval(bossAttackInterval);
+            bossAttackSprites.value = [];
+            bossAttackName.value = '';
+            bossAttackFrame.value = 0;
+          }
+        }, 180);
+      }
+
+      playerStats.value.health = Math.max(0, playerStats.value.health - ataqueChefe.dano);
+      vida.value = playerStats.value.health;
+      bossHits.value++; // Incrementa o contador de golpes do boss
+      textoFala.value = `${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano!`;
+
+      // Retorna o turno para o jogador após o ataque do boss
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      isPlayerTurn.value = true;
+      textoFala.value = 'Escolha seu ataque!';
+
+      if (playerStats.value.health <= 0) {
+        router.push({
+          path: '/defeat',
+          query: {
+            bossId: chefeBatalha.value.id,
+            damage: ataqueChefe.dano,
+          }
+        });
+      }
+    }
   } else {
     // Jogador ataca
     let danoCausado = ataque.dano;
@@ -239,6 +290,11 @@ const realizarAtaque = async (ataque) => {
       bossHits.value++; // Incrementa o contador de golpes do boss
       textoFala.value = `${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano!`;
 
+      // Retorna o turno para o jogador após o ataque do boss
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Espera 1 segundo após o ataque do boss
+      isPlayerTurn.value = true;
+      textoFala.value = 'Escolha seu ataque!';
+
       if (playerStats.value.health <= 0) {
         router.push({
           path: '/defeat',
@@ -276,6 +332,14 @@ const gridAreaByIndex = (idx) => {
   const areas = ['a', 'b', 'c', 'd'];
   return areas[idx] || 'd';
 };
+
+// Controle de turno
+const isPlayerTurn = ref(true)
+
+// Texto indicativo de turno
+const getTurnText = computed(() => {
+  return isPlayerTurn.value ? 'Seu turno' : 'Turno do inimigo';
+});
 </script>
 
 <template>
@@ -370,6 +434,10 @@ const gridAreaByIndex = (idx) => {
         </div>
       </div>
 
+        <!-- Adiciona o indicador de turno -->
+        <div class="turn-indicator" :class="{ 'enemy-turn': !isPlayerTurn.value }">
+          {{ getTurnText }}
+        </div>
 
         <router-link to="/menu">
           <button class="pokemon-button menu-button">
@@ -838,5 +906,48 @@ const gridAreaByIndex = (idx) => {
   20% { transform: scale(1.1); opacity: 1; }
   80% { transform: scale(1); opacity: 1; }
   100% { transform: scale(0.7); opacity: 0; }
+}
+
+.turn-indicator {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #32CD32;
+  color: white;
+  padding: 12px 24px;
+  border: 4px solid #228B22;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #228B22;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  z-index: 10;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  animation: turnPulse 2s infinite;
+}
+
+.turn-indicator::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid #ffce1c;
+  pointer-events: none;
+}
+
+.turn-indicator.enemy-turn {
+  background-color: #ff3333;
+  border-color: #931e30;
+  box-shadow: 0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30;
+}
+
+@keyframes turnPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
 }
 </style>
