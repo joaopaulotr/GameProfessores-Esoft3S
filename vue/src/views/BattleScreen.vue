@@ -182,12 +182,19 @@ const realizarAtaque = async (ataque) => {
     // Aplica o dano ao boss e atualiza a fala
     const vidaAnterior = bossStats.value.health;
     bossStats.value.health = Math.max(0, bossStats.value.health - danoCausado);
+    playerHits.value++; // Incrementa o contador de golpes do jogador
     textoFala.value = `Aluno usou ${ataque.nome} causando ${danoCausado} de dano!`;
 
     // O boss só é derrotado se a vida chegar exatamente a 0
     if (vidaAnterior > 0 && bossStats.value.health <= 0) {
       // Incrementa o contador de chefes derrotados
       chefesDerrotados.value++;
+      
+      // Adiciona uma mensagem de vitória
+      textoFala.value = "Você venceu!";
+      
+      // Espera 2 segundos antes de redirecionar para a tela de vitória
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Redireciona para a tela de vitória
       router.push({
@@ -229,6 +236,7 @@ const realizarAtaque = async (ataque) => {
 
       playerStats.value.health = Math.max(0, playerStats.value.health - ataqueChefe.dano);
       vida.value = playerStats.value.health;
+      bossHits.value++; // Incrementa o contador de golpes do boss
       textoFala.value = `${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano!`;
 
       if (playerStats.value.health <= 0) {
@@ -243,6 +251,23 @@ const realizarAtaque = async (ataque) => {
     }
   }
 }
+
+// Contadores de golpes
+const playerHits = ref(0)
+const bossHits = ref(0)
+
+// Função para calcular a cor do contador baseado no número de golpes
+const getHitColor = (hits) => {
+  if (hits >= 8) return '#ff0000' // Vermelho intenso
+  if (hits >= 6) return '#ff4400' // Laranja avermelhado
+  if (hits >= 4) return '#ff8800' // Laranja
+  if (hits >= 2) return '#ffcc00'  // Amarelo
+  return '#00ff00' // Verde
+}
+
+// Computed properties para as cores dos contadores
+const playerHitColor = computed(() => getHitColor(playerHits.value))
+const bossHitColor = computed(() => getHitColor(bossHits.value))
 
 // Função para definir a área da grade com base no índice
 const gridAreaByIndex = (idx) => {
@@ -270,6 +295,9 @@ const gridAreaByIndex = (idx) => {
               :name="playerStats.name"
               :health="playerStats.health"
               :maxHealth="playerStats.maxHealth"
+              :xp="playerHits"
+              :maxXp="8"
+              :xpColor="playerHitColor"
             />
           </div>
         </div>
@@ -282,6 +310,9 @@ const gridAreaByIndex = (idx) => {
               :name="chefeBatalha?.name"
               :health="bossStats.health"
               :maxHealth="bossStats.maxHealth"
+              :xp="bossHits"
+              :maxXp="8"
+              :xpColor="bossHitColor"
             />
           </div>
         </div>
@@ -353,7 +384,7 @@ const gridAreaByIndex = (idx) => {
 
 <style scoped>
 .battle-screen {
-  background-image: url('@/assets/images/imgFundo.png');
+  background-image: url('@/assets/images/sala.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -528,7 +559,7 @@ const gridAreaByIndex = (idx) => {
   position: relative;
   overflow: hidden;
   margin: 2rem auto;
-  background: url('@/assets/images/Fundosala.png') no-repeat center;
+  background: url('@/assets/images/sala.png') no-repeat center;
   background-size: 100% 100%;
   image-rendering: pixelated;
 }
