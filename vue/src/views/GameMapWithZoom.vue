@@ -5,14 +5,12 @@ import PlayerSprite from '../components/PlayerSprite.vue'
 import ProfessorBoss from '../components/ProfessorBoss.vue'
 import ProximityIndicator from '../components/ProximityIndicator.vue'
 import Tile from '../components/Tile.vue'
-import DialogBox from '../components/DialogBox.vue'
 import MiniMap from '../components/MiniMap.vue'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 import { playSound } from '../utils/audioUtils.js'
 
 const router = useRouter()
 const { chefesDerrotados } = useDadosJogador()
-const dialogActiveInicio = ref(true)
 const playerPosition = ref({ x: 400, y: 300 })
 const bossInteractionActive = ref(false)
 const currentBoss = ref(null)
@@ -24,16 +22,6 @@ const nearbyUnavailableBoss = ref(null)
 // Posição do indicador de proximidade
 const showProximityIndicator = ref(false)
 const proximityIndicatorPosition = ref({ x: 0, y: 0 })
-
-function openDialogInicio() {
-  dialogActiveInicio.value = true
-}
-
-const dialogMessagesInicio = [
-  'Bem-vindo ao SyntaxFIght!',
-  'Use as setas para se mover. ⭠ ⭡ ⭢ ⭣',
-  'Pressione E para interagir com objetos.'
-]
 
 const mapWidth = 77   // número de colunas
 const mapHeight = 59  // número de linhas
@@ -237,11 +225,7 @@ onUnmounted(() => {
           :y="proximityIndicatorPosition.y"
         />
 
-        <DialogBox
-          v-if="dialogActiveInicio"
-          :messages="dialogMessagesInicio"
-          @close="dialogActiveInicio = false"
-        />
+
       </div>
 
       <!-- UI elements ficam fora do zoom -->

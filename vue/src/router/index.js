@@ -34,7 +34,7 @@ const routes = [
   },
   { 
     path: '/map', 
-    name: 'GameMap',
+    name: 'GameMapWithZoom',
     component: GameMapWithZoom,
     meta: { soundtrack: 'map' } // Toca a música do mapa
   }
