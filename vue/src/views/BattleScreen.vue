@@ -3,6 +3,8 @@ import HealthBar from '../components/HealthBar.vue'
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
+import bgDefault from '@/assets/images/sala.png';
+import bgHugo from '@/assets/images/backgroundhugo.png';
 
 // Pega os dados do jogador do armazenamento centralizado
 const { vida, ataques, vitorias, derrotas, chefesDerrotados, vidaMaxima } = useDadosJogador()
@@ -306,7 +308,19 @@ const gridAreaByIndex = (idx) => {
 </script>
 
 <template>
-  <div class="battle-screen">
+  <div
+    class="battle-screen"
+    :style="{
+      backgroundImage: chefeBatalha && chefeBatalha.id === 4
+        ? `url(${bgHugo})`
+        : `url(${bgDefault})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh',
+      width: '100%'
+    }"
+  >
     <div class="battle-overlay">
       <div class="mc-header">
         <h1>Tela de Batalha</h1>
@@ -347,7 +361,23 @@ const gridAreaByIndex = (idx) => {
 
       <div class="battle-interface text-center">
         <div class="battle-arena">
-          <div class="arena-container">
+          <div
+            class="arena-container"
+            :style="{
+              background: chefeBatalha && chefeBatalha.id === 4
+                ? `url(${bgHugo}) no-repeat center/100% 100%`
+                : `url(${bgDefault}) no-repeat center/100% 100%`,
+              backgroundColor: 'white',
+              border: '4px solid #931e30',
+              boxShadow: '0 0 0 4px #ffce1c, inset 0 0 0 1px #931e30',
+              position: 'relative',
+              overflow: 'hidden',
+              margin: '2rem auto',
+              width: '1600px',
+              height: '640px',
+              imageRendering: 'pixelated'
+            }"
+          >
           <!-- Área de batalha -->
           <div v-if="chefeBatalha" class="battle-sprites">
             <!-- Sprite do boss (agora à esquerda) -->
@@ -412,7 +442,7 @@ const gridAreaByIndex = (idx) => {
 
 <style scoped>
 .battle-screen {
-  background-image: url('@/assets/images/sala.png');
+  /* background-image: url('@/assets/images/sala.png'); */
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -579,6 +609,8 @@ const gridAreaByIndex = (idx) => {
 }
 
 .arena-container {
+  /* background: url('@/assets/images/sala.png') no-repeat center; */
+  /* background-size: 100% 100%; */
   width: 1600px;
   height: 640px;
   background-color: white;
@@ -587,8 +619,6 @@ const gridAreaByIndex = (idx) => {
   position: relative;
   overflow: hidden;
   margin: 2rem auto;
-  background: url('@/assets/images/sala.png') no-repeat center;
-  background-size: 100% 100%;
   image-rendering: pixelated;
 }
 
