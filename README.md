@@ -12,18 +12,37 @@ Feito com HTML, CSS, JavaScript e Vue, o game simula combates dinâmicos e inter
 
 ---
 
-## 🎯 Objetivo
-
-- À fazer
-
----
-
 ## 🧠 Tecnologias Utilizadas
 
 - HTML5  
 - CSS3 
 - JavaScript Puro
 - Vue.js 
+
+---
+
+## 🛠️ Instruções para Instalação e Execução Local
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/joaopaulotr/SyntaxFight-GameProject
+   ```
+2. **Acesse a pasta do projeto:**
+   ```bash
+   cd SyntaxFight-GameProject/vue
+   ```
+3. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+4. **Execute o projeto localmente:**
+   ```bash
+   npm run dev
+   ```
+5. **Abra o navegador:**
+   Acesse o endereço exibido no terminal, geralmente `http://localhost:5173`.
+
+Pronto! O jogo estará rodando localmente na sua máquina.
 
 ---
 
@@ -34,19 +53,22 @@ Feito com HTML, CSS, JavaScript e Vue, o game simula combates dinâmicos e inter
 3. Heitor Ferrrari Crivelin - 24015780-2
 4. Maria Eduarda Furlan Scomparin - 24021296-2
 5. Gabriel Santos Furlanette - 24000873-2
-6. Eduardo Barella 24088000 - 2
+6. Eduardo Barella 24088000 -2
 
 ---
 
 ## 📸 Imagens do Jogo (opcional)
 
-> Prints do Jogo
+![Tela inicial do jogo](./vue/src/assets/images/image.png)
+![Combate em andamento](./vue/src/assets/images/image-1.png)
+![Fase de vitória](./vue/src/assets/images/image-2.png)
+![Tela de derrota](./vue/src/assets/images/image-3.png)
 
 ---
 
 ## 🚀 Status do Projeto
 
-✅ Fase inicial - Desenvolvimento história
+✅ Fase final - Deploy
 
 ---
 
