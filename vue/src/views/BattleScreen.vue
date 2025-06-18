@@ -203,7 +203,9 @@ const realizarAtaque = async (ataque) => {
     // O boss só é derrotado se a vida chegar exatamente a 0
     if (vidaAnterior > 0 && bossStats.value.health <= 0) {
       // Incrementa o contador de chefes derrotados
-      chefesDerrotados.value++;
+      const jaDerrotado = chefesDerrotados.value.includes(chefeBatalha.value.id);
+      if(!jaDerrotado)
+        chefesDerrotados.value.push(chefeBatalha.value.id);
       // Adiciona uma mensagem de vitória
       textoFala.value = "Você venceu!";
       // Espera 2 segundos antes de redirecionar
@@ -223,7 +225,7 @@ const realizarAtaque = async (ataque) => {
           path: '/victory',
           query: {
             bossId: chefeBatalha.value.id,
-            final: chefesDerrotados.value === chefesBatalha.length
+            final: chefesDerrotados.value.length === chefesBatalha.length
           }
         });
       }

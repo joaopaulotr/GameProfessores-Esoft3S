@@ -344,7 +344,7 @@ export function useDadosJogador() {
   const ataques = useStorage('jogadorAtaques', ataquesPadrao);
   const vitorias = useStorage('jogadorVitorias', 0);
   const derrotas = useStorage('jogadorDerrotas', 0);
-  const chefesDerrotados = useStorage('chefesDerrotados', 0);
+  const chefesDerrotados = useStorage('chefesDerrotados', []);
 
   return {
     vida,

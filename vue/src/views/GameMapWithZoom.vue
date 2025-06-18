@@ -136,7 +136,7 @@ function updatePlayerPosition(e) {
       });
 
       if (isNearby) {
-        if (chefesDerrotados.value >= (boss.chefesNecessarios || 0)) {
+        if (chefesDerrotados.value.length >= (boss.chefesNecessarios || 0)) {
           currentBoss.value = boss;
           bossInteractionActive.value = true;
           showProximityIndicator.value = true;
