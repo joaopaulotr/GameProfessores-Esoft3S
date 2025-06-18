@@ -70,12 +70,6 @@
               Continuar
             </button>
           </router-link>
-          <router-link to="/battle">
-            <button class="retry-btn">
-              <span class="btn-icon">⚔️</span>
-              Revanche
-            </button>
-          </router-link>
           <router-link to="/menu">
             <button class="menu-btn">
               <span class="btn-icon">🏠</span>
@@ -252,10 +246,15 @@ h1 {
 }
 
 .buttons-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
   margin-top: 2rem;
+}
+
+.buttons-container > * {
+  flex: 0 1 220px;
 }
 
 button {

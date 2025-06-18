@@ -153,15 +153,28 @@ onUnmounted(() => {
   if (playerAttackInterval) clearInterval(playerAttackInterval)
 })
 
+// Adiciona estado para controlar botões de ataque
+const isPlayerTurn = ref(true)
+
 // Adiciona os ataques do jogador
 const realizarAtaque = async (ataque) => {
+  // Impede ataque se não for turno do jogador
+  if (!isPlayerTurn.value) return;
+
+  // Desabilita ataques durante a animação
+  isPlayerTurn.value = false;
+
   // Verifica se a batalha já acabou
-  if (bossStats.value.health <= 0 || playerStats.value.health <= 0) return;
+  if (bossStats.value.health <= 0 || playerStats.value.health <= 0) {
+    isPlayerTurn.value = true;
+    return;
+  }
 
   // Verifica se alguém já foi derrotado
   if (bossStats.value.health <= 0 || playerStats.value.health <= 0) {
     if (bossStats.value.health <= 0) showVictoryModal.value = true;
     if (playerStats.value.health <= 0) showDefeatModal.value = true;
+    isPlayerTurn.value = true;
     return;
   }
 
@@ -247,6 +260,9 @@ const realizarAtaque = async (ataque) => {
       bossHits.value++; // Incrementa o contador de golpes do boss
       textoFala.value = `${chefeBatalha.value.name} usou ${ataqueChefe.nome} causando ${ataqueChefe.dano} de dano!`;
 
+      // Reativa os botões após o ataque do boss
+      isPlayerTurn.value = true;
+
       if (playerStats.value.health <= 0) {
         router.push({
           path: '/defeat',
@@ -258,6 +274,9 @@ const realizarAtaque = async (ataque) => {
       }
     }
   }
+
+  // Restaura o turno para o jogador após o ataque do boss
+  isPlayerTurn.value = true;
 }
 
 // Contadores de golpes
@@ -366,8 +385,9 @@ const gridAreaByIndex = (idx) => {
                 v-for="(ataque, idx) in ataques"
                 :key="ataque.nome"
                 @click="realizarAtaque(ataque)"
+                :disabled="!isPlayerTurn"
                 class="pokemon-button"
-                :class="{ 'cura-button': ataque.tipo === 'cura' }"
+                :class="{ 'cura-button': ataque.tipo === 'cura', 'disabled': !isPlayerTurn }"
                 :style="{ gridArea: gridAreaByIndex(idx) }"
               >
                 <span class="btn-icon"></span>
@@ -846,5 +866,20 @@ const gridAreaByIndex = (idx) => {
   20% { transform: scale(1.1); opacity: 1; }
   80% { transform: scale(1); opacity: 1; }
   100% { transform: scale(0.7); opacity: 0; }
+}
+
+.pokemon-button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(40%);
+}
+
+.pokemon-button.disabled:hover {
+  transform: none;
+  background-color: white;
+}
+
+.pokemon-button:disabled {
+  pointer-events: none;
 }
 </style>
