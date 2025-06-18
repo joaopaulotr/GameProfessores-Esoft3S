@@ -340,7 +340,7 @@ const gridAreaByIndex = (idx) => {
       </div>
 
 
-        <router-link to="/">
+        <router-link to="/menu">
           <button class="pokemon-button menu-button">
             <span class="btn-icon">🏠</span>
             Voltar ao Menu

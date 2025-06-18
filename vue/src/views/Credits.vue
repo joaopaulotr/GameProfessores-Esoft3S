@@ -58,7 +58,7 @@
         </div>
 
         <div class="button-container">
-          <router-link to="/">
+          <router-link to="/menu">
             <button class="pixel-button">Voltar ao Menu</button>
           </router-link>
         </div>

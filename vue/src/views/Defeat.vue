@@ -46,7 +46,7 @@
               Tentar Novamente
             </button>
           </router-link>
-          <router-link to="/">
+          <router-link to="/menu">
             <button class="menu-btn">
               <span class="btn-icon">🏠</span>
               Menu Principal

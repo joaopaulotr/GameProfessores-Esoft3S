@@ -261,7 +261,7 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="botoes-acao">
-      <router-link to="/">
+      <router-link to="/menu">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
       <button class="pokemon-button" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
