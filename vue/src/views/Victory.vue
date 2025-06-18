@@ -34,7 +34,7 @@
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Dano Total:</span>
-                  <span class="stat-value">120</span>
+                  <span class="stat-value">1337</span>
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Combo Máximo:</span>
@@ -51,7 +51,7 @@
           <div class="rewards-container">
             <div class="reward-item">
               <span class="reward-icon">⭐</span>
-              <span class="reward-text">{{ isFinalVictory ? 'Título: "Syntax Master"' : 'Desbloqueado: "Mestre do Debug"'  }}</span>
+              <span class="reward-text">{{ isFinalVictory ? 'Título: "Syntax Master"' : 'Desbloqueado: "Mestre do Debug"' }}</span>
             </div>
             <div class="reward-item" v-if="isFinalVictory">
               <span class="reward-icon">👑</span>
@@ -59,7 +59,7 @@
             </div>
             <div class="reward-item">
               <span class="reward-icon">🎮</span>
-              <span class="reward-text">{{ isFinalVictory ? 'Todas as Habilidades Desbloqueadas!' : 'Nova Habilidade: "Refatoração Suprema"' }}</span>
+              <span class="reward-text">{{ isFinalVictory ? 'Todas as Habilidades Desbloqueadas!' : 'Nova Habilidade: "Refatoração Supreme"' }}</span>
             </div>
           </div>
         </div>
@@ -71,26 +71,26 @@
               Continuar Jornada
             </button>
           </router-link>
-          <router-link to="/menu">
+          <router-link to="/battle">
+            <button class="retry-btn">
+              <span class="btn-icon">⚔️</span>
+              Nova Batalha
+            </button>
+          </router-link>
+          <router-link to="/">
             <button class="menu-btn">
               <span class="btn-icon">🏠</span>
-              Voltar ao Menu
+              Menu Principal
             </button>
           </router-link>
         </div>
       </div>
     </div>
 
-    <!-- Aumentando o número de efeitos visuais -->
     <div class="confetti-container">
-      <div class="confetti" v-for="n in isFinalVictory ? 60 : 20" :key="n" 
-           :style="{ '--delay': n * 0.1 + 's', '--color': getConfettiColor(n) }">
+      <div class="confetti" v-for="n in isFinalVictory ? 40 : 20" :key="n" 
+           :style="{ '--delay': n * 0.2 + 's', '--color': ['#ffce1c', '#931e30'][n % 2] }">
       </div>
-    </div>
-
-    <!-- Adicionando círculos de luz -->
-    <div class="light-circles">
-      <div class="light-circle" v-for="n in 5" :key="'light'+n"></div>
     </div>
   </div>
 </template>
@@ -253,118 +253,53 @@ h1 {
 }
 
 .buttons-container {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
   margin-top: 2rem;
-  width: 100%;
 }
 
 button {
-  background: linear-gradient(45deg, rgba(255, 206, 28, 0.2), rgba(147, 30, 48, 0.2));
-  border: 3px solid #ffce1c;
-  border-radius: 15px;
-  padding: 15px 30px;
-  font-size: 1.2rem;
-  min-width: 280px;
-  color: #fff;
+  width: 100%;
+  padding: 12px;
+  font-size: 0.9rem;
   font-family: 'Press Start 2P', cursive;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffce1c;
+  border-radius: 8px;
+  color: #fff;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-button::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, #ffce1c, #931e30, #ffce1c);
-  z-index: -1;
-  border-radius: 15px;
-  animation: border-flow 3s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 button:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 
-    0 10px 20px rgba(255, 206, 28, 0.3),
-    0 0 40px rgba(255, 206, 28, 0.2),
-    0 0 80px rgba(255, 206, 28, 0.1);
-}
-
-button:active {
-  transform: translateY(1px) scale(0.98);
+  transform: translateY(-2px);
+  background-color: rgba(255, 206, 28, 0.2);
+  box-shadow: 0 5px 15px rgba(255, 206, 28, 0.3);
 }
 
 .continue-btn {
-  background: linear-gradient(45deg, rgba(76, 175, 80, 0.2), rgba(56, 142, 60, 0.2));
-}
-
-.continue-btn::before {
-  background: linear-gradient(45deg, #4CAF50, #388E3C, #4CAF50);
+  background-color: rgba(76, 175, 80, 0.3);
 }
 
 .retry-btn {
-  background: linear-gradient(45deg, rgba(33, 150, 243, 0.2), rgba(25, 118, 210, 0.2));
-}
-
-.retry-btn::before {
-  background: linear-gradient(45deg, #2196F3, #1976D2, #2196F3);
+  background-color: rgba(33, 150, 243, 0.3);
 }
 
 .menu-btn {
-  background: linear-gradient(45deg, rgba(255, 206, 28, 0.2), rgba(147, 30, 48, 0.2));
-}
-
-.menu-btn::before {
-  background: linear-gradient(45deg, #ffce1c, #931e30, #ffce1c);
+  background-color: rgba(255, 152, 0, 0.3);
 }
 
 .btn-icon {
-  font-size: 1.4rem;
-  margin-right: 10px;
-  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.5));
-  animation: float-icon 2s ease-in-out infinite;
+  font-size: 1.2rem;
 }
 
-@keyframes float-icon {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-
-@keyframes border-flow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.light-circles {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.light-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 206, 28, 0.3) 0%, transparent 70%);
-  animation: light-pulse 4s infinite;
-  width: 300px;
-  height: 300px;
-}
-
-.light-circle:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-.light-circle:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
-.light-circle:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 2s; }
-.light-circle:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 3s; }
-.light-circle:nth-child(5) { top: 50%; left: 50%; animation-delay: 4s; }
-
+/* Animações */
 @keyframes victory-pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
@@ -398,16 +333,6 @@ button:active {
 @keyframes glow {
   0% { box-shadow: 0 0 10px rgba(255, 206, 28, 0.3); }
   100% { box-shadow: 0 0 20px rgba(255, 206, 28, 0.6); }
-}
-
-@keyframes light-pulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.2); }
-}
-
-@keyframes border-flow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 /* Efeitos visuais */
@@ -524,15 +449,9 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 const isFinalVictory = computed(() => route.query.final === 'true');
 
-// Função para gerar cores aleatórias para os confetes
-const getConfettiColor = (n) => {
-  const colors = ['#ffce1c', '#931e30', '#ffd700', '#ff6b6b', '#4cd964'];
-  return colors[n % colors.length];
-};
-
 // Limpar timers e animações quando o componente for desmontado
 onUnmounted(() => {
-  const elements = document.querySelectorAll('.firework, .confetti, .light-circle');
+  const elements = document.querySelectorAll('.firework, .confetti');
   elements.forEach(el => {
     el.style.animation = 'none';
   });
