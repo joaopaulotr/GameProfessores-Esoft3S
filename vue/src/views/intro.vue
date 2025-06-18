@@ -11,11 +11,11 @@
   import { useRouter } from 'vue-router';
   
   const router = useRouter();
-  const textoCompleto = `Em Syntax Fight: Batalha no DOM, o conhecimento é sua espada... e a sanidade, seu escudo.
-Enfrente mestres implacáveis, derrote bugs traiçoeiros e supere os desafios mais temidos da vida acadêmica.
-Entre erros de sintaxe e provas mortais, apenas os verdadeiros guerreiros do código sobreviverão.
-Com coragem no coração e lógica nas mãos — a batalha começou.
-Você está pronto para lutar até o último ponto e vírgula?`;
+  const textoCompleto = `Em Syntax Fight: Batalha no DOM, Você é um aluno exausto que adormece na sala de informática. Onde de repente, é puxado para dentro do computador por um estranho brilho vindo da tela. Agora, preso em um mundo digital corrompido, precisa enfrentar professores transformados em bugs assustadores.
+
+Para escapar, será necessário usar lógica, coragem e vencer cada batalha contra essas criaturas distorcidas do conhecimento.
+
+A luta pela sua liberdade — e sanidade — começa agora.`;
   const textoDigitado = ref('');
   let i = 0;
   

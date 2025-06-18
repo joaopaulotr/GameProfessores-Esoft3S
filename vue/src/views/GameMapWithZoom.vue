@@ -74,9 +74,9 @@ const gameMap = ref([
 function startBattle() {
   if (bossInteractionActive.value && currentBoss.value) {
     console.log('Iniciando batalha com', currentBoss.value.nome);
-    // Se for o Hugo (ID 4), mostra o vídeo primeiro
+    // Se for o Hugo (ID 4), mostra a introdução primeiro
     if (currentBoss.value.id === 4) {
-      router.push(`/boss-fight-video?id=${currentBoss.value.id}`);
+      router.push(`/boss-fight-intro?id=${currentBoss.value.id}`);
     } else {
       router.push(`/battle?id=${currentBoss.value.id}`);
     }
