@@ -37,7 +37,7 @@
       </div>
 
       <div class="button-container">
-        <router-link to="/">
+        <router-link to="/menu">
           <button class="pixel-button">
             <span class="button-icon">🏠</span>
             Menu

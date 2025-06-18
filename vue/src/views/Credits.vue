@@ -47,8 +47,10 @@
 
             <div class="credit-section">
               <h2>Agradecimentos Especiais</h2>
-              <p>Professor Moreno</p>
               <p>Professor Hugo Fumero</p>
+              <p>Professor Moreno</p>
+              <p>Professor Cidão</p>
+              <p>Professor Ferlini</p>
               <p>Turma Engenharia de Software</p>
             </div>
 
@@ -56,7 +58,7 @@
         </div>
 
         <div class="button-container">
-          <router-link to="/">
+          <router-link to="/menu">
             <button class="pixel-button">Voltar ao Menu</button>
           </router-link>
         </div>

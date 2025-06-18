@@ -2,7 +2,7 @@
     <div class="intro-container">
       <h1 class="titulo">Syntax Fight</h1>
       <p class="intro-text">{{ textoDigitado }}<span class="cursor">|</span></p>
-      <RouterLink to="/menu"><button  class="btn-continuar">Continuar</button></RouterLink>
+      <RouterLink to="/intro-video"><button  class="btn-continuar">Continuar</button></RouterLink>
     </div>
   </template>
   
@@ -23,7 +23,7 @@ Você está pronto para lutar até o último ponto e vírgula?`;
     if (i < textoCompleto.length) {
       textoDigitado.value += textoCompleto[i];
       i++;
-      setTimeout(digitar, 25); // velocidade da digitação
+      setTimeout(digitar, 50); // velocidade da digitação
     }
   };
   

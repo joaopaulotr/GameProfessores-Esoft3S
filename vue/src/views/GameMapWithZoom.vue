@@ -5,35 +5,23 @@ import PlayerSprite from '../components/PlayerSprite.vue'
 import ProfessorBoss from '../components/ProfessorBoss.vue'
 import ProximityIndicator from '../components/ProximityIndicator.vue'
 import Tile from '../components/Tile.vue'
-import DialogBox from '../components/DialogBox.vue'
 import MiniMap from '../components/MiniMap.vue'
 import { chefesBatalha, useDadosJogador } from '../utils/dadosBatalha.js'
 import { playSound } from '../utils/audioUtils.js'
 
 const router = useRouter()
 const { chefesDerrotados } = useDadosJogador()
-const dialogActiveInicio = ref(true)
-const playerPosition = ref({ x: 400, y: 300 })
+const playerPosition = ref({ x: 2439, y: 1839 })
 const bossInteractionActive = ref(false)
 const currentBoss = ref(null)
 const bossNearButUnavailable = ref(false)
 const nearbyUnavailableBoss = ref(null)
-const musicaMapa = new Audio(new URL('@/assets/music/musicaMapa.mp3', import.meta.url).href);
-musicaMapa.loop = true; // Faz a música repetir
+ //const musicaMapa = new Audio(new URL('@/assets/music/musicaMapa.mp3', import.meta.url).href);
+ //musicaMapa.loop = true; // Faz a música repetir
 
 // Posição do indicador de proximidade
 const showProximityIndicator = ref(false)
 const proximityIndicatorPosition = ref({ x: 0, y: 0 })
-
-function openDialogInicio() {
-  dialogActiveInicio.value = true
-}
-
-const dialogMessagesInicio = [
-  'Bem-vindo ao SyntaxFIght!',
-  'Use as setas para se mover. ⭠ ⭡ ⭢ ⭣',
-  'Pressione E para interagir com objetos.'
-]
 
 const mapWidth = 77   // número de colunas
 const mapHeight = 59  // número de linhas
@@ -166,41 +154,26 @@ function updatePlayerPosition(e) {
   });
 }
 
-const miniMapVisible = ref(false)
-
-function openMiniMap() {
-  miniMapVisible.value = true
-}
-function closeMiniMap() {
-  miniMapVisible.value = false
-}
-function toggleMiniMap() {
-  miniMapVisible.value = !miniMapVisible.value
-}
-
 function handleKeyDown(e) {
   if (e.key === 'e' || e.key === 'E') {
     startBattle();
   }
-  if (e.key === 'm' || e.key === 'M') {
-    toggleMiniMap();
-  }
 }
 
 onMounted(() => {
-  musicaMapa.play().catch(err => {
-    console.warn('A reprodução automática foi bloqueada pelo navegador.', err);
-  });
+  updateCamera(playerPosition.value.x, playerPosition.value.y);
+  //musicaMapa.play().catch(err => {
+  //  console.warn('A reprodução automática foi bloqueada pelo navegador.', err);
+  //});
   window.addEventListener('keydown', handleKeyDown);
   document.addEventListener('playerMoved', updatePlayerPosition);
   
   // Inicializa a câmera na posição inicial do jogador
-  updateCamera(playerPosition.value.x, playerPosition.value.y);
 });
 
 onUnmounted(() => {
-  musicaMapa.pause();
-  musicaMapa.currentTime = 0;
+  //musicaMapa.pause();
+  //musicaMapa.currentTime = 0;
   window.removeEventListener('keydown', handleKeyDown);
   document.removeEventListener('playerMoved', updatePlayerPosition);
 });
@@ -238,11 +211,7 @@ onUnmounted(() => {
           :y="proximityIndicatorPosition.y"
         />
 
-        <DialogBox
-          v-if="dialogActiveInicio"
-          :messages="dialogMessagesInicio"
-          @close="dialogActiveInicio = false"
-        />
+
       </div>
 
       <!-- UI elements ficam fora do zoom -->
@@ -262,11 +231,10 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="botoes-acao">
-      <router-link to="/">
+      <router-link to="/menu">
         <button class="pokemon-button">Voltar ao Menu</button>
       </router-link>
-      <button class="pokemon-button" @click="toggleMiniMap" title="Mini Mapa (M)">M</button>
-      <div v-if="miniMapVisible" style="display:inline-block; vertical-align:middle; margin-left: 16px;">
+      <div style="position: absolute; margin-left: 16px;">
         <MiniMap
           :player="playerPosition"
           :bosses="bossesPositions"

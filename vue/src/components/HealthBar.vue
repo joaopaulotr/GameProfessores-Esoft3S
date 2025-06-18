@@ -21,6 +21,10 @@ const props = defineProps({
   maxXp: {
     type: Number,
     default: 100
+  },
+  xpColor: {
+    type: String,
+    default: '#00ff00'
   }
 })
 
@@ -67,9 +71,9 @@ watch(() => props.health, (newHealth, oldHealth) => {
       </div>
       
       <div v-if="showXP" class="xp-bar">
-        <div class="xp-label">XP: {{ xp }}/{{ maxXp }}</div>
+        <div class="xp-label">HITS: {{ xp }}</div>
         <div class="bar-background">
-          <div class="bar-fill xp-fill" :style="{ width: xpPercent + '%' }">
+          <div class="bar-fill xp-fill" :style="{ width: xpPercent + '%', '--hit-color': xpColor }">
             <div class="xp-segments">
               <div v-for="n in 10" :key="n" class="segment"></div>
             </div>
@@ -169,7 +173,8 @@ watch(() => props.health, (newHealth, oldHealth) => {
 }
 
 .xp-fill {
-  background: linear-gradient(to right, #3498db, #2980b9);
+  background: var(--hit-color);
+  transition: background-color 0.3s ease;
 }
 
 @keyframes pulse {
