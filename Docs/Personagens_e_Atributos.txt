@@ -1,0 +1,50 @@
+# Personagens e Atributos do Jogo
+
+## Jogador
+- **Vida Máxima:** 120
+- **Ataques:**
+  - Sintaxe Certeira (20 de dano)
+  - Refatoração Rápida (25 de dano)
+  - Stack Overflow (35 de dano)
+  - Café Restaurador (cura 55 de vida)
+
+## Chefes
+
+### 1. Moreno (Algoritmos)
+- **Vida:** 120
+- **Estilo:** Algoritmos e lógica
+- **Ataques:**
+  - Laço Infinito (25 de dano)
+  - Recursão Mortal (30 de dano)
+  - Busca Binária (20 de dano)
+  - Explosão de Pseudocódigo (35 de dano)
+
+### 2. Cidão (Arquitetura de Computadores)
+- **Vida:** 140
+- **Estilo:** Arquitetura e hardware
+- **Ataques:**
+  - Cache Mortal (27 de dano)
+  - Pipeline Quebrado (33 de dano)
+  - Overclock Selvagem (29 de dano)
+  - Tempestade de Barramentos (38 de dano)
+
+### 3. Gostosinho (Redes de Computadores)
+- **Vida:** 150
+- **Estilo:** Redes e comunicação
+- **Ataques:**
+  - Pacote Perdido (29 de dano)
+  - Broadcast Fatal (31 de dano)
+  - Tempestade de Ping (26 de dano)
+  - Firewall Implacável (39 de dano)
+
+### 4. Hugo Fumero (Front-End)
+- **Vida:** 180
+- **Estilo:** Front-End Supremo
+- **Ataques:**
+  - CSS Caótico (35 de dano)
+  - React Devastador (40 de dano)
+  - Bug Visual Fantasma (30 de dano)
+  - Deploy Apoteótico (45 de dano)
+
+
+Obs: Os nomes dos ataques e valores de dano são baseados nos dados do arquivo `dadosBatalha.js`.
