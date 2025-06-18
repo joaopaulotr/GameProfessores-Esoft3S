@@ -315,7 +315,7 @@ const realizarAtaque = async (ataque) => {
   // No final do ataque do jogador (antes de liberar o turno novamente):
   setTimeout(() => {
     canAttack.value = true;
-  }, 1000);
+  }, 500);
 }
 
 // Contadores de golpes
