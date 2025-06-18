@@ -23,6 +23,8 @@
 </template>
 
 <script setup>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { computed } from 'vue';
 let mapMiniSrc = '';
 try {
@@ -30,6 +32,12 @@ try {
 } catch (e) {
   mapMiniSrc = '';
 }
+=======
+import { computed } from 'vue'
+>>>>>>> Stashed changes
+=======
+import { computed } from 'vue'
+>>>>>>> Stashed changes
 const props = defineProps({
   player: { type: Object, required: true },
   bosses: { type: Array, required: true },
@@ -39,12 +47,23 @@ const props = defineProps({
 });
 const miniWidth = 300;
 const miniHeight = 150;
+<<<<<<< Updated upstream
 const scaleX = computed(() => miniWidth / props.mapWidth);
 const scaleY = computed(() => miniHeight / props.mapHeight);
 const playerStyle = computed(() => ({
   left: `${props.player.x * scaleX.value - 6}px`,
   top: `${props.player.y * scaleY.value - 6}px`
 }));
+=======
+const scaleX = miniWidth / props.mapWidth;
+const scaleY = miniHeight / props.mapHeight;
+
+const playerStyle = computed(() => ({
+  left: `${props.player.x * scaleX - 6}px`,
+  top: `${props.player.y * scaleY - 6}px`
+}));
+
+>>>>>>> Stashed changes
 function bossStyle(boss) {
   return {
     left: `${boss.x * scaleX.value - 6}px`,
