@@ -81,6 +81,7 @@ const gameMap = ref([
   Array(77).fill(1)
 ])
 
+
 // Função para iniciar a batalha quando perto de um boss
 function startBattle() {
   if (bossInteractionActive.value && currentBoss.value) {

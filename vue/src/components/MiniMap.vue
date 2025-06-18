@@ -1,9 +1,8 @@
 <!-- MiniMap.vue (exemplo simplificado) -->
 <template>
-  <div class="mini-map-overlay" @click.self="onClose">
+  <div class="mini-map-fixed">
     <div class="mini-map-bg">
-      <img v-if="mapMiniSrc" :src="mapMiniSrc" class="mini-map-image" />
-      <div v-else class="mini-map-fallback">MapaMini.png não encontrado</div>
+      <img src="@/assets/images/MapaMini.png" class="mini-map-image" />
       <!-- Player -->
       <div
         class="mini-player"
@@ -19,18 +18,11 @@
         title="Boss"
       ></div>
     </div>
-    <div class="mini-map-close">Clique fora para fechar</div>
+    <div class="mini-map-close" @click="onClose">Fechar</div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-let mapMiniSrc = '';
-try {
-  mapMiniSrc = new URL('@/assets/images/MapaMini.png', import.meta.url).href;
-} catch (e) {
-  mapMiniSrc = '';
-}
 const props = defineProps({
   player: { type: Object, required: true },
   bosses: { type: Array, required: true },
@@ -38,34 +30,39 @@ const props = defineProps({
   mapHeight: { type: Number, required: true },
   onClose: { type: Function, default: null }
 });
+
 const miniWidth = 300;
 const miniHeight = 150;
-const scaleX = computed(() => miniWidth / props.mapWidth);
-const scaleY = computed(() => miniHeight / props.mapHeight);
-const playerStyle = computed(() => ({
-  left: `${props.player.x * scaleX.value - 6}px`,
-  top: `${props.player.y * scaleY.value - 6}px`
-}));
+const scaleX = miniWidth / props.mapWidth;
+const scaleY = miniHeight / props.mapHeight;
+
+const playerStyle = {
+  left: `${props.player.x * scaleX - 6}px`,
+  top: `${props.player.y * scaleY - 6}px`
+};
+
 function bossStyle(boss) {
   return {
-    left: `${boss.x * scaleX.value - 6}px`,
-    top: `${boss.y * scaleY.value - 6}px`
+    left: `${boss.x * scaleX - 6}px`,
+    top: `${boss.y * scaleY - 6}px`
   };
 }
+
 function onClose() {
   if (props.onClose) props.onClose();
 }
 </script>
 
 <style scoped>
-.mini-map-overlay {
+.mini-map-fixed {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 99999;
+  top: 50%;
+  right: 32px;
+  transform: translateY(-50%);
+  z-index: 2000;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .mini-map-bg {
   position: relative;
@@ -82,16 +79,6 @@ function onClose() {
   height: 100%;
   object-fit: cover;
   opacity: 0.85;
-}
-.mini-map-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: #444;
-  font-size: 1.1rem;
 }
 .mini-player {
   position: absolute;
@@ -114,10 +101,19 @@ function onClose() {
   box-shadow: 0 0 8px #f00;
 }
 .mini-map-close {
-  text-align: center;
-  color: #fff;
-  font-size: 0.9rem;
   margin-top: 8px;
-  text-shadow: 1px 1px 2px #000;
+  background: #931e30;
+  color: #ffce1c;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #000a;
+  text-align: center;
+}
+.mini-map-close:hover {
+  background: #b5243a;
 }
 </style>
