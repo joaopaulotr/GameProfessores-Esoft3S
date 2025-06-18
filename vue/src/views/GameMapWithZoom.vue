@@ -18,8 +18,8 @@ const bossInteractionActive = ref(false)
 const currentBoss = ref(null)
 const bossNearButUnavailable = ref(false)
 const nearbyUnavailableBoss = ref(null)
-const musicaMapa = new Audio(new URL('@/assets/music/musicaMapa.mp3', import.meta.url).href);
-musicaMapa.loop = true; // Faz a música repetir
+ //const musicaMapa = new Audio(new URL('@/assets/music/musicaMapa.mp3', import.meta.url).href);
+ //musicaMapa.loop = true; // Faz a música repetir
 
 // Posição do indicador de proximidade
 const showProximityIndicator = ref(false)
@@ -187,9 +187,9 @@ function handleKeyDown(e) {
 }
 
 onMounted(() => {
-  musicaMapa.play().catch(err => {
-    console.warn('A reprodução automática foi bloqueada pelo navegador.', err);
-  });
+  //musicaMapa.play().catch(err => {
+  //  console.warn('A reprodução automática foi bloqueada pelo navegador.', err);
+  //});
   window.addEventListener('keydown', handleKeyDown);
   document.addEventListener('playerMoved', updatePlayerPosition);
   
@@ -198,8 +198,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  musicaMapa.pause();
-  musicaMapa.currentTime = 0;
+  //musicaMapa.pause();
+  //musicaMapa.currentTime = 0;
   window.removeEventListener('keydown', handleKeyDown);
   document.removeEventListener('playerMoved', updatePlayerPosition);
 });
